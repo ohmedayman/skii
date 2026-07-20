@@ -64,7 +64,36 @@ const DEFAULT_STYLE = { bg: 'linear-gradient(135deg,#64748b,#475569)', icon: 'ri
 function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
 
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
-const CITIES = ['القاهرة','الإسكندرية','الجيزة','المنصورة','طنطا','أسيوط','السويس','الفيوم','أسوان','الاقصر','شرم الشيخ','دهب','مرسى مطروح','الزقازيق'];
+
+const GOVERNORATES = {
+  'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','ال Sayeda Zeinab','البساتين','التبين'],
+  'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','أكتوبر','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','ال观音','العℛين','البدرشين'],
+  'الإسكندرية': ['سيدي جابر','ميامي','سموحة','المنشية','الرمل','كركدان','باكوس','كفر عبده','العصافرة','برج العرب','الدخيلة','محرم بك'],
+  'القليوبية': ['بنها','القليوبية','شبرا الخيمة','طوخ','قليوب','العبور','الشرق'],
+  'المنوفية': ['شبين الكوم','منوف','سرس الليان','الباجور','أشمون','تلا','بركة السبع'],
+  'الغربية': ['طنطا','المحلة الكبرى','كفر الزيات','زفتى','سمنود','قطور','بسيون'],
+  'الدقهلية': ['المنصورة','طلخا','ميت غمر','دكرنس','السنبلاوين','أجا','منية النصر','شربين'],
+  'الفيوم': ['الفيوم','سانت مريم','إطسا','سنورس','طامية','الفيوم الجديدة'],
+  'بني سويف': ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطرا'],
+  'المنيا': ['المنيا','ملوي','أبوقرقاص','سمالوط','العدوة','مغاغة'],
+  'أسيوط': ['أسيوط','البداري','الغنايم','ديروط','منفلوط','أبو تيج','صدفا'],
+  'سوهاج': ['سوهاج','طهطا','جراجة','البلينا','العريش','المراغة','الساحل'],
+  'قنا': ['قنا','قوص','نجع حمادي','الأقصر','الوقف','دشنا','ال colour'],
+  'الأقصر': ['الأقصر','الزينية','البع淋','ال colour','الفرنا','إسنا','طيبة الجديدة'],
+  'أسوان': ['أسوان','دراو','كوم أمبو','نصر النوبة','إدفو','البللدي'],
+  'البحر الأحمر': ['الغردقة','مرسى علم','الجونة','السخنة','الدهب','شرم الشيخ'],
+  'الإسماعيلية': ['الإسماعيلية','التل الكبير','الewis','أبو صوير','القنطرة شرق','القنطرة غرب'],
+  'السويس': ['السويس','عتاقا','الجناين'],
+  'بورسعيد': ['بورسعيد','العرب'],
+  'دمياط': ['دمياط','دمياط الجديدة','الروضة','الزرقا','فارسكور','كفر سعد'],
+  'كفر الشيخ': ['كفر الشيخ','دسوق','بيلا','الحامول','سيدي سالم','قلين','الرياض'],
+  'شمال سيناء': ['العريش','رفح','بئر العبد','الشيخ زويد','ن��ل'],
+  'جنوب سيناء': ['طور سيناء','شرم الشيخ','دهب','كينج','أبو رديس',' saint katrin'],
+  'مطروح': ['مرسى مطروح','الحمام','العلمين','سيدي براني','النجيلة','سيوة'],
+  'الوادي الجديد': ['الخارجة','الداخلة','الفرافرة','بلاط'],
+};
+
+const CITIES = Object.keys(GOVERNORATES);
 
 // ==================== STORAGE ====================
 function saveData() {
@@ -245,8 +274,30 @@ function showSignupModal() {
   document.getElementById('signup-name').value = '';
   document.getElementById('signup-email').value = '';
   document.getElementById('signup-password').value = '';
+  populateGovSelect('signup-gov', 'signup-center');
 }
 function hideSignupModal() { document.getElementById('signup-modal').style.display = 'none'; }
+
+function populateGovSelect(govId, centerId) {
+  const govSelect = document.getElementById(govId);
+  const centerSelect = document.getElementById(centerId);
+  if (!govSelect) return;
+  govSelect.innerHTML = '<option value="">اختار المحافظة</option>' + Object.keys(GOVERNORATES).map(g => `<option value="${g}">${g}</option>`).join('');
+  if (centerSelect) {
+    centerSelect.innerHTML = '<option value="">اختار المركز</option>';
+    centerSelect.disabled = true;
+    govSelect.addEventListener('change', () => {
+      const gov = govSelect.value;
+      if (gov && GOVERNORATES[gov]) {
+        centerSelect.innerHTML = '<option value="">اختار المركز</option>' + GOVERNORATES[gov].map(c => `<option value="${c}">${c}</option>`).join('');
+        centerSelect.disabled = false;
+      } else {
+        centerSelect.innerHTML = '<option value="">اختار المركز</option>';
+        centerSelect.disabled = true;
+      }
+    });
+  }
+}
 
 function updateAuthUI() {
   const btns = document.getElementById('header-auth-btns');
@@ -264,6 +315,16 @@ function updateAuthUI() {
     `;
     if (name) name.textContent = currentUser.name;
     if (email) email.textContent = currentUser.email;
+    const locEl = document.getElementById('profile-location');
+    const locText = document.getElementById('profile-location-text');
+    if (locEl && locText) {
+      if (currentUser.governorate) {
+        locText.textContent = currentUser.governorate + (currentUser.center ? ' - ' + currentUser.center : '');
+        locEl.classList.remove('hidden');
+      } else {
+        locEl.classList.add('hidden');
+      }
+    }
     if (authBtns) authBtns.style.display = 'none';
     if (menu) menu.style.display = 'block';
     if (adminLink) adminLink.style.display = currentUser.isAdmin ? 'flex' : 'none';
@@ -334,6 +395,8 @@ function signupWithEmail() {
     email: email,
     password: pass,
     isAdmin: email === 'admin@sikka.com',
+    governorate: document.getElementById('signup-gov')?.value || '',
+    center: document.getElementById('signup-center')?.value || '',
     createdAt: new Date().toISOString()
   };
 
@@ -427,6 +490,7 @@ function loadHome() {
   animateCounter('stat-reviews', totalReviews);
   const cities = [...new Set(approved.map(b => b.location?.city).filter(Boolean))];
   animateCounter('stat-cities', cities.length || CITIES.length);
+  renderNearby(approved);
 }
 
 function renderCategories(cats) {
@@ -494,6 +558,36 @@ function animateCounter(id, target) {
     if (current >= target) { current = target; clearInterval(interval); }
     el.textContent = current;
   }, 30);
+}
+
+function renderNearby(approved) {
+  const section = document.getElementById('nearby-section');
+  const grid = document.getElementById('nearby-grid');
+  if (!section || !grid) return;
+
+  const userGov = currentUser?.governorate;
+  const userCenter = currentUser?.center;
+
+  let nearby = [];
+  if (userGov) {
+    nearby = approved.filter(b => b.location?.city === userGov);
+    if (userCenter && nearby.length < 4) {
+      const more = approved.filter(b => b.location?.district === userCenter && !nearby.find(n => n.id === b.id));
+      nearby = [...nearby, ...more];
+    }
+    nearby.sort((a, b) => (b.rating?.average || 0) - (a.rating?.average || 0));
+    nearby = nearby.slice(0, 8);
+  }
+
+  if (nearby.length) {
+    section.style.display = 'block';
+    grid.innerHTML = nearby.map((b, i) => renderBusinessCard(b, i)).join('');
+  } else if (userGov) {
+    section.style.display = 'block';
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-400"><i class="ri-map-pin-line text-3xl mb-2 block"></i><p>مفيش أعمال مسجلة في ' + userGov + ' لسه</p></div>';
+  } else {
+    section.style.display = 'none';
+  }
 }
 
 // ==================== BUSINESSES PAGE ====================
@@ -1047,24 +1141,38 @@ function renderDashSettings(c, b) {
       <div class="space-y-3">
         <div><label class="form-label">الاسم</label><input class="form-input" id="set-name" value="${currentUser.name}"></div>
         <div><label class="form-label">البريد الإلكتروني</label><input class="form-input" id="set-email" value="${currentUser.email}" disabled></div>
+        <div><label class="form-label">المحافظة</label><select class="form-input" id="set-gov"><option value="">اختار المحافظة</option></select></div>
+        <div><label class="form-label">المركز/الحي</label><select class="form-input" id="set-center"><option value="">اختار المركز</option></select></div>
         <button onclick="saveDashSettings()" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-save-line ml-1"></i> حفظ</button>
       </div>
     </div>
     <div class="bg-white border border-gray-200 rounded-2xl p-6">
       <h3 class="font-bold mb-3">حذف الحساب</h3>
       <p class="text-gray-500 text-sm mb-4">حذف الحساب يعني حذف جميع بياناتك نهائياً</p>
-      <button onclick="deleteDashAccount('${b.id}')" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl font-medium hover:bg-red-100 transition-all text-sm"><i class="ri-delete-bin-line ml-1"></i> حذف الحساب والنشاط</button>
+      <button onclick="deleteDashAccount('${b.id}')" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl font-medium hover:bg-red-100 transition-all text-sm"><i class="ri-delete-bin-line ml-1"></i> حذف الحساب والشغل</button>
     </div>
   `;
+  populateGovSelect('set-gov', 'set-center');
+  const govSelect = document.getElementById('set-gov');
+  if (govSelect && currentUser.governorate) {
+    govSelect.value = currentUser.governorate;
+    govSelect.dispatchEvent(new Event('change'));
+    setTimeout(() => {
+      const centerSelect = document.getElementById('set-center');
+      if (centerSelect && currentUser.center) centerSelect.value = currentUser.center;
+    }, 50);
+  }
 }
 
 function saveDashSettings() {
   const name = document.getElementById('set-name')?.value?.trim();
   if (!name) { showToast('اكتب الاسم', 'error'); return; }
   currentUser.name = name;
+  currentUser.governorate = document.getElementById('set-gov')?.value || '';
+  currentUser.center = document.getElementById('set-center')?.value || '';
   localStorage.setItem('sikka_current_user', JSON.stringify(currentUser));
   const u = users.find(u => u.id === currentUser.id);
-  if (u) u.name = name;
+  if (u) { u.name = name; u.governorate = currentUser.governorate; u.center = currentUser.center; }
   saveData();
   updateAuthUI();
   showToast('اتحفظت المعلومات', 'success');
@@ -1152,9 +1260,9 @@ function renderAddForm() {
     <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="sm:col-span-2"><label class="form-label">اسم الشغل *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم الشغل بالعربي"></div>
-        <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختر الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
-        <div><label class="form-label">المدينة *</label><input type="text" class="form-input" id="biz-city" placeholder="مثال: القاهرة"></div>
-        <div><label class="form-label">الحي</label><input type="text" class="form-input" id="biz-district" placeholder="مثال: المعادي"></div>
+        <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختار الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
+        <div><label class="form-label">المحافظة *</label><select class="form-input" id="biz-city"><option value="">اختار المحافظة</option>${Object.keys(GOVERNORATES).map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>
+        <div><label class="form-label">المركز/الحي</label><select class="form-input" id="biz-district" disabled><option value="">اختار المحافظة الأول</option></select></div>
         <div class="sm:col-span-2"><label class="form-label">العنوان بالتفصيل</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
         <div><label class="form-label">التليفون *</label><input type="tel" class="form-input" id="biz-phone" placeholder="01XXXXXXXXX"></div>
         <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="201XXXXXXXXX"></div>
@@ -1171,6 +1279,20 @@ function renderAddForm() {
       </div>
     </div>
   `;
+  const bizGov = document.getElementById('biz-city');
+  const bizCenter = document.getElementById('biz-district');
+  if (bizGov && bizCenter) {
+    bizGov.addEventListener('change', () => {
+      const gov = bizGov.value;
+      if (gov && GOVERNORATES[gov]) {
+        bizCenter.innerHTML = '<option value="">اختار المركز</option>' + GOVERNORATES[gov].map(c => `<option value="${c}">${c}</option>`).join('');
+        bizCenter.disabled = false;
+      } else {
+        bizCenter.innerHTML = '<option value="">اختار المحافظة الأول</option>';
+        bizCenter.disabled = true;
+      }
+    });
+  }
 }
 
 function submitBusiness() {
