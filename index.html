@@ -29,18 +29,18 @@
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50" id="main-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#" class="flex items-center gap-3 group" onclick="navigateTo('home')">
+        <a href="#/home" class="flex items-center gap-3 group" onclick="navigateTo('home')">
           <div class="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-all">
             <i class="ri-road-map-line text-lg"></i>
           </div>
           <span class="text-xl font-bold bg-gradient-to-l from-gray-800 to-gray-600 bg-clip-text text-transparent">سِكّة</span>
         </a>
         <nav class="hidden md:flex items-center gap-1">
-          <a href="#" class="nav-link active" data-nav="home" onclick="navigateTo('home')"><i class="ri-home-5-line ml-1"></i>الرئيسية</a>
-          <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
-          <a href="#" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
-          <a href="#" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
-          <a href="#" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
+          <a href="#/home" class="nav-link active" data-nav="home" onclick="navigateTo('home')"><i class="ri-home-5-line ml-1"></i>الرئيسية</a>
+          <a href="#/businesses" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
+          <a href="#/categories" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
+          <a href="#/blog" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
+          <a href="#/admin" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
         </nav>
         <div class="flex items-center gap-3">
           <div id="header-auth-btns">
@@ -59,11 +59,11 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl">
       <div class="px-4 py-3 space-y-1">
-        <a href="#" class="mobile-menu-item active" onclick="navigateTo('home')"><i class="ri-home-5-line"></i>الرئيسية</a>
-        <a href="#" class="mobile-menu-item" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i>الأعمال</a>
-        <a href="#" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
-        <a href="#" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
-        <a href="#" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>سجّل شغلك</a>
+        <a href="#/home" class="mobile-menu-item active" onclick="navigateTo('home')"><i class="ri-home-5-line"></i>الرئيسية</a>
+        <a href="#/businesses" class="mobile-menu-item" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i>الأعمال</a>
+        <a href="#/categories" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
+        <a href="#/blog" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
+        <a href="#/add" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>سجّل شغلك</a>
       </div>
     </div>
   </header>
@@ -116,7 +116,7 @@
     <section class="py-16 bg-white" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-10">
-          <div><h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2>            <p class="text-gray-500 mt-1">اختار الفئة اللي تناسبك</p></div>
+          <div><h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2><p class="text-gray-500 mt-1">اختار الفئة اللي تناسبك</p></div>
           <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('categories')">شوف الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4"></div>
@@ -167,7 +167,7 @@
           </div>
           <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
             <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20"><i class="ri-map-pin-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-cities">0</div><div class="text-sm text-gray-500 mt-1">مدينة</div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-cities">0</div><div class="text-sm text-gray-500 mt-1">محافظة</div>
           </div>
         </div>
       </div>
@@ -183,23 +183,6 @@
         </button>
       </div>
     </section>
-
-    <footer class="bg-gray-900 text-white pt-16 pb-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          <div>
-            <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center"><i class="ri-road-map-line text-lg"></i></div><span class="text-xl font-bold">سِكّة</span></div>
-            <p class="text-gray-400 text-sm leading-relaxed">دليل الأعمال الذكي في مصر</p>
-          </div>
-          <div><h4 class="font-bold mb-4">روابط سريعة</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('home')">الرئيسية</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a></div></div>
-          <div><h4 class="font-bold mb-4">الفئات</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مقاهي')">مقاهي</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مطاعم')">مطاعم</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('بنوك')">بنوك</a></div></div>
-          <div><h4 class="font-bold mb-4">تواصل معنا</h4><div class="flex gap-3"><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-twitter-x-line"></i></a><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-instagram-line"></i></a><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-whatsapp-line"></i></a></div></div>
-        </div>
-        <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span class="text-gray-500 text-sm">© 2025 سِكّة. جميع الحقوق محفوظة</span>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <!-- BUSINESSES -->
@@ -229,7 +212,12 @@
   </div>
 
   <!-- BLOG -->
-  <div id="page-blog" class="page"><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><h1 class="text-2xl sm:text-3xl font-bold mb-6">المدونة</h1><div id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div></div></div>
+  <div id="page-blog" class="page">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6">المدونة</h1>
+      <div id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </div>
 
   <!-- ADD BUSINESS -->
   <div id="page-add" class="page">
@@ -250,10 +238,9 @@
         <div id="auth-buttons"><button class="w-full py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium transition-all hover:shadow-lg" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button></div>
         <div id="profile-menu" style="display:none">
           <div class="space-y-2 text-right">
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line text-gray-400"></i> لوحة التحكم</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('favorites')"><i class="ri-heart-line text-gray-400"></i> المفضلة</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> سجّل شغل جديد</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('profile')"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
+            <a href="#/dashboard" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line text-gray-400"></i> لوحة التحكم</a>
+            <a href="#/favorites" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('favorites')"><i class="ri-heart-line text-gray-400"></i> المفضلة</a>
+            <a href="#/add" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> سجّل شغل جديد</a>
             <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> خروج</button>
           </div>
         </div>
@@ -263,6 +250,8 @@
 
   <!-- BUSINESS DETAIL -->
   <div id="page-business" class="page"><div id="business-detail"></div></div>
+
+  <!-- POST DETAIL -->
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
 
   <!-- FAVORITES -->
@@ -273,17 +262,103 @@
     </div>
   </div>
 
+  <!-- ABOUT -->
+  <div id="page-about" class="page">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 sm:p-12 shadow-sm">
+        <div class="text-center mb-10">
+          <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"><i class="ri-road-map-line text-2xl text-white"></i></div>
+          <h1 class="text-3xl font-bold mb-2">عن سِكّة</h1>
+          <p class="text-gray-500">دليل الأعمال الذكي في مصر</p>
+        </div>
+        <div class="prose max-w-none space-y-6 text-gray-600 leading-relaxed">
+          <p>سِكّة هو دليل الأعمال الذكي في مصر. هدفنا نساعدك تكتشف أفضل المحلات والمطاعم والخدمات حسب موقعك وتقييمات الناس الحقيقية.</p>
+          <p>سواء بتدور على مقهى قريب، أو مطعم مظبوط، أو بنك، أو أي خدمة تانية — سِكّة هيسهّل عليك تلاقي اللي بتدور عليه بسهولة.</p>
+          <h3 class="text-lg font-bold text-gray-900 mt-6">ليه سِكّة؟</h3>
+          <ul class="list-disc list-inside space-y-2">
+            <li>دليل شامل لأعمال مصر في كل المحافظات</li>
+            <li>تقييمات ومراجعات حقيقية من الناس</li>
+            <li>لوحة تحكم للأصحاب الأعمال يقدروا يسيروا شغلهم</li>
+            <li>عروض وخصومات حصرية من المحلات</li>
+            <li>مجاني تماماً للمستخدمين</li>
+          </ul>
+          <h3 class="text-lg font-bold text-gray-900 mt-6">رسالتنا</h3>
+          <p>نعمل دليل أعمال مصري يربط بين أصحاب الأعمال والزبائن بطريقة سهلة وبسيطة. كل واحد يلاقي اللي بيدور عليه، وكل صاحب شغل يوصل لزباينه.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="page-contact" class="page">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 sm:p-12 shadow-sm">
+        <div class="text-center mb-10">
+          <h1 class="text-3xl font-bold mb-2">تواصل معنا</h1>
+          <p class="text-gray-500">عندك أي سؤال أو اقتراح؟ ابعتلنا</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+          <div class="text-center p-6 bg-gray-50 rounded-2xl">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-mail-line text-2xl text-blue-600"></i></div>
+            <h3 class="font-bold mb-1">البريد الإلكتروني</h3>
+            <p class="text-gray-500 text-sm">info@sikka.com</p>
+          </div>
+          <div class="text-center p-6 bg-gray-50 rounded-2xl">
+            <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-whatsapp-line text-2xl text-green-600"></i></div>
+            <h3 class="font-bold mb-1">واتساب</h3>
+            <p class="text-gray-500 text-sm">01000000000</p>
+          </div>
+          <div class="text-center p-6 bg-gray-50 rounded-2xl">
+            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-map-pin-line text-2xl text-purple-600"></i></div>
+            <h3 class="font-bold mb-1">الموقع</h3>
+            <p class="text-gray-500 text-sm">القاهرة، مصر</p>
+          </div>
+        </div>
+        <div class="bg-gray-50 rounded-2xl p-6 sm:p-8">
+          <h3 class="font-bold mb-4">ابعت رسالة</h3>
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label class="form-label">الاسم</label><input type="text" class="form-input" placeholder="الاسم الكامل"></div>
+              <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" placeholder="example@email.com"></div>
+            </div>
+            <div><label class="form-label">الموضوع</label><input type="text" class="form-input" placeholder="موضوع الرسالة"></div>
+            <div><label class="form-label">الرسالة</label><textarea class="form-input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea></div>
+            <button class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showToast('شكراً لتواصلك! هنرد عليك قريب', 'success')"><i class="ri-send-plane-line ml-1"></i> إرسال</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div id="page-terms" class="page">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 sm:p-12 shadow-sm">
+        <h1 class="text-3xl font-bold mb-2 text-center">الشروط والأحكام</h1>
+        <p class="text-gray-500 text-center mb-8">آخر تحديث: يناير 2025</p>
+        <div class="prose max-w-none space-y-6 text-gray-600 leading-relaxed text-sm">
+          <div><h3 class="font-bold text-gray-900 mb-2">1. قبول الشروط</h3><p>باستخدامك موقع سِكّة، أنت موافق على الشروط دي. لو مش موافق، من فضلك متستخدمش الموقع.</p></div>
+          <div><h3 class="font-bold text-gray-900 mb-2">2. الخدمة</h3><p>سِكّة دليل أعمال مجاني بيساعد المستخدمين يكتشفوا أعمال وخدمات في مصر. الموقع مش مسؤول عن جودة الخدمات اللي بيتم الإعلان عنها.</p></div>
+          <div><h3 class="font-bold text-gray-900 mb-2">3. حساب المستخدم</h3><p>أنت مسؤول عن حفظ معلومات تسجيل الدخول بتاعتك. كل المعلومات المدخلة في الموقع بتتحفظ محلياً على جهازك.</p></div>
+          <div><h3 class="font-bold text-gray-900 mb-2">4. المحتوى</h3><p>المستخدمين مسؤولين عن المحتوى اللي بينشروه. سِكّة يحق له يمسح أي محتوى مخالف أو مسيء.</p></div>
+          <div><h3 class="font-bold text-gray-900 mb-2">5. الخصوصية</h3><p>سِكّة بيحترم خصوصيتك. كل البيانات بتتحفظ محلياً على جهازك ومبتتبعتش لأي سيرفر خارجي.</p></div>
+          <div><h3 class="font-bold text-gray-900 mb-2">6. التعديلات</h3><p>سِكّة يحقله يعدّل على الشروط في أي وقت. التعديلات هتنشر على الصفحة دي.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- CUSTOMER DASHBOARD -->
   <div id="page-dashboard" class="page">
     <div class="flex min-h-[calc(100vh-64px)]">
       <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block" id="dash-sidebar">
         <div class="flex items-center gap-2 mb-4 px-3">
-          <button class="md:hidden p-1 hover:bg-gray-100 rounded-lg" onclick="document.getElementById('dash-sidebar').classList.toggle('hidden')"><i class="ri-close-line"></i></button>
           <h3 class="font-bold text-sm">لوحة التحكم</h3>
         </div>
         <div class="space-y-1">
-          <a href="#" class="admin-nav-item active" onclick="showDashTab('overview')"><i class="ri-dashboard-line"></i> نظرة عامة</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('overview')"><i class="ri-dashboard-line"></i> نظرة عامة</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('edit')"><i class="ri-edit-line"></i> تعديل الشغل</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('products')"><i class="ri-shopping-bag-line"></i> المنتجات والخدمات</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('photos')"><i class="ri-image-line"></i> الصور</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('reviews')"><i class="ri-star-line"></i> التقييمات</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('offers')"><i class="ri-megaphone-line"></i> العروض والتسويق</a>
@@ -313,8 +388,59 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8" id="main-footer">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center"><i class="ri-road-map-line text-lg"></i></div><span class="text-xl font-bold">سِكّة</span></div>
+          <p class="text-gray-400 text-sm leading-relaxed">دليل الأعمال الذكي في مصر. اكتشف أفضل المحلات والخدمات حسب موقعك.</p>
+          <div class="flex gap-3 mt-4">
+            <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-instagram-line"></i></a>
+            <a href="https://wa.me/201000000000" target="_blank" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-whatsapp-line"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">روابط سريعة</h4>
+          <div class="space-y-2">
+            <a href="#/home" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('home')">الرئيسية</a>
+            <a href="#/businesses" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('businesses')">كل الأعمال</a>
+            <a href="#/categories" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a>
+            <a href="#/blog" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">الفئات</h4>
+          <div class="space-y-2">
+            <a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مقاهي')">مقاهي</a>
+            <a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مطاعم')">مطاعم</a>
+            <a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('بنوك')">بنوك</a>
+            <a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('صحة')">صحة</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">روابط مهمة</h4>
+          <div class="space-y-2">
+            <a href="#/about" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('about')">عن سِكّة</a>
+            <a href="#/contact" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('contact')">تواصل معنا</a>
+            <a href="#/terms" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('terms')">الشروط والأحكام</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-gray-500 text-sm">© 2025 سِكّة. جميع الحقوق محفوظة</span>
+        <div class="flex gap-4 text-sm text-gray-500">
+          <a href="#/about" class="hover:text-white transition-colors" onclick="navigateTo('about')">عنّا</a>
+          <a href="#/contact" class="hover:text-white transition-colors" onclick="navigateTo('contact')">تواصل</a>
+          <a href="#/terms" class="hover:text-white transition-colors" onclick="navigateTo('terms')">الشروط</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <!-- Mobile Bottom Nav -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 z-50 md:hidden">
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 z-50 md:hidden" id="mobile-bottom-nav">
     <div class="flex items-center justify-around h-16 px-2">
       <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')"><i class="ri-home-5-line"></i><span>الرئيسية</span></button>
       <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')"><i class="ri-apps-line"></i><span>الفئات</span></button>
@@ -403,7 +529,8 @@
   <!-- Toast -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 -translate-y-20 bg-gray-900 text-white px-6 py-3 rounded-2xl font-medium shadow-2xl z-[2000] transition-all duration-300 flex items-center gap-2"></div>
 
-  <!-- No Firebase needed - everything works locally! -->
+  <!-- Scroll to top -->
+  <button id="scroll-top-btn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="ri-arrow-up-line text-lg"></i></button>
 
   <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -12,14 +12,40 @@ let currentRating = 0;
 
 // ==================== INIT DATA ====================
 const DEFAULT_BUSINESSES = [
-  { id:'b1', name:'ستاربكس مصر', nameAr:'ستاربكس مصر', nameEn:'Starbucks Egypt', categoryNameAr:'المقاهي', location:{ city:'القاهرة', district:'مدينة نصر', address:'شارع مصطفى النحاس' }, contact:{ phone:'0222738476', whatsapp:'201065000001', email:'info@starbucks.eg' }, description:'مقهى ستاربكس بيقدم أحسن أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'7:00 ص - 1:00 م', friday:'2:00 م - 1:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], createdAt:'2025-01-15' },
-  { id:'b2', name:'كنتاكي', nameAr:'ケンタッكي / كنتاكي', nameEn:'KFC Egypt', categoryNameAr:'المطاعم', location:{ city:'القاهرة', district:'التجمع الخامس', address:'مول العرب' }, contact:{ phone:'0226140050', whatsapp:'201065000002' }, description:'مطعم كنتاكي بيقدم أشهى الدجاج المقلي والوجبات السريعة بأسعار مناسبة.', keywords:['دجاج','مطعم','وجبات سريعة','فرايز'], brands:['KFC'], workingHours:{ saturday:'11:00 ص - 2:00 م', friday:'1:00 م - 2:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, ownerId:'demo', views:220, photos:[], offers:[], createdAt:'2025-02-10' },
-  { id:'b3', name:'البنك الأهلي المصري', nameAr:'البنك الأهلي المصري', nameEn:'National Bank of Egypt', categoryNameAr:'البنوك', location:{ city:'القاهرة', district:'وسط البلد', address:'شارع محمد محمود' }, contact:{ phone:'19623' }, description:'البنك الأهلي المصري أكبر بنك في مصر بيفتحلك حسابات وقروض وخدمات مالية متنوعة.', keywords:['بنك','حساب','قروض','خدمات مالية'], brands:['NBE'], workingHours:{ saturday:'8:30 ص - 2:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:500, photos:[], offers:[], createdAt:'2025-01-20' },
-  { id:'b4', name:'بلازا مصر', nameAr:'بلازا مصر', nameEn:'Plaza Egypt', categoryNameAr:'التجزئة', location:{ city:'الإسكندرية', district:'سيدي جابر', address:'شارع فوزي معاذ' }, contact:{ phone:'0334456789', email:'info@plaza.eg' }, description:'متجر بلازا للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء','ماركات'], brands:['Plaza'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, ownerId:'demo', views:180, photos:[], offers:[], createdAt:'2025-03-01' },
-  { id:'b5', name:'مستشفى دار الفؤاد', nameAr:'مستشفى دار الفؤاد', nameEn:'Dar Al Fouad Hospital', categoryNameAr:'الصحة', location:{ city:'القاهرة', district:'السادس من أكتوبر', address:'شارع المحور' }, contact:{ phone:'0228100010' }, description:'مستشفى دار الفؤاد من أحسن المستشفيات في مصر في التخصصات المختلفة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, ownerId:'demo', views:800, photos:[], offers:[], createdAt:'2025-01-10' },
-  { id:'b6', name:'جامعة القاهرة', nameAr:'جامعة القاهرة', nameEn:'Cairo University', categoryNameAr:'التعليم', location:{ city:'القاهرة', district:'الجيزة', address:'شارع صلاح سالم' }, contact:{ phone:'0227954000' }, description:'جامعة القاهرة هي أكبر وأقدم جامعات مصر والشرق الأوسط.', keywords:['جامعة','تعليم','دراسة','طلبة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, ownerId:'demo', views:600, photos:[], offers:[], createdAt:'2025-01-05' },
-  { id:'b7', name:'فاليو للخدمات', nameAr:'فاليو', nameEn:'Fawry', categoryNameAr:'الخدمات', location:{ city:'القاهرة', district:' المعادي', address:'شارع 9' }, contact:{ phone:'19666', email:'info@fawry.com' }, description:'فاليو أكبر منصة خدمات مالية إلكترونية في مصر.', keywords:['دفع','فواتير','خدمات','مالية'], brands:['Fawry'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, ownerId:'demo', views:900, photos:[], offers:[], createdAt:'2025-02-20' },
-  { id:'b8', name:'المتحف المصري', nameAr:'المتحف المصري', nameEn:'Egyptian Museum', categoryNameAr:'السفر والسياحة', location:{ city:'القاهرة', district:'التحرير', address:'ميدان التحرير' }, contact:{ phone:'0225782452' }, description:'المتحف المصري أكبر متحف في الشرق الأوسط فيه آلاف القطع الأثرية.', keywords:['متحف','سياحة','تراث','ثقافة','أثر'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:400, photos:[], offers:[], createdAt:'2025-03-10' },
+  { id:'b1', name:'ستاربكس مصر', nameAr:'ستاربكس مصر', nameEn:'Starbucks Egypt', categoryNameAr:'المقاهي', location:{ city:'القاهرة', district:'مدينة نصر', address:'شارع مصطفى النحاس' }, contact:{ phone:'0222738476', whatsapp:'201065000001', email:'info@starbucks.eg' }, description:'مقهى ستاربكس بيقدم أحسن أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'7:00 ص - 1:00 م', friday:'2:00 م - 1:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], products:[
+    { id:'p1', name:'لاتيه', desc:'لاتيه بالحليب والمحلبات', price:'45', image:'', category:'قهوة' },
+    { id:'p2', name:'كابتشينو', desc:'كابتشينو كلاسيكي', price:'42', image:'', category:'قهوة' },
+    { id:'p3', name:'موكا شوكولاتة', desc:'موكا بالشوكولاتة السوداء', price:'50', image:'', category:'مشروبات' },
+    { id:'p4', name:'آيس كوفي', desc:'قهوة باردة بالثلج', price:'40', image:'', category:'مشروبات' },
+  ], createdAt:'2025-01-15' },
+  { id:'b2', name:'كنتاكي', nameAr:'كنتاكي', nameEn:'KFC Egypt', categoryNameAr:'المطاعم', location:{ city:'القاهرة', district:'التجمع الخامس', address:'مول العرب' }, contact:{ phone:'0226140050', whatsapp:'201065000002' }, description:'مطعم كنتاكي بيقدم أشهى الدجاج المقلي والوجبات السريعة بأسعار مناسبة.', keywords:['دجاج','مطعم','وجبات سريعة','فرايز'], brands:['KFC'], workingHours:{ saturday:'11:00 ص - 2:00 م', friday:'1:00 م - 2:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, ownerId:'demo', views:220, photos:[], offers:[], products:[
+    { id:'p5', name:'وجبة دجاج مقلي', desc:'4 قطع دجاج مع فرايز', price:'120', image:'', category:'وجبات' },
+    { id:'p6', name:'ساندويتش زنجر', desc:'ساندويتش دجاج مقلي مع صلصة', price:'65', image:'', category:'ساندويتشات' },
+    { id:'p7', name:'ساندويتش توستيكر', desc:'دجاج مشوي في توست', price:'70', image:'', category:'ساندويتشات' },
+  ], createdAt:'2025-02-10' },
+  { id:'b3', name:'البنك الأهلي المصري', nameAr:'البنك الأهلي المصري', nameEn:'National Bank of Egypt', categoryNameAr:'البنوك', location:{ city:'القاهرة', district:'وسط البلد', address:'شارع محمد محمود' }, contact:{ phone:'19623' }, description:'البنك الأهلي المصري أكبر بنك في مصر بيفتحلك حسابات وقروض وخدمات مالية متنوعة.', keywords:['بنك','حساب','قروض','خدمات مالية'], brands:['NBE'], workingHours:{ saturday:'8:30 ص - 2:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:500, photos:[], offers:[], products:[
+    { id:'p8', name:'حساب توفير', desc:'حساب توفير بشروط مميزة', price:'', image:'', category:'حسابات' },
+    { id:'p9', name:'قروض شخصية', desc:'قروض بفوائد تنافسية', price:'', image:'', category:'قروض' },
+    { id:'p10', name:'كرت ائتمان', desc:'كرت ائتمان بمزايا كتير', price:'', image:'', category:'بطاقات' },
+  ], createdAt:'2025-01-20' },
+  { id:'b4', name:'بلازا مصر', nameAr:'بلازا مصر', nameEn:'Plaza Egypt', categoryNameAr:'التجزئة', location:{ city:'الإسكندرية', district:'سيدي جابر', address:'شارع فوزي معاذ' }, contact:{ phone:'0334456789', email:'info@plaza.eg' }, description:'متجر بلازا للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء','ماركات'], brands:['Plaza'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, ownerId:'demo', views:180, photos:[], offers:[], products:[
+    { id:'p11', name:'تيشيرت قطن', desc:'تيشيرت قطن 100% ألوان متعددة', price:'299', image:'', category:'رجالي' },
+    { id:'p12', name:'جينز كلاسيك', desc:'جينز ساقي مستقيم', price:'450', image:'', category:'رجالي' },
+    { id:'p13', name:'فستان صيفي', desc:'فستان خفيف للصيف', price:'399', image:'', category:'حريمي' },
+  ], createdAt:'2025-03-01' },
+  { id:'b5', name:'مستشفى دار الفؤاد', nameAr:'مستشفى دار الفؤاد', nameEn:'Dar Al Fouad Hospital', categoryNameAr:'الصحة', location:{ city:'القاهرة', district:'السادس من أكتوبر', address:'شارع المحور' }, contact:{ phone:'0228100010' }, description:'مستشفى دار الفؤاد من أحسن المستشفيات في مصر في التخصصات المختلفة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, ownerId:'demo', views:800, photos:[], offers:[], products:[
+    { id:'p14', name:'فحص شامل', desc:'كشف كامل مع تحاليل', price:'1500', image:'', category:'خدمات' },
+    { id:'p15', name:'استشارة قلب', desc:'استشارة أخصائي قلب', price:'500', image:'', category:'استشارات' },
+  ], createdAt:'2025-01-10' },
+  { id:'b6', name:'جامعة القاهرة', nameAr:'جامعة القاهرة', nameEn:'Cairo University', categoryNameAr:'التعليم', location:{ city:'القاهرة', district:'الجيزة', address:'شارع صلاح سالم' }, contact:{ phone:'0227954000' }, description:'جامعة القاهرة هي أكبر وأقدم جامعات مصر والشرق الأوسط.', keywords:['جامعة','تعليم','دراسة','طلبة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, ownerId:'demo', views:600, photos:[], offers:[], products:[], createdAt:'2025-01-05' },
+  { id:'b7', name:'فاليو للخدمات', nameAr:'فاليو', nameEn:'Fawry', categoryNameAr:'الخدمات', location:{ city:'القاهرة', district:'المعادي', address:'شارع 9' }, contact:{ phone:'19666', email:'info@fawry.com' }, description:'فاليو أكبر منصة خدمات مالية إلكترونية في مصر.', keywords:['دفع','فواتير','خدمات','مالية'], brands:['Fawry'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, ownerId:'demo', views:900, photos:[], offers:[], products:[
+    { id:'p16', name:'دفع فواتير', desc:'دفع فواتير الكهرباء والميه والغاز', price:'', image:'', category:'خدمات' },
+    { id:'p17', name:'شحن رصيد', desc:'شحن رصيد أي موبايل', price:'', image:'', category:'خدمات' },
+  ], createdAt:'2025-02-20' },
+  { id:'b8', name:'المتحف المصري', nameAr:'المتحف المصري', nameEn:'Egyptian Museum', categoryNameAr:'السفر والسياحة', location:{ city:'القاهرة', district:'التحرير', address:'ميدان التحرير' }, contact:{ phone:'0225782452' }, description:'المتحف المصري أكبر متحف في الشرق الأوسط فيه آلاف القطع الأثرية.', keywords:['متحف','سياحة','تراث','ثقافة','أثر'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:400, photos:[], offers:[], products:[
+    { id:'p18', name:'تذكرة دخول', desc:'تذكرة دخول للمتحف', price:'200', image:'', category:'تذاكر' },
+    { id:'p19', name:'جولة مع مرشد', desc:'جولة مع مرشد سياحي', price:'500', image:'', category:'جولات' },
+  ], createdAt:'2025-03-10' },
 ];
 
 const CATEGORIES = [
@@ -118,6 +144,7 @@ function loadData() {
       if (biz.views === undefined) { biz.views = 0; migrated = true; }
       if (!biz.photos) { biz.photos = []; migrated = true; }
       if (!biz.offers) { biz.offers = []; migrated = true; }
+      if (!biz.products) { biz.products = []; migrated = true; }
       if (!biz.ownerId && biz.userId) { biz.ownerId = biz.userId; migrated = true; }
     });
 
@@ -166,9 +193,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('popstate', () => handleHash());
 
+// Scroll to top
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scroll-top-btn');
+  if (btn) {
+    if (window.scrollY > 400) { btn.classList.add('visible'); } else { btn.classList.remove('visible'); }
+  }
+});
+
 function handleHash() {
   const hash = location.hash;
-  if (!hash || hash === '#/' || hash === '#') return;
+  if (!hash || hash === '#/' || hash === '#' || hash === '#/home') {
+    navigateTo('home');
+    return;
+  }
 
   if (hash.startsWith('#/business/')) {
     const id = hash.replace('#/business/', '');
@@ -180,11 +218,18 @@ function handleHash() {
     } else {
       show404();
     }
-  } else if (hash.startsWith('#/dashboard')) {
-    navigateTo('dashboard');
-  } else {
-    show404();
-  }
+  } else if (hash === '#/businesses') { navigateTo('businesses');
+  } else if (hash === '#/categories') { navigateTo('categories');
+  } else if (hash === '#/blog') { navigateTo('blog');
+  } else if (hash === '#/add') { navigateTo('add');
+  } else if (hash === '#/profile') { navigateTo('profile');
+  } else if (hash === '#/dashboard') { navigateTo('dashboard');
+  } else if (hash === '#/favorites') { navigateTo('favorites');
+  } else if (hash === '#/admin') { navigateTo('admin');
+  } else if (hash === '#/about') { navigateTo('about');
+  } else if (hash === '#/contact') { navigateTo('contact');
+  } else if (hash === '#/terms') { navigateTo('terms');
+  } else { show404(); }
 }
 
 function show404() {
@@ -237,6 +282,13 @@ function navigateTo(page) {
   document.querySelector(`.mobile-nav-item[data-page="${page}"]`)?.classList.add('active');
   document.getElementById('mobile-menu')?.classList.add('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Push hash URL
+  const hashMap = { home:'/', businesses:'/businesses', categories:'/categories', blog:'/blog', add:'/add', profile:'/profile', dashboard:'/dashboard', favorites:'/favorites', admin:'/admin', about:'/about', contact:'/contact', terms:'/terms' };
+  const newHash = '#/' + (hashMap[page] || page);
+  if (location.hash !== newHash) {
+    history.pushState({ page }, '', newHash);
+  }
 
   if (page === 'home') loadHome();
   if (page === 'businesses') loadAllBusinesses();
@@ -496,15 +548,17 @@ function loadHome() {
 function renderCategories(cats) {
   const g = document.getElementById('categories-grid');
   if (!g) return;
+  const approved = businesses.filter(b => b.status === 'approved');
   g.innerHTML = cats.slice(0, 8).map((c, i) => {
     const style = getCategoryStyle(c.name);
+    const count = approved.filter(b => b.categoryNameAr === c.name).length;
     return `
     <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
       <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300" style="background:${style.bg}">
         <span style="font-size:1.5rem;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))">${style.emoji}</span>
       </div>
       <div class="text-sm font-bold mb-1">${c.name}</div>
-      <div class="text-xs text-gray-400">${approved.filter(b => b.categoryNameAr === c.name).length} شغل</div>
+      <div class="text-xs text-gray-400">${count} شغل</div>
     </div>
   `}).join('');
 }
@@ -665,6 +719,30 @@ function renderBusinessDetail(b) {
   const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
   const brandsHtml = b.brands?.length ? `<div class="detail-section"><h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
 
+  const products = b.products || [];
+  const productsHtml = products.length ? `
+    <div class="detail-section">
+      <h3><i class="ri-shopping-bag-line text-emerald-500"></i> المنتجات والخدمات (${products.length})</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        ${products.map(p => `
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all">
+            <div class="w-14 h-14 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
+              ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='📦'">` : '<span class="text-xl">📦</span>'}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-sm truncate">${p.name}</div>
+              ${p.desc ? `<div class="text-xs text-gray-500 truncate">${p.desc}</div>` : ''}
+              ${p.category ? `<div class="text-xs text-blue-500">${p.category}</div>` : ''}
+            </div>
+            <div class="flex-shrink-0">
+              ${p.price ? `<span class="font-bold text-green-600 text-sm">${p.price} ج</span>` : '<span class="text-xs text-gray-400">اتصال</span>'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  ` : '';
+
   const offers = b.offers || [];
   const offersHtml = offers.length ? `
     <div class="detail-section">
@@ -745,7 +823,7 @@ function renderBusinessDetail(b) {
       </div>
       ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن الشغل</h3><p>${b.description}</p></div>` : ''}
       ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
-      ${offersHtml}${photosHtml}${hoursHtml}${keywordsHtml}${brandsHtml}
+      ${productsHtml}${offersHtml}${photosHtml}${hoursHtml}${keywordsHtml}${brandsHtml}
       <div class="detail-section">
         <h3><i class="ri-star-line text-amber-500"></i> التقييمات (${totalReviews})</h3>
         <div id="reviews-list">${reviewsHtml}</div>
@@ -857,7 +935,7 @@ function showDashTab(tab) {
   event?.target?.closest?.('.admin-nav-item')?.classList.add('active');
   if (!event?.target?.closest?.('.admin-nav-item')) {
     document.querySelectorAll('#page-dashboard .admin-nav-item').forEach(n => {
-      if (n.textContent.includes(tab === 'overview' ? 'نظرة' : tab === 'edit' ? 'تعديل' : tab === 'photos' ? 'صور' : tab === 'reviews' ? 'تقييمات' : tab === 'offers' ? 'عروض' : 'إعدادات')) n.classList.add('active');
+      if (n.textContent.includes(tab === 'overview' ? 'نظرة' : tab === 'edit' ? 'تعديل' : tab === 'products' ? 'المنتجات' : tab === 'photos' ? 'صور' : tab === 'reviews' ? 'تقييمات' : tab === 'offers' ? 'عروض' : 'إعدادات')) n.classList.add('active');
     });
   }
 
@@ -866,6 +944,7 @@ function showDashTab(tab) {
 
   if (tab === 'overview') renderDashOverview(c, myBiz);
   else if (tab === 'edit') renderDashEdit(c, myBiz);
+  else if (tab === 'products') renderDashProducts(c, myBiz);
   else if (tab === 'photos') renderDashPhotos(c, myBiz);
   else if (tab === 'reviews') renderDashReviews(c, myBiz);
   else if (tab === 'offers') renderDashOffers(c, myBiz);
@@ -984,6 +1063,101 @@ function saveDashEdit(id) {
   };
   saveData();
   showToast('تم حفظ التعديلات بنجاح', 'success');
+}
+
+// ==================== PRODUCTS ====================
+function renderDashProducts(c, b) {
+  const products = b.products || [];
+  const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
+  c.innerHTML = `
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">المنتجات والخدمات</h2>
+      <span class="text-sm text-gray-500">${products.length} منتج</span>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+      <h3 class="font-bold mb-4"><i class="ri-add-circle-line text-green-500 ml-1"></i> إضافة منتج جديد</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="form-label">اسم المنتج *</label><input class="form-input" id="prod-name" placeholder="مثال: لاتيه"></div>
+        <div><label class="form-label">السعر (جنيه)</label><input class="form-input" id="prod-price" placeholder="45"></div>
+        <div><label class="form-label">التصنيف</label><input class="form-input" id="prod-category" placeholder="مثال: قهوة، وجبات، خدمات"></div>
+        <div><label class="form-label">رابط الصورة</label><input class="form-input" id="prod-image" placeholder="https://..."></div>
+        <div class="sm:col-span-2"><label class="form-label">الوصف</label><input class="form-input" id="prod-desc" placeholder="وصف المنتج"></div>
+      </div>
+      <button onclick="addBizProduct('${b.id}')" class="mt-4 px-6 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-add-line ml-1"></i> إضافة المنتج</button>
+    </div>
+    ${cats.length ? `
+    <div class="flex flex-wrap gap-2 mb-4">
+      <button class="px-3 py-1.5 text-xs font-medium bg-gray-900 text-white rounded-lg" onclick="filterDashProducts('${b.id}','')">الكل (${products.length})</button>
+      ${cats.map(cat => `<button class="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200" onclick="filterDashProducts('${b.id}','${cat}')">${cat} (${products.filter(p => p.category === cat).length})</button>`).join('')}
+    </div>
+    ` : ''}
+    <div id="dash-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      ${products.length ? products.map((p, i) => renderProductCard(p, i, b.id, true)).join('') : `
+        <div class="col-span-full text-center py-12 bg-white border border-gray-200 rounded-2xl">
+          <div class="text-5xl mb-4">📦</div>
+          <h3 class="font-bold text-gray-700 mb-2">مفيش منتجات لسه</h3>
+          <p class="text-gray-500 text-sm">أضف منتجاتك أو خدماتك عشان الزباين يعرفوا يشوفوا الأسعار والتفاصيل</p>
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function renderProductCard(p, i, bizId, editable = false) {
+  return `
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all group" data-aos="fade-up" data-aos-delay="${i * 30}">
+      <div class="h-40 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
+        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-full h-full items-center justify-center text-4xl" style="display:none">📦</div>` : '<span class="text-4xl">📦</span>'}
+        ${p.category ? `<span class="absolute top-2 right-2 px-2 py-0.5 bg-black/60 text-white text-xs rounded-lg backdrop-blur-sm">${p.category}</span>` : ''}
+      </div>
+      <div class="p-4">
+        <h4 class="font-bold text-sm mb-1">${p.name}</h4>
+        ${p.desc ? `<p class="text-gray-500 text-xs mb-2 line-clamp-2">${p.desc}</p>` : ''}
+        <div class="flex items-center justify-between">
+          ${p.price ? `<span class="text-lg font-bold text-green-600">${p.price} <span class="text-xs font-normal">جنيه</span></span>` : '<span class="text-sm text-gray-400">السعر عند الاتصال</span>'}
+          ${editable ? `<button onclick="removeBizProduct('${bizId}','${p.id}')" class="w-8 h-8 bg-red-50 text-red-400 rounded-lg flex items-center justify-center hover:bg-red-100 hover:text-red-600 transition-all"><i class="ri-delete-bin-line text-sm"></i></button>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function addBizProduct(id) {
+  const name = document.getElementById('prod-name')?.value?.trim();
+  if (!name) { showToast('اكتب اسم المنتج', 'error'); return; }
+  const b = businesses.find(biz => biz.id === id);
+  if (!b) return;
+  if (!b.products) b.products = [];
+  b.products.push({
+    id: 'prod_' + Date.now(),
+    name: name,
+    desc: document.getElementById('prod-desc')?.value?.trim() || '',
+    price: document.getElementById('prod-price')?.value?.trim() || '',
+    image: document.getElementById('prod-image')?.value?.trim() || '',
+    category: document.getElementById('prod-category')?.value?.trim() || '',
+  });
+  saveData();
+  showToast('اتضاف المنتج بنجاح', 'success');
+  renderDashProducts(document.getElementById('dashboard-content'), b);
+}
+
+function removeBizProduct(bizId, prodId) {
+  const b = businesses.find(biz => biz.id === bizId);
+  if (!b || !b.products) return;
+  b.products = b.products.filter(p => p.id !== prodId);
+  saveData();
+  showToast('اتحذف المنتج', 'success');
+  renderDashProducts(document.getElementById('dashboard-content'), b);
+}
+
+function filterDashProducts(bizId, cat) {
+  const b = businesses.find(biz => biz.id === bizId);
+  if (!b) return;
+  const products = cat ? (b.products || []).filter(p => p.category === cat) : (b.products || []);
+  const grid = document.getElementById('dash-products-grid');
+  if (grid) {
+    grid.innerHTML = products.length ? products.map((p, i) => renderProductCard(p, i, bizId, true)).join('') : '<div class="col-span-full text-center py-8 text-gray-400">مفيش منتجات في التصنيف ده</div>';
+  }
 }
 
 function renderDashPhotos(c, b) {
@@ -1499,3 +1673,6 @@ window.removeBizOffer = removeBizOffer;
 window.saveDashEdit = saveDashEdit;
 window.saveDashSettings = saveDashSettings;
 window.deleteDashAccount = deleteDashAccount;
+window.addBizProduct = addBizProduct;
+window.removeBizProduct = removeBizProduct;
+window.filterDashProducts = filterDashProducts;
