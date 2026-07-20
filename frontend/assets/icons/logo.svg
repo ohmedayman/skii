@@ -1,12 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00E5A0"/>
-      <stop offset="100%" stop-color="#00BFA5"/>
+      <stop offset="100%" stop-color="#00C9A0"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="96" fill="#121824"/>
-  <path d="M224 140C224 140 288 140 288 180C288 220 224 220 224 260C224 300 288 300 288 340C288 360 272 370 256 370C240 370 224 356 224 340" fill="none" stroke="url(#g)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="256" cy="140" r="32" fill="url(#g)"/>
-  <circle cx="256" cy="140" r="12" fill="#121824"/>
+  <!-- S Icon -->
+  <path d="M15 12C15 12 25 12 25 17C25 22 15 22 15 27C15 32 25 32 25 37C25 40 22 42 19 42C16 42 14 39 14 36" stroke="url(#grad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="19" cy="12" r="4" fill="url(#grad)"/>
+  <circle cx="19" cy="12" r="1.5" fill="#0B1120"/>
+  <!-- Arabic Text -->
+  <text x="38" y="38" fill="url(#grad)" font-size="28" font-weight="700" font-family="IBM Plex Sans Arabic, Arial">سِكّة</text>
 </svg>
