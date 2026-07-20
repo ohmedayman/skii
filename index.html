@@ -39,6 +39,7 @@
           <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
           <a href="#" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
           <a href="#" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
+          <a href="#" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
         </nav>
         <div class="flex items-center gap-3">
           <div id="header-auth-btns">
@@ -279,7 +280,7 @@
   </nav>
 
   <!-- Auth Modal -->
-  <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)hideAuthModal()">
+  <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)hideAuthModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-road-map-line text-2xl text-white"></i></div>
@@ -304,7 +305,7 @@
   </div>
 
   <!-- Signup Modal -->
-  <div id="signup-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)hideSignupModal()">
+  <div id="signup-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)hideSignupModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-user-add-line text-2xl text-white"></i></div>
@@ -330,7 +331,7 @@
   </div>
 
   <!-- Review Modal -->
-  <div id="review-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)closeReviewModal()">
+  <div id="review-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeReviewModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <h2 class="text-xl font-bold text-center mb-2">أضف تقييمك</h2>
       <p class="text-gray-500 text-sm text-center mb-6">شارك تجربتك مع هذا النشاط</p>
