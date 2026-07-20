@@ -2,24 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0891B2">
-  <title>سِكّة | دليل الأعمال الذكي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111827">
+  <title>سِكّة | دليل الأعمال</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <a href="#" class="logo" onclick="navigateTo('home')">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <rect width="36" height="36" rx="10" fill="#0891B2"/>
-          <path d="M12 10C12 10 20 10 20 14C20 18 12 18 12 22C12 26 20 26 20 30C20 32 18 33 16 33C14 33 12 31 12 28" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
-        </svg>
+        <div class="logo-icon"><i class="ri-road-map-line"></i></div>
         <span class="logo-text">سِكّة</span>
       </a>
-
       <nav class="nav-links">
         <a href="#" class="nav-link active" data-nav="home" onclick="navigateTo('home')">الرئيسية</a>
         <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')">الأعمال</a>
@@ -27,7 +22,6 @@
         <a href="#" class="nav-link" data-nav="add" onclick="navigateTo('add')">أضف نشاطك</a>
         <a href="#" class="nav-link" data-nav="admin" onclick="navigateTo('admin')">الإدارة</a>
       </nav>
-
       <div class="header-actions">
         <button class="btn btn-outline btn-sm" onclick="showAuthModal()">تسجيل دخول</button>
         <button class="btn btn-primary btn-sm" onclick="navigateTo('add')">+ أضف نشاطك</button>
@@ -35,14 +29,12 @@
     </div>
   </header>
 
-  <!-- HOME -->
   <div id="page-home" class="page active">
     <section class="hero">
-      <div class="hero-badge" style="display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(255,255,255,0.15);border-radius:50px;font-size:0.85rem;margin-bottom:20px;">🌐 دليل الأعمال الذكي</div>
-      <h1>ابدأ رحلتك مع <span style="color:#CFFAFE;">سِكّة</span></h1>
+      <h1>ابدأ رحلتك مع <strong>سِكّة</strong></h1>
       <p>اكتشف أفضل الأعمال والخدمات في المملكة العربية السعودية</p>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="ابحث عن نشاط تجاري، خدمة، أو موقع...">
+        <input type="text" id="search-input" placeholder="ابحث عن نشاط تجاري أو خدمة...">
         <button class="btn btn-primary" onclick="performSearch()">بحث</button>
       </div>
       <div class="search-tags">
@@ -56,21 +48,15 @@
 
     <section class="section">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">تصفح حسب الفئات</h2>
-          <p class="section-subtitle">اختر الفئة المناسبة لاكتشاف أفضل الأعمال</p>
-        </div>
+        <div><h2 class="section-title">تصفح حسب الفئات</h2><p class="section-subtitle">اختر الفئة المناسبة</p></div>
       </div>
       <div id="categories-grid" class="categories-grid"></div>
     </section>
 
     <section class="section" style="background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:100%;padding-left:0;padding-right:0;">
-      <div style="max-width:1400px;margin:0 auto;padding:0 32px;">
+      <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
         <div class="section-header">
-          <div>
-            <h2 class="section-title">أفضل الأعمال المميزة</h2>
-            <p class="section-subtitle">اكتشف الأعمال الأكثر تقييماً في المملكة</p>
-          </div>
+          <div><h2 class="section-title">أفضل الأعمال</h2><p class="section-subtitle">اكتشف الأعمال الأكثر تقييماً</p></div>
           <button class="btn btn-outline" onclick="navigateTo('businesses')">عرض الكل</button>
         </div>
         <div id="businesses-grid" class="businesses-grid"></div>
@@ -79,19 +65,16 @@
 
     <section class="stats-bar">
       <div class="stats-grid">
-        <div><div class="stat-number">+2,500</div><div class="stat-label">نشاط تجاري مسجل</div></div>
-        <div><div class="stat-number">+15,000</div><div class="stat-label">مستخدم نشط</div></div>
-        <div><div class="stat-number">+8,200</div><div class="stat-label">تقييم ورأي</div></div>
-        <div><div class="stat-number">+50</div><div class="stat-label">مدينة ومحافظة</div></div>
+        <div><div class="stat-number" id="stat-biz">0</div><div class="stat-label">نشاط تجاري</div></div>
+        <div><div class="stat-number" id="stat-users">0</div><div class="stat-label">مستخدم</div></div>
+        <div><div class="stat-number" id="stat-reviews">0</div><div class="stat-label">تقييم</div></div>
+        <div><div class="stat-number" id="stat-cities">0</div><div class="stat-label">مدينة</div></div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">أحدث المقالات</h2>
-          <p class="section-subtitle">نصائح وأدلة لتطوير أعمالك</p>
-        </div>
+        <div><h2 class="section-title">أحدث المقالات</h2><p class="section-subtitle">نصائح وأدلة</p></div>
         <button class="btn btn-outline" onclick="navigateTo('blog')">عرض الكل</button>
       </div>
       <div id="posts-grid" class="blog-grid"></div>
@@ -99,169 +82,120 @@
 
     <section class="cta-section">
       <h2>هل تملك نشاطاً تجارياً؟</h2>
-      <p>سجّل نشاطك مجاناً وابدأ في الوصول لآلاف العملاء كل يوم</p>
-      <button class="btn btn-lg" style="background:white;color:var(--primary);font-weight:700;" onclick="navigateTo('add')">أضف نشاطك الآن</button>
+      <p>سجّل نشاطك مجاناً وابدأ في الوصول للعملاء</p>
+      <button class="btn btn-primary btn-lg" onclick="navigateTo('add')">أضف نشاطك الآن</button>
     </section>
 
     <footer class="footer">
       <div class="footer-inner">
         <div class="footer-grid">
           <div class="footer-brand">
-            <div class="logo" style="margin-bottom:8px;">
-              <svg width="32" height="32" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#0891B2"/><path d="M12 10C12 10 20 10 20 14C20 18 12 18 12 22C12 26 20 26 20 30C20 32 18 33 16 33C14 33 12 31 12 28" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
-              <span style="font-size:1.2rem;font-weight:700;color:white;">سِكّة</span>
-            </div>
+            <div class="logo"><div class="logo-icon" style="width:28px;height:28px;font-size:0.85rem;"><i class="ri-road-map-line"></i></div><span class="logo-text" style="font-size:1.1rem;">سِكّة</span></div>
             <p>دليل الأعمال الذكي في المملكة العربية السعودية</p>
           </div>
-          <div class="footer-col">
-            <h4>روابط سريعة</h4>
-            <a href="#">الرئيسية</a>
-            <a href="#">المدونة</a>
-            <a href="#">أضف نشاطك</a>
-          </div>
-          <div class="footer-col">
-            <h4>الفئات</h4>
-            <a href="#">مقاهي</a>
-            <a href="#">مطاعم</a>
-            <a href="#">بنوك</a>
-            <a href="#">تسوق</a>
-          </div>
-          <div class="footer-col">
-            <h4>الدعم</h4>
-            <a href="#">تواصل معنا</a>
-            <a href="#">الأسئلة الشائعة</a>
-            <a href="#">سياسة الخصوصية</a>
-          </div>
+          <div class="footer-col"><h4>روابط سريعة</h4><a href="#">الرئيسية</a><a href="#">المدونة</a><a href="#">أضف نشاطك</a></div>
+          <div class="footer-col"><h4>الفئات</h4><a href="#">مقاهي</a><a href="#">مطاعم</a><a href="#">بنوك</a><a href="#">تسوق</a></div>
+          <div class="footer-col"><h4>الدعم</h4><a href="#">تواصل معنا</a><a href="#">الأسئلة الشائعة</a><a href="#">سياسة الخصوصية</a></div>
         </div>
         <div class="footer-bottom">
           <span>© 2025 سِكّة. جميع الحقوق محفوظة</span>
-          <div style="display:flex;gap:16px;"><a href="#">Twitter</a><a href="#">Instagram</a></div>
+          <div style="display:flex;gap:14px;"><a href="#">Twitter</a><a href="#">Instagram</a></div>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- BUSINESSES PAGE -->
-  <div id="page-businesses" class="page">
-    <section class="section">
-      <h1 class="section-title" style="margin-bottom:24px;">جميع الأعمال</h1>
-      <div id="all-businesses-grid" class="businesses-grid"></div>
-    </section>
-  </div>
+  <div id="page-businesses" class="page"><section class="section"><h1 class="section-title" style="margin-bottom:20px;">جميع الأعمال</h1><div id="all-businesses-grid" class="businesses-grid"></div></section></div>
+  <div id="page-blog" class="page"><section class="section"><h1 class="section-title" style="margin-bottom:20px;">المدونة</h1><div id="blog-list" class="blog-grid"></div></section></div>
 
-  <!-- BLOG PAGE -->
-  <div id="page-blog" class="page">
-    <section class="section">
-      <h1 class="section-title" style="margin-bottom:24px;">المدونة</h1>
-      <div id="blog-list" class="blog-grid"></div>
-    </section>
-  </div>
-
-  <!-- ADD LISTING -->
   <div id="page-add" class="page">
     <div class="form-page">
       <h1>أضف نشاطك التجاري</h1>
-      <p>سجّل نشاطك مجاناً وابدأ في الوصول لآلاف العملاء</p>
+      <p>سجّل نشاطك مجاناً</p>
       <div class="form-grid">
-        <div class="input-group full"><label>اسم النشاط *</label><input type="text" class="input" id="biz-name" placeholder="مثال: مقهى سِكّة"></div>
-        <div class="input-group"><label>الفئة *</label><select class="input" id="biz-category"><option value="">اختر</option><option>مقاهي</option><option>مطاعم</option><option>بنوك</option><option>تسوق</option><option>صحة وجمال</option><option>خدمات</option></select></div>
-        <div class="input-group"><label>المدينة *</label><input type="text" class="input" id="biz-city" placeholder="الرياض"></div>
-        <div class="input-group"><label>الجوال *</label><input type="tel" class="input" id="biz-phone" placeholder="+966 5XX XXX XXXX"></div>
-        <div class="input-group"><label>واتساب</label><input type="tel" class="input" id="biz-whatsapp" placeholder="+966 5XX XXX XXXX"></div>
-        <div class="input-group full"><label>العنوان *</label><input type="text" class="input" id="biz-address" placeholder="العنوان التفصيلي"></div>
-        <div class="input-group full"><label>الوصف</label><textarea class="input" id="biz-description" rows="3" placeholder="أخبر الناس عن نشاطك..."></textarea></div>
+        <div class="input-group full"><label>اسم النشاط *</label><input type="text" class="input" id="biz-name" placeholder="اسم النشاط"></div>
+        <div class="input-group"><label>الفئة *</label><select class="input" id="biz-category"><option value="">اختر</option><option>مقاهي</option><option>مطاعم</option><option>بنوك</option><option>تسوق</option><option>صحة</option><option>خدمات</option></select></div>
+        <div class="input-group"><label>المدينة *</label><input type="text" class="input" id="biz-city" placeholder="المدينة"></div>
+        <div class="input-group"><label>الجوال *</label><input type="tel" class="input" id="biz-phone" placeholder="+966"></div>
+        <div class="input-group"><label>واتساب</label><input type="tel" class="input" id="biz-whatsapp" placeholder="+966"></div>
+        <div class="input-group full"><label>العنوان *</label><input type="text" class="input" id="biz-address" placeholder="العنوان"></div>
+        <div class="input-group full"><label>الوصف</label><textarea class="input" id="biz-description" rows="3" placeholder="وصف النشاط"></textarea></div>
       </div>
-      <div style="margin-top:20px;display:flex;gap:10px;">
-        <button class="btn btn-primary btn-lg" style="flex:1;" onclick="submitBusiness()">نشر النشاط</button>
-        <button class="btn btn-outline btn-lg" onclick="navigateTo('home')">إلغاء</button>
-      </div>
+      <div style="margin-top:16px;display:flex;gap:8px;"><button class="btn btn-primary btn-lg" style="flex:1;" onclick="submitBusiness()">نشر</button><button class="btn btn-outline btn-lg" onclick="navigateTo('home')">إلغاء</button></div>
     </div>
   </div>
 
-  <!-- PROFILE -->
   <div id="page-profile" class="page">
-    <section class="section" style="text-align:center;">
-      <div style="width:90px;height:90px;border-radius:50%;background:var(--primary-50);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:3px solid var(--primary);">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <h2 id="profile-name" style="font-size:1.3rem;margin-bottom:4px;">ضيف</h2>
-      <p id="profile-email" style="color:var(--text-secondary);margin-bottom:20px;">سجّل الدخول للوصول لملفك الشخصي</p>
-      <div id="auth-buttons"><button class="btn btn-primary btn-lg" style="width:100%;max-width:300px;" onclick="showAuthModal()">تسجيل دخول</button></div>
-      <div id="profile-menu" style="display:none;max-width:400px;margin:0 auto;">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-align:right;">
-          <a href="#" style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border-light);">📋 إعلاناتي</a>
-          <a href="#" style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border-light);">❤️ المفضلة</a>
-          <a href="#" style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border-light);">⚙️ الإعدادات</a>
-          <a href="#" onclick="logout()" style="display:flex;align-items:center;gap:10px;padding:14px 18px;color:var(--danger);">🚪 تسجيل خروج</a>
+    <section class="section" style="text-align:center;max-width:400px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="ri-user-line" style="font-size:2rem;color:var(--text-muted);"></i></div>
+      <h2 id="profile-name" style="font-size:1.2rem;margin-bottom:4px;">ضيف</h2>
+      <p id="profile-email" style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:18px;">سجّل الدخول</p>
+      <div id="auth-buttons"><button class="btn btn-primary btn-lg" style="width:100%;" onclick="showAuthModal()">تسجيل دخول</button></div>
+      <div id="profile-menu" style="display:none;">
+        <div style="background:white;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-align:right;">
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border-light);font-size:0.85rem;"><i class="ri-store-2-line"></i> إعلاناتي</a>
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border-light);font-size:0.85rem;"><i class="ri-heart-line"></i> المفضلة</a>
+          <a href="#" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border-light);font-size:0.85rem;"><i class="ri-settings-3-line"></i> الإعدادات</a>
+          <a href="#" onclick="logout()" style="display:flex;align-items:center;gap:8px;padding:12px 16px;color:var(--danger);font-size:0.85rem;"><i class="ri-logout-box-r-line"></i> تسجيل خروج</a>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- BUSINESS DETAIL -->
   <div id="page-business" class="page"><div id="business-detail"></div></div>
-
-  <!-- POST DETAIL -->
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
 
-  <!-- ADMIN -->
   <div id="page-admin" class="page">
     <div class="admin-layout">
       <aside class="admin-sidebar">
-        <div style="margin-bottom:20px;"><strong style="font-size:0.9rem;">لوحة التحكم</strong></div>
-        <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> الرئيسية</a>
-        <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg> الأعمال</a>
-        <a href="#" class="admin-nav-item" onclick="showAdminTab('users')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> المستخدمين</a>
-        <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> المقالات</a>
-        <a href="#" class="admin-nav-item" onclick="showAdminTab('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.468.852.758 1.51 1H21a2 2 0 1 1 0 4h-.09c-.658.242-1.25.532-1.51 1z"/></svg> الإعدادات</a>
+        <strong style="font-size:0.85rem;">لوحة التحكم</strong>
+        <div style="margin-top:16px;">
+          <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard')"><i class="ri-dashboard-line"></i> الرئيسية</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')"><i class="ri-store-2-line"></i> الأعمال</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('users')"><i class="ri-user-3-line"></i> المستخدمين</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')"><i class="ri-article-line"></i> المقالات</a>
+        </div>
       </aside>
-      <main class="admin-main">
-        <div id="admin-content"></div>
-      </main>
+      <main class="admin-main"><div id="admin-content"></div></main>
     </div>
   </div>
 
-  <!-- MOBILE NAV -->
   <nav class="mobile-nav">
     <div class="mobile-nav-inner">
-      <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>الرئيسية</span>
-      </button>
-      <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-        <span>الأعمال</span>
-      </button>
-      <div class="mobile-nav-center">
-        <button class="center-btn" onclick="navigateTo('add')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
-      </div>
-      <button class="mobile-nav-item" data-page="blog" onclick="navigateTo('blog')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-        <span>المدونة</span>
-      </button>
-      <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>حسابي</span>
-      </button>
+      <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')"><i class="ri-home-5-line"></i><span>الرئيسية</span></button>
+      <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i><span>الأعمال</span></button>
+      <div class="mobile-nav-center"><button class="center-btn" onclick="navigateTo('add')"><i class="ri-add-line"></i></button></div>
+      <button class="mobile-nav-item" data-page="blog" onclick="navigateTo('blog')"><i class="ri-article-line"></i><span>المدونة</span></button>
+      <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span>حسابي</span></button>
     </div>
   </nav>
 
-  <!-- AUTH MODAL -->
   <div id="auth-modal" class="modal-overlay" onclick="if(event.target===this)hideAuthModal()">
     <div class="modal">
       <h2>تسجيل دخول</h2>
       <p>سجّل الدخول لإضافة نشاطك وحفظ المفضلة</p>
-      <div class="input-group"><label>رقم الجوال</label><input type="tel" class="input" id="phone-input" placeholder="+966 5XX XXX XXXX"></div>
-      <div id="recaptcha-container"></div>
-      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;" onclick="loginWithPhone()">متابعة برقم الجوال</button>
+      <div class="input-group"><label>البريد الإلكتروني</label><input type="email" class="input" id="email-input" placeholder="example@email.com"></div>
+      <div class="input-group"><label>كلمة المرور</label><input type="password" class="input" id="password-input" placeholder="••••••••"></div>
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;" onclick="loginWithEmail()">تسجيل دخول</button>
       <div class="divider">أو</div>
-      <button class="google-btn" onclick="loginWithGoogle()">
-        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        متابعة مع Google
-      </button>
-      <button class="btn btn-ghost" style="width:100%;margin-top:10px;" onclick="hideAuthModal()">إلغاء</button>
+      <button class="google-btn" onclick="loginWithGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> متابعة مع Google</button>
+      <div style="margin-top:14px;text-align:center;font-size:0.8rem;color:var(--text-secondary);">ليس لديك حساب؟ <a href="#" style="color:var(--text);font-weight:600;" onclick="hideAuthModal();showSignupModal()">إنشاء حساب</a></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="hideAuthModal()">إلغاء</button>
+    </div>
+  </div>
+
+  <div id="signup-modal" class="modal-overlay" onclick="if(event.target===this)hideSignupModal()">
+    <div class="modal">
+      <h2>إنشاء حساب</h2>
+      <p>سجّل حساب جديد</p>
+      <div class="input-group"><label>الاسم</label><input type="text" class="input" id="signup-name" placeholder="الاسم الكامل"></div>
+      <div class="input-group"><label>البريد الإلكتروني</label><input type="email" class="input" id="signup-email" placeholder="example@email.com"></div>
+      <div class="input-group"><label>كلمة المرور</label><input type="password" class="input" id="signup-password" placeholder="••••••••"></div>
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;" onclick="signupWithEmail()">إنشاء حساب</button>
+      <div class="divider">أو</div>
+      <button class="google-btn" onclick="loginWithGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> التسجيل بـ Google</button>
+      <div style="margin-top:14px;text-align:center;font-size:0.8rem;color:var(--text-secondary);">لديك حساب بالفعل؟ <a href="#" style="color:var(--text);font-weight:600;" onclick="hideSignupModal();showAuthModal()">تسجيل دخول</a></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="hideSignupModal()">إلغاء</button>
     </div>
   </div>
 
@@ -269,11 +203,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    try {
-      const r = await fetch('/api/config');
-      const { firebase: c } = await r.json();
-      if (c?.apiKey) initializeApp(c);
-    } catch(e) {}
+    try { const r = await fetch('/api/config'); const { firebase: c } = await r.json(); if (c?.apiKey) initializeApp(c); } catch(e) {}
   </script>
   <script src="js/app.js"></script>
 </body>
