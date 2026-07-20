@@ -240,6 +240,7 @@
         <div id="profile-menu" style="display:none">
           <div class="space-y-2 text-right">
             <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line text-gray-400"></i> لوحة التحكم</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('favorites')"><i class="ri-heart-line text-gray-400"></i> المفضلة</a>
             <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> سجّل شغل جديد</a>
             <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('profile')"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
             <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> خروج</button>
@@ -252,6 +253,14 @@
   <!-- BUSINESS DETAIL -->
   <div id="page-business" class="page"><div id="business-detail"></div></div>
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
+
+  <!-- FAVORITES -->
+  <div id="page-favorites" class="page">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6"><i class="ri-heart-fill text-red-500"></i> المفضلة</h1>
+      <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+    </div>
+  </div>
 
   <!-- CUSTOMER DASHBOARD -->
   <div id="page-dashboard" class="page">

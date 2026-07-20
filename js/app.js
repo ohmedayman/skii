@@ -217,6 +217,7 @@ function navigateTo(page) {
   if (page === 'categories') loadCategoriesFull();
   if (page === 'add') renderAddForm();
   if (page === 'dashboard') loadDashboard();
+  if (page === 'favorites') loadFavorites();
 }
 
 function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
@@ -534,8 +535,9 @@ function applyFilters() {
 
 function renderBusinessesTo(list, container) {
   if (!container) return;
-  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش أعمال</h3></div>'; return; }
-  container.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
+  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش نتائج</h3><p>جرّب تغيير الفلتر أو كلمات البحث</p></div>'; return; }
+  const countHtml = `<div class="col-span-full mb-2 text-sm text-gray-500">${list.length} نتيجة</div>`;
+  container.innerHTML = countHtml + list.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
 // ==================== BUSINESS DETAIL ====================
@@ -555,6 +557,8 @@ function renderBusinessDetail(b) {
   const reviewCount = b.rating?.count || 0;
   const bizReviews = reviews[b.id] || [];
   const totalReviews = reviewCount + bizReviews.length;
+  const isFav = currentUser && (JSON.parse(localStorage.getItem('sikka_favorites') || '[]')).includes(b.id);
+  const isOpen = checkIfOpen(b.workingHours);
 
   const hours = b.workingHours || {};
   const hoursHtml = hours.saturday ? `
@@ -567,7 +571,35 @@ function renderBusinessDetail(b) {
   const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
   const brandsHtml = b.brands?.length ? `<div class="detail-section"><h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
 
-  // Build reviews HTML
+  const offers = b.offers || [];
+  const offersHtml = offers.length ? `
+    <div class="detail-section">
+      <h3><i class="ri-megaphone-line text-orange-500"></i> العروض (${offers.length})</h3>
+      <div class="space-y-3">${offers.map(o => `
+        <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-orange-600 font-bold text-sm">${o.title}</span>
+            ${o.code ? `<span class="bg-white border border-orange-300 px-2 py-0.5 rounded text-xs font-mono text-orange-700">${o.code}</span>` : ''}
+          </div>
+          ${o.description ? `<p class="text-gray-600 text-xs">${o.description}</p>` : ''}
+          ${o.endDate ? `<p class="text-gray-400 text-xs mt-1"><i class="ri-calendar-line"></i> بينتهي: ${o.endDate}</p>` : ''}
+        </div>
+      `).join('')}</div>
+    </div>
+  ` : '';
+
+  const photos = b.photos || [];
+  const photosHtml = photos.length ? `
+    <div class="detail-section">
+      <h3><i class="ri-image-line text-green-500"></i> الصور (${photos.length})</h3>
+      <div class="grid grid-cols-3 gap-2">${photos.map(p => `
+        <div class="rounded-xl overflow-hidden bg-gray-100 aspect-square">
+          <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-2xl\\'></i></div>'">
+        </div>
+      `).join('')}</div>
+    </div>
+  ` : '';
+
   let reviewsHtml = '';
   if (bizReviews.length) {
     reviewsHtml = bizReviews.map(r => `
@@ -591,18 +623,21 @@ function renderBusinessDetail(b) {
     <div class="detail-hero" style="background:${style.bg}">
       ${b.location?.lat && b.location?.lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2))">${style.emoji}</div>`}
       <button class="back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
+      <button class="back-btn" style="right:auto;left:16px;background:${isFav ? '#ef4444' : 'white'};color:${isFav ? 'white' : '#64748b'}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
     </div>
     <div class="detail-content">
       <div class="detail-header">
         <div class="detail-logo" style="background:${style.bg};border-color:transparent">
           <span style="font-size:1.8rem">${style.emoji}</span>
         </div>
-        <div>
+        <div class="flex-1">
           <h1 class="detail-name">${b.nameAr || b.name}</h1>
           <div class="detail-category">${b.categoryNameAr || ''}</div>
           <div class="detail-stats">
             <div class="detail-stat"><i class="ri-star-fill"></i> ${rating.toFixed(1)} (${totalReviews} تقييم)</div>
             ${b.location?.city ? `<div class="detail-stat"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' - ' + b.location.district : ''}</div>` : ''}
+            ${b.views ? `<div class="detail-stat"><i class="ri-eye-line"></i> ${b.views} مشاهدة</div>` : ''}
+            <div class="detail-stat"><span class="inline-block w-2 h-2 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}"></span> ${isOpen ? 'مفتوح دلوقتي' : 'مقفول'}</div>
           </div>
         </div>
       </div>
@@ -616,7 +651,7 @@ function renderBusinessDetail(b) {
       </div>
       ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن الشغل</h3><p>${b.description}</p></div>` : ''}
       ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
-      ${hoursHtml}${keywordsHtml}${brandsHtml}
+      ${offersHtml}${photosHtml}${hoursHtml}${keywordsHtml}${brandsHtml}
       <div class="detail-section">
         <h3><i class="ri-star-line text-amber-500"></i> التقييمات (${totalReviews})</h3>
         <div id="reviews-list">${reviewsHtml}</div>
@@ -656,6 +691,45 @@ function shareBusiness(id) {
     navigator.share({ url });
   } else {
     navigator.clipboard.writeText(url).then(() => showToast('اتنسخ الرابط', 'success'));
+  }
+}
+
+function checkIfOpen(hours) {
+  if (!hours || !hours.saturday) return false;
+  const now = new Date();
+  const dayIndex = now.getDay();
+  const dayMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  const todayKey = dayMap[dayIndex];
+  const todayHours = hours[todayKey] || hours.saturday || '';
+  if (!todayHours || todayHours === 'مغلق') return false;
+  const match = todayHours.match(/(\d{1,2}):(\d{2})\s*(ص|م)\s*-\s*(\d{1,2}):(\d{2})\s*(ص|م)/);
+  if (!match) return true;
+  let [_, sh, sm, sap, eh, em, eap] = match;
+  sh = parseInt(sh); sm = parseInt(sm); eh = parseInt(eh); em = parseInt(em);
+  if (sap === 'م' && sh !== 12) sh += 12;
+  if (sap === 'ص' && sh === 12) sh = 0;
+  if (eap === 'م' && eh !== 12) eh += 12;
+  if (eap === 'ص' && eh === 12) eh = 0;
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  return nowMin >= sh * 60 + sm && nowMin <= eh * 60 + em;
+}
+
+function toggleFavorite(id, btn) {
+  if (!currentUser) { showAuthModal(); return; }
+  let favs = JSON.parse(localStorage.getItem('sikka_favorites') || '[]');
+  if (favs.includes(id)) {
+    favs = favs.filter(f => f !== id);
+    showToast('اتحذف من المفضلة');
+  } else {
+    favs.push(id);
+    showToast('اتضاف للمفضلة');
+  }
+  localStorage.setItem('sikka_favorites', JSON.stringify(favs));
+  if (btn) {
+    const isFav = favs.includes(id);
+    btn.style.background = isFav ? '#ef4444' : 'white';
+    btn.style.color = isFav ? 'white' : '#64748b';
+    btn.innerHTML = `<i class="ri-heart-${isFav ? 'fill' : 'line'}"></i>`;
   }
 }
 
@@ -1040,7 +1114,7 @@ function submitReview() {
     rating: currentRating,
     title: title || '',
     comment: text || '',
-    date: new Date().toLocaleDateString('ar-SA')
+    date: new Date().toLocaleDateString('ar-EG')
   });
 
   // Update average
@@ -1181,6 +1255,23 @@ function loadProfile() {
   updateAuthUI();
 }
 
+// ==================== FAVORITES ====================
+function loadFavorites() {
+  const g = document.getElementById('favorites-grid');
+  if (!g) return;
+  if (!currentUser) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon"><i class="ri-heart-line"></i></div><h3>سجّل دخول عشان تشوف المفضلة</h3></div>';
+    return;
+  }
+  const favs = JSON.parse(localStorage.getItem('sikka_favorites') || '[]');
+  const favBusinesses = businesses.filter(b => favs.includes(b.id));
+  if (!favBusinesses.length) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon"><i class="ri-heart-line"></i></div><h3>مفيش مفضلة لسه</h3><p>اضغط على القلب في أي صفحة نشاط عشان تحفظه هنا</p></div>';
+    return;
+  }
+  g.innerHTML = favBusinesses.map((b, i) => renderBusinessCard(b, i)).join('');
+}
+
 // ==================== ADMIN ====================
 function loadAdmin() {
   const c = document.getElementById('admin-content');
@@ -1278,6 +1369,7 @@ window.requireAuth = requireAuth;
 window.approveBusiness = approveBusiness;
 window.deleteBusiness = deleteBusiness;
 window.shareBusiness = shareBusiness;
+window.toggleFavorite = toggleFavorite;
 window.addBizPhoto = addBizPhoto;
 window.removeBizPhoto = removeBizPhoto;
 window.addBizOffer = addBizOffer;
