@@ -181,6 +181,8 @@ function loadData() {
 }
 
 // ==================== INIT ====================
+let isNavigating = false;
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Sikka starting...');
   loadData();
@@ -191,7 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
   handleHash();
 });
 
-window.addEventListener('popstate', () => handleHash());
+window.addEventListener('popstate', () => {
+  if (!isNavigating) handleHash();
+});
 
 // Scroll to top
 window.addEventListener('scroll', () => {
@@ -201,35 +205,75 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// Prevent ALL href="#" from changing hash
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href="#"]');
+  if (a) e.preventDefault();
+});
+
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + pageId);
+  if (el) el.classList.add('active');
+  document.getElementById('mobile-menu')?.classList.add('hidden');
+}
+
+function updateNavActive(page) {
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mobile-menu-item').forEach(n => n.classList.remove('active'));
+  const navLink = document.querySelector(`[data-nav="${page}"]`);
+  if (navLink) navLink.classList.add('active');
+  const mobileNav = document.querySelector(`.mobile-nav-item[data-page="${page}"]`);
+  if (mobileNav) mobileNav.classList.add('active');
+}
+
 function handleHash() {
-  const hash = location.hash;
-  if (!hash || hash === '#/' || hash === '#' || hash === '#/home') {
-    navigateTo('home');
-    return;
-  }
+  const hash = location.hash || '#/home';
 
   if (hash.startsWith('#/business/')) {
     const id = hash.replace('#/business/', '');
     const b = businesses.find(biz => biz.id === id);
     if (b) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-business')?.classList.add('active');
+      showPage('business');
       renderBusinessDetail(b);
     } else {
       show404();
     }
-  } else if (hash === '#/businesses') { navigateTo('businesses');
-  } else if (hash === '#/categories') { navigateTo('categories');
-  } else if (hash === '#/blog') { navigateTo('blog');
-  } else if (hash === '#/add') { navigateTo('add');
-  } else if (hash === '#/profile') { navigateTo('profile');
-  } else if (hash === '#/dashboard') { navigateTo('dashboard');
-  } else if (hash === '#/favorites') { navigateTo('favorites');
-  } else if (hash === '#/admin') { navigateTo('admin');
-  } else if (hash === '#/about') { navigateTo('about');
-  } else if (hash === '#/contact') { navigateTo('contact');
-  } else if (hash === '#/terms') { navigateTo('terms');
-  } else { show404(); }
+    return;
+  }
+
+  const pageMap = {
+    '#/home': 'home', '#/': 'home',
+    '#/businesses': 'businesses',
+    '#/categories': 'categories',
+    '#/blog': 'blog',
+    '#/add': 'add',
+    '#/profile': 'profile',
+    '#/dashboard': 'dashboard',
+    '#/favorites': 'favorites',
+    '#/admin': 'admin',
+    '#/about': 'about',
+    '#/contact': 'contact',
+    '#/terms': 'terms',
+  };
+
+  const page = pageMap[hash];
+  if (!page) { show404(); return; }
+
+  showPage(page);
+  updateNavActive(page);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (page === 'home') loadHome();
+  if (page === 'businesses') loadAllBusinesses();
+  if (page === 'blog') loadBlog();
+  if (page === 'admin') loadAdmin();
+  if (page === 'profile') loadProfile();
+  if (page === 'categories') loadCategoriesFull();
+  if (page === 'add') renderAddForm();
+  if (page === 'dashboard') loadDashboard();
+  if (page === 'favorites') loadFavorites();
 }
 
 function show404() {
@@ -271,34 +315,16 @@ function showToast(msg, type = 'success') {
 // ==================== NAVIGATION ====================
 function navigateTo(page) {
   console.log('📄 Navigate to:', page);
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.mobile-nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.mobile-menu-item').forEach(n => n.classList.remove('active'));
-
-  const el = document.getElementById(`page-${page}`);
-  if (el) el.classList.add('active');
-  document.querySelector(`[data-nav="${page}"]`)?.classList.add('active');
-  document.querySelector(`.mobile-nav-item[data-page="${page}"]`)?.classList.add('active');
-  document.getElementById('mobile-menu')?.classList.add('hidden');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Push hash URL
-  const hashMap = { home:'/', businesses:'/businesses', categories:'/categories', blog:'/blog', add:'/add', profile:'/profile', dashboard:'/dashboard', favorites:'/favorites', admin:'/admin', about:'/about', contact:'/contact', terms:'/terms' };
-  const newHash = '#/' + (hashMap[page] || page);
-  if (location.hash !== newHash) {
-    history.pushState({ page }, '', newHash);
+  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms' };
+  const newHash = hashMap[page] || '#/home';
+  if (location.hash === newHash) {
+    handleHash();
+    return;
   }
-
-  if (page === 'home') loadHome();
-  if (page === 'businesses') loadAllBusinesses();
-  if (page === 'blog') loadBlog();
-  if (page === 'admin') loadAdmin();
-  if (page === 'profile') loadProfile();
-  if (page === 'categories') loadCategoriesFull();
-  if (page === 'add') renderAddForm();
-  if (page === 'dashboard') loadDashboard();
-  if (page === 'favorites') loadFavorites();
+  isNavigating = true;
+  history.pushState({ page }, '', newHash);
+  handleHash();
+  setTimeout(() => { isNavigating = false; }, 50);
 }
 
 function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
@@ -694,8 +720,13 @@ function openBusiness(id) {
   if (!b) { showToast('الشغل مش موجود', 'error'); return; }
   b.views = (b.views || 0) + 1;
   saveData();
+  isNavigating = true;
   history.pushState({ page: 'business', id }, '', '#/business/' + id);
+  showPage('business');
   renderBusinessDetail(b);
+  updateNavActive('');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => { isNavigating = false; }, 50);
 }
 
 function renderBusinessDetail(b) {
@@ -852,9 +883,7 @@ function getDayName(day) {
 }
 
 function closeDetail() {
-  history.pushState({ page: 'home' }, '', '#/');
-  document.getElementById('page-business')?.classList.remove('active');
-  document.getElementById('page-home')?.classList.add('active');
+  navigateTo('home');
 }
 
 function shareBusiness(id) {
