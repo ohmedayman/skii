@@ -41,6 +41,28 @@ const CATEGORIES = [
   { slug:'legal', name:'القانونية', icon:'ri-scales-3-line', desc:'محاماة واستشارات' },
 ];
 
+const CATEGORY_STYLES = {
+  'المقاهي':     { bg: 'linear-gradient(135deg,#78350f,#92400e)', icon: 'ri-cup-line', emoji: '☕' },
+  'المطاعم':     { bg: 'linear-gradient(135deg,#dc2626,#b91c1c)', icon: 'ri-restaurant-line', emoji: '🍕' },
+  'البنوك':      { bg: 'linear-gradient(135deg,#1e40af,#1d4ed8)', icon: 'ri-bank-line', emoji: '🏦' },
+  'التجزئة':     { bg: 'linear-gradient(135deg,#7c3aed,#6d28d9)', icon: 'ri-shopping-cart-2-line', emoji: '🛒' },
+  'الاتصالات':   { bg: 'linear-gradient(135deg,#0891b2,#0e7490)', icon: 'ri-smartphone-line', emoji: '📱' },
+  'الصحة':       { bg: 'linear-gradient(135deg,#dc2626,#e11d48)', icon: 'ri-heart-pulse-line', emoji: '🏥' },
+  'التعليم':     { bg: 'linear-gradient(135deg,#2563eb,#1d4ed8)', icon: 'ri-book-open-line', emoji: '🎓' },
+  'الخدمات':     { bg: 'linear-gradient(135deg,#475569,#334155)', icon: 'ri-tools-line', emoji: '🔧' },
+  'العقارات':    { bg: 'linear-gradient(135deg,#059669,#047857)', icon: 'ri-home-4-line', emoji: '🏠' },
+  'السيارات':    { bg: 'linear-gradient(135deg,#475569,#1e293b)', icon: 'ri-car-line', emoji: '🚗' },
+  'السفر والسياحة': { bg: 'linear-gradient(135deg,#0284c7,#0369a1)', icon: 'ri-plane-line', emoji: '✈️' },
+  'الأزياء':     { bg: 'linear-gradient(135deg,#c026d3,#a21caf)', icon: 'ri-t-shirt-line', emoji: '👗' },
+  'الجمال':      { bg: 'linear-gradient(135deg,#db2777,#be185d)', icon: 'ri-palette-line', emoji: '💄' },
+  'الرياضة':     { bg: 'linear-gradient(135deg,#16a34a,#15803d)', icon: 'ri-basketball-line', emoji: '⚽' },
+  'التكنولوجيا': { bg: 'linear-gradient(135deg,#4f46e5,#4338ca)', icon: 'ri-computer-line', emoji: '💻' },
+  'القانونية':   { bg: 'linear-gradient(135deg,#92400e,#78350f)', icon: 'ri-scales-3-line', emoji: '⚖️' },
+};
+const DEFAULT_STYLE = { bg: 'linear-gradient(135deg,#64748b,#475569)', icon: 'ri-building-2-line', emoji: '🏢' };
+
+function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
+
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
 const CITIES = ['الرياض','جدة','مكة المكرمة','المدينة المنورة','الدمام','الظهران','الخبر','تبوك','أبها'];
 
@@ -350,15 +372,17 @@ function loadHome() {
 function renderCategories(cats) {
   const g = document.getElementById('categories-grid');
   if (!g) return;
-  g.innerHTML = cats.slice(0, 8).map((c, i) => `
+  g.innerHTML = cats.slice(0, 8).map((c, i) => {
+    const style = getCategoryStyle(c.name);
+    return `
     <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
-      <div class="w-14 h-14 bg-gray-100 group-hover:bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300">
-        <i class="${c.icon} text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300" style="background:${style.bg}">
+        <span style="font-size:1.5rem;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))">${style.emoji}</span>
       </div>
       <div class="text-sm font-bold mb-1">${c.name}</div>
       <div class="text-xs text-gray-400">${approved.filter(b => b.categoryNameAr === c.name).length} نشاط</div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function renderBusinesses(list) {
@@ -376,11 +400,13 @@ function renderBusinessCard(b, i = 0) {
   const reviewCount = b.rating?.count || 0;
   const reviewList = reviews[b.id] || [];
   const totalReviews = reviewCount + reviewList.length;
+  const style = getCategoryStyle(b.categoryNameAr);
+  const initial = (b.nameAr || b.name || '')[0] || '🏢';
 
   return `
     <div class="biz-card group" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
-      <div class="biz-card-img">
-        <div class="biz-card-logo"><i class="ri-building-2-line"></i></div>
+      <div class="biz-card-img" style="background:${style.bg}">
+        <div style="font-size:2.5rem;opacity:0.9;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))">${style.emoji}</div>
         ${b.isVerified ? '<span class="biz-badge verified">موثق</span>' : ''}
       </div>
       <div class="biz-card-body">
@@ -498,14 +524,18 @@ function renderBusinessDetail(b) {
     reviewsHtml = '<p class="text-gray-500 text-sm text-center py-4">لا توجد تقييمات بعد. كن أول من يقيّم!</p>';
   }
 
+  const style = getCategoryStyle(b.categoryNameAr);
+
   c.innerHTML = `
-    <div class="detail-hero">
-      ${b.location?.lat && b.location?.lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem"><i class="ri-building-2-line" style="color:#cbd5e1"></i></div>`}
+    <div class="detail-hero" style="background:${style.bg}">
+      ${b.location?.lat && b.location?.lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2))">${style.emoji}</div>`}
       <button class="back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
     </div>
     <div class="detail-content">
       <div class="detail-header">
-        <div class="detail-logo"><i class="ri-building-2-line"></i></div>
+        <div class="detail-logo" style="background:${style.bg};border-color:transparent">
+          <span style="font-size:1.8rem">${style.emoji}</span>
+        </div>
         <div>
           <h1 class="detail-name">${b.nameAr || b.name}</h1>
           <div class="detail-category">${b.categoryNameAr || ''}</div>
