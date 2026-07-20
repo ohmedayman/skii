@@ -3,520 +3,264 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#0f172a">
   <title>سِكّة | دليل الأعمال الذكي</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
-
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: { 'arabic': ['IBM Plex Sans Arabic', 'sans-serif'] },
-          colors: {
-            'sikka': { 50:'#f8fafc', 100:'#f1f5f9', 200:'#e2e8f0', 300:'#cbd5e1', 400:'#94a3b8', 500:'#64748b', 600:'#475569', 700:'#334155', 800:'#1e293b', 900:'#0f172a' },
-          },
-          animation: {
-            'float': 'float 3s ease-in-out infinite',
-            'glow': 'glow 2s ease-in-out infinite alternate',
-            'slide-up': 'slideUp 0.6s ease-out',
-            'slide-down': 'slideDown 0.3s ease-out',
-            'fade-in': 'fadeIn 0.5s ease-out',
-            'scale-in': 'scaleIn 0.3s ease-out',
-            'bounce-in': 'bounceIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55)',
-            'shimmer': 'shimmer 2s linear infinite',
-          },
-          keyframes: {
-            float: { '0%,100%': { transform:'translateY(0)' }, '50%': { transform:'translateY(-10px)' } },
-            glow: { '0%': { boxShadow:'0 0 20px rgba(37,99,235,0.3)' }, '100%': { boxShadow:'0 0 40px rgba(37,99,235,0.6)' } },
-            slideUp: { '0%': { opacity:'0', transform:'translateY(30px)' }, '100%': { opacity:'1', transform:'translateY(0)' } },
-            slideDown: { '0%': { opacity:'0', transform:'translateY(-10px)' }, '100%': { opacity:'1', transform:'translateY(0)' } },
-            fadeIn: { '0%': { opacity:'0' }, '100%': { opacity:'1' } },
-            scaleIn: { '0%': { opacity:'0', transform:'scale(0.9)' }, '100%': { opacity:'1', transform:'scale(1)' } },
-            bounceIn: { '0%': { opacity:'0', transform:'scale(0.3)' }, '50%': { opacity:'1', transform:'scale(1.05)' }, '70%': { transform:'scale(0.9)' }, '100%': { transform:'scale(1)' } },
-            shimmer: { '0%': { backgroundPosition:'-200% 0' }, '100%': { backgroundPosition:'200% 0' } },
-          }
         }
       }
     }
   </script>
-
-  <!-- Animate.css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-  <!-- AOS - Animate On Scroll -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
-
-  <!-- Remixicon -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"/>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="font-arabic bg-sikka-50 text-sikka-900 min-h-screen">
+<body class="font-arabic bg-gray-50 text-gray-900 min-h-screen">
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-sikka-200/50 transition-all duration-300" id="main-header">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50" id="main-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
         <a href="#" class="flex items-center gap-3 group" onclick="navigateTo('home')">
-          <div class="w-10 h-10 bg-gradient-to-br from-sikka-800 to-sikka-900 rounded-xl flex items-center justify-center text-white shadow-lg shadow-sikka-900/20 group-hover:shadow-sikka-900/40 transition-all duration-300 group-hover:scale-105">
+          <div class="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-all">
             <i class="ri-road-map-line text-lg"></i>
           </div>
-          <span class="text-xl font-bold bg-gradient-to-l from-sikka-800 to-sikka-600 bg-clip-text text-transparent">سِكّة</span>
+          <span class="text-xl font-bold bg-gradient-to-l from-gray-800 to-gray-600 bg-clip-text text-transparent">سِكّة</span>
         </a>
-
-        <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-1">
-          <a href="#" class="nav-link active" data-nav="home" onclick="navigateTo('home')">
-            <i class="ri-home-5-line ml-1"></i>الرئيسية
-          </a>
-          <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')">
-            <i class="ri-store-2-line ml-1"></i>الأعمال
-          </a>
-          <a href="#" class="nav-link" data-nav="categories" onclick="navigateTo('categories')">
-            <i class="ri-apps-line ml-1"></i>الفئات
-          </a>
-          <a href="#" class="nav-link" data-nav="blog" onclick="navigateTo('blog')">
-            <i class="ri-article-line ml-1"></i>المدونة
-          </a>
-          <a href="#" class="nav-link" data-nav="add" onclick="navigateTo('add')">
-            <i class="ri-add-circle-line ml-1"></i>أضف نشاطك
-          </a>
+          <a href="#" class="nav-link active" data-nav="home" onclick="navigateTo('home')"><i class="ri-home-5-line ml-1"></i>الرئيسية</a>
+          <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
+          <a href="#" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
+          <a href="#" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
         </nav>
-
-        <!-- Actions -->
         <div class="flex items-center gap-3">
-          <button class="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-sikka-700 bg-sikka-100 hover:bg-sikka-200 rounded-xl transition-all duration-200" onclick="showAuthModal()">
-            <i class="ri-login-box-line"></i>
-            دخول
+          <div id="header-auth-btns">
+            <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="showAuthModal()">
+              <i class="ri-login-box-line"></i> دخول
+            </button>
+          </div>
+          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5" onclick="requireAuth('add')">
+            <i class="ri-add-line"></i><span class="hidden sm:inline">أضف نشاطك</span>
           </button>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-l from-sikka-800 to-sikka-900 hover:from-sikka-700 hover:to-sikka-800 rounded-xl shadow-lg shadow-sikka-900/20 hover:shadow-sikka-900/40 transition-all duration-300 hover:-translate-y-0.5" onclick="navigateTo('add')">
-            <i class="ri-add-line"></i>
-            <span class="hidden sm:inline">أضف نشاطك</span>
-          </button>
-          <!-- Mobile Menu Button -->
-          <button class="md:hidden p-2 hover:bg-sikka-100 rounded-xl transition-colors" onclick="toggleMobileMenu()">
+          <button class="md:hidden p-2 hover:bg-gray-100 rounded-xl" onclick="toggleMobileMenu()">
             <i class="ri-menu-3-line text-xl"></i>
           </button>
         </div>
       </div>
     </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-sikka-100 bg-white/95 backdrop-blur-xl">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl">
       <div class="px-4 py-3 space-y-1">
         <a href="#" class="mobile-menu-item active" onclick="navigateTo('home')"><i class="ri-home-5-line"></i>الرئيسية</a>
         <a href="#" class="mobile-menu-item" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i>الأعمال</a>
         <a href="#" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
         <a href="#" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
-        <a href="#" class="mobile-menu-item" onclick="navigateTo('add')"><i class="ri-add-circle-line"></i>أضف نشاطك</a>
-        <a href="#" class="mobile-menu-item" onclick="showAuthModal()"><i class="ri-login-box-line"></i>تسجيل دخول</a>
+        <a href="#" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>أضف نشاطك</a>
       </div>
     </div>
   </header>
 
-  <!-- ========== HOME PAGE ========== -->
+  <!-- HOME -->
   <div id="page-home" class="page active">
-
-    <!-- Hero Section - Glassmorphism -->
-    <section class="relative overflow-hidden bg-gradient-to-br from-sikka-900 via-sikka-800 to-sikka-900">
-      <!-- Animated Background -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div class="absolute inset-0 overflow-hidden">
         <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
-        <!-- Grid Pattern -->
-        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay:1s"></div>
+        <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 1px 1px,white 1px,transparent 0);background-size:40px 40px"></div>
       </div>
-
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
-        <div class="animate__animated animate__fadeInDown">
-          <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/80 text-sm mb-6">
-            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-            دليل الأعمال الذكي في السعودية
-          </span>
-        </div>
-
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/80 text-sm mb-6 animate__animated animate__fadeInDown">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          دليل الأعمال الذكي في السعودية
+        </span>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 animate__animated animate__fadeInUp">
           ابدأ رحلتك مع
           <span class="block mt-2 bg-gradient-to-l from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent">سِكّة</span>
         </h1>
-
-        <p class="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
-          اكتشف أفضل الأعمال والخدمات في المملكة العربية السعودية
-        </p>
-
-        <!-- Search Box - Glassmorphism -->
-        <div class="max-w-3xl mx-auto animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+        <p class="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10 animate__animated animate__fadeInUp" style="animation-delay:.2s">اكتشف أفضل الأعمال والخدمات في المملكة العربية السعودية</p>
+        <div class="max-w-3xl mx-auto animate__animated animate__fadeInUp" style="animation-delay:.4s">
           <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl">
-            <!-- Search Tabs -->
             <div class="flex gap-1 mb-2 px-1">
-              <button class="search-tab active" onclick="switchSearchTab(this,'name')">
-                <i class="ri-search-line"></i><span>بالاسم</span>
-              </button>
-              <button class="search-tab" onclick="switchSearchTab(this,'keyword')">
-                <i class="ri-keyboard-line"></i><span>بالكلمة</span>
-              </button>
-              <button class="search-tab" onclick="switchSearchTab(this,'category')">
-                <i class="ri-folder-line"></i><span>بالفئة</span>
-              </button>
-              <button class="search-tab" onclick="switchSearchTab(this,'brand')">
-                <i class="ri-bookmark-line"></i><span>بالبراند</span>
-              </button>
+              <button class="search-tab active" onclick="switchSearchTab(this,'name')"><i class="ri-search-line"></i><span>بالاسم</span></button>
+              <button class="search-tab" onclick="switchSearchTab(this,'keyword')"><i class="ri-keyboard-line"></i><span>بالكلمة</span></button>
+              <button class="search-tab" onclick="switchSearchTab(this,'category')"><i class="ri-folder-line"></i><span>بالفئة</span></button>
+              <button class="search-tab" onclick="switchSearchTab(this,'brand')"><i class="ri-bookmark-line"></i><span>بالبراند</span></button>
             </div>
-            <!-- Search Input -->
             <div class="flex gap-2">
-              <input type="text" id="search-input"
-                class="flex-1 px-5 py-3.5 bg-white rounded-xl text-sikka-900 placeholder-sikka-400 outline-none text-sm sm:text-base font-medium"
-                placeholder="ابحث عن نشاط تجاري أو خدمة...">
-              <button class="px-6 sm:px-8 py-3.5 bg-gradient-to-l from-sikka-800 to-sikka-900 hover:from-sikka-700 hover:to-sikka-800 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-sikka-900/30 hover:-translate-y-0.5 flex items-center gap-2" onclick="performSearch()">
-                <i class="ri-search-line"></i>
-                <span class="hidden sm:inline">بحث</span>
+              <input type="text" id="search-input" class="flex-1 px-5 py-3.5 bg-white rounded-xl text-gray-900 placeholder-gray-400 outline-none text-sm sm:text-base font-medium" placeholder="ابحث عن نشاط تجاري أو خدمة...">
+              <button class="px-6 sm:px-8 py-3.5 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center gap-2" onclick="performSearch()">
+                <i class="ri-search-line"></i><span class="hidden sm:inline">بحث</span>
               </button>
             </div>
           </div>
-
-          <!-- Quick Tags -->
           <div class="flex justify-center gap-2 mt-6 flex-wrap">
-            <span class="search-tag" onclick="quickSearch('مقاهي')">☕ مقاهي</span>
-            <span class="search-tag" onclick="quickSearch('مطاعم')">🍽️ مطاعم</span>
-            <span class="search-tag" onclick="quickSearch('بنوك')">🏦 بنوك</span>
-            <span class="search-tag" onclick="quickSearch('تسوق')">🛍️ تسوق</span>
-            <span class="search-tag" onclick="quickSearch('صحة')">🏥 صحة</span>
-            <span class="search-tag" onclick="quickSearch('تعليم')">📚 تعليم</span>
-            <span class="search-tag" onclick="quickSearch('عقارات')">🏠 عقارات</span>
-            <span class="search-tag" onclick="quickSearch('سيارات')">🚗 سيارات</span>
+            <span class="search-tag" onclick="quickSearch('مقاهي')">مقاهي</span>
+            <span class="search-tag" onclick="quickSearch('مطاعم')">مطاعم</span>
+            <span class="search-tag" onclick="quickSearch('بنوك')">بنوك</span>
+            <span class="search-tag" onclick="quickSearch('تسوق')">تسوق</span>
+            <span class="search-tag" onclick="quickSearch('صحة')">صحة</span>
+            <span class="search-tag" onclick="quickSearch('تعليم')">تعليم</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Categories Section -->
     <section class="py-16 bg-white" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-sikka-900">تصفح حسب الفئات</h2>
-            <p class="text-sikka-500 mt-1">اختر الفئة المناسبة لاحتياجاتك</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-sikka-700 bg-sikka-100 hover:bg-sikka-200 rounded-xl transition-all duration-200" onclick="navigateTo('categories')">
-            عرض الكل
-            <i class="ri-arrow-left-line"></i>
-          </button>
+          <div><h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2><p class="text-gray-500 mt-1">اختر الفئة المناسبة</p></div>
+          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('categories')">عرض الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4"></div>
       </div>
     </section>
 
-    <!-- Top Businesses Section -->
-    <section class="py-16 bg-sikka-50" data-aos="fade-up">
+    <section class="py-16 bg-gray-50" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-sikka-900">أفضل الأعمال</h2>
-            <p class="text-sikka-500 mt-1">اكتشف الأعمال الأكثر تقييماً</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-sikka-700 bg-white hover:bg-sikka-100 rounded-xl border border-sikka-200 transition-all duration-200" onclick="navigateTo('businesses')">
-            عرض الكل
-            <i class="ri-arrow-left-line"></i>
-          </button>
+          <div><h2 class="text-2xl sm:text-3xl font-bold">أفضل الأعمال</h2><p class="text-gray-500 mt-1">اكتشف الأعمال الأكثر تقييماً</p></div>
+          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">عرض الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
       </div>
     </section>
 
-    <!-- Alphabetical Browse -->
     <section class="py-16 bg-white" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10">
-          <h2 class="text-2xl sm:text-3xl font-bold text-sikka-900">تصفح بالأبجدية</h2>
-          <p class="text-sikka-500 mt-1">ابحث حسب الحرف الأول</p>
-        </div>
+        <div class="text-center mb-10"><h2 class="text-2xl sm:text-3xl font-bold">تصفح بالأبجدية</h2><p class="text-gray-500 mt-1">ابحث حسب الحرف الأول</p></div>
         <div id="alpha-grid" class="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl mx-auto"></div>
       </div>
     </section>
 
-    <!-- Stats Section - Neumorphism -->
-    <section class="py-16 bg-sikka-50" data-aos="fade-up">
+    <section class="py-16 bg-gray-50" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          <div class="neu-card p-6 text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all duration-300">
-              <i class="ri-store-2-line text-2xl text-white"></i>
-            </div>
-            <div class="text-3xl sm:text-4xl font-bold text-sikka-900" id="stat-biz">0</div>
-            <div class="text-sm text-sikka-500 mt-1">نشاط تجاري</div>
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20"><i class="ri-store-2-line text-2xl text-white"></i></div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-biz">0</div><div class="text-sm text-gray-500 mt-1">نشاط تجاري</div>
           </div>
-          <div class="neu-card p-6 text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300">
-              <i class="ri-user-3-line text-2xl text-white"></i>
-            </div>
-            <div class="text-3xl sm:text-4xl font-bold text-sikka-900" id="stat-users">0</div>
-            <div class="text-sm text-sikka-500 mt-1">مستخدم</div>
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20"><i class="ri-user-3-line text-2xl text-white"></i></div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-users">0</div><div class="text-sm text-gray-500 mt-1">مستخدم</div>
           </div>
-          <div class="neu-card p-6 text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-all duration-300">
-              <i class="ri-star-line text-2xl text-white"></i>
-            </div>
-            <div class="text-3xl sm:text-4xl font-bold text-sikka-900" id="stat-reviews">0</div>
-            <div class="text-sm text-sikka-500 mt-1">تقييم</div>
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20"><i class="ri-star-line text-2xl text-white"></i></div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-reviews">0</div><div class="text-sm text-gray-500 mt-1">تقييم</div>
           </div>
-          <div class="neu-card p-6 text-center group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all duration-300">
-              <i class="ri-map-pin-line text-2xl text-white"></i>
-            </div>
-            <div class="text-3xl sm:text-4xl font-bold text-sikka-900" id="stat-cities">0</div>
-            <div class="text-sm text-sikka-500 mt-1">مدينة</div>
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20"><i class="ri-map-pin-line text-2xl text-white"></i></div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-cities">0</div><div class="text-sm text-gray-500 mt-1">مدينة</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Blog Section -->
-    <section class="py-16 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-sikka-900">أحدث المقالات</h2>
-            <p class="text-sikka-500 mt-1">نصائح وأدلة مفيدة</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-sikka-700 bg-sikka-100 hover:bg-sikka-200 rounded-xl transition-all duration-200" onclick="navigateTo('blog')">
-            عرض الكل
-            <i class="ri-arrow-left-line"></i>
-          </button>
-        </div>
-        <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      </div>
-    </section>
-
-    <!-- CTA Section - Glassmorphism -->
-    <section class="py-20 bg-gradient-to-br from-sikka-900 via-sikka-800 to-sikka-900 relative overflow-hidden" data-aos="fade-up">
-      <div class="absolute inset-0">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
-      </div>
+    <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" data-aos="fade-up">
+      <div class="absolute inset-0"><div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div><div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div></div>
       <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">هل تملك نشاطاً تجارياً؟</h2>
         <p class="text-lg text-white/70 mb-8">سجّل نشاطك مجاناً وابدأ في الوصول للعملاء</p>
-        <button class="px-8 py-4 bg-white text-sikka-900 rounded-2xl font-bold text-lg hover:bg-sikka-100 transition-all duration-300 hover:shadow-2xl hover:shadow-white/20 hover:-translate-y-1 animate__animated animate__pulse animate__infinite" onclick="navigateTo('add')">
-          <i class="ri-add-circle-line ml-2"></i>
-          أضف نشاطك الآن
+        <button class="px-8 py-4 bg-white text-gray-900 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all hover:shadow-2xl hover:-translate-y-1" onclick="requireAuth('add')">
+          <i class="ri-add-circle-line ml-2"></i>أضف نشاطك الآن
         </button>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-sikka-900 text-white pt-16 pb-8">
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <i class="ri-road-map-line text-lg"></i>
-              </div>
-              <span class="text-xl font-bold">سِكّة</span>
-            </div>
-            <p class="text-sikka-400 text-sm leading-relaxed">دليل الأعمال الذكي في المملكة العربية السعودية. اكتشف أفضل الأعمال والخدمات في مدينتك.</p>
+            <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center"><i class="ri-road-map-line text-lg"></i></div><span class="text-xl font-bold">سِكّة</span></div>
+            <p class="text-gray-400 text-sm leading-relaxed">دليل الأعمال الذكي في المملكة العربية السعودية</p>
           </div>
-          <div>
-            <h4 class="font-bold mb-4">روابط سريعة</h4>
-            <div class="space-y-2">
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="navigateTo('home')">الرئيسية</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="navigateTo('add')">أضف نشاطك</a>
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold mb-4">الفئات</h4>
-            <div class="space-y-2">
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مقاهي')">مقاهي</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مطاعم')">مطاعم</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="quickSearch('بنوك')">بنوك</a>
-              <a href="#" class="block text-sikka-400 hover:text-white text-sm transition-colors" onclick="quickSearch('تسوق')">تسوق</a>
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold mb-4">تواصل معنا</h4>
-            <div class="flex gap-3">
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-1">
-                <i class="ri-twitter-x-line"></i>
-              </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-1">
-                <i class="ri-instagram-line"></i>
-              </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-1">
-                <i class="ri-whatsapp-line"></i>
-              </a>
-            </div>
-          </div>
+          <div><h4 class="font-bold mb-4">روابط سريعة</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('home')">الرئيسية</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a></div></div>
+          <div><h4 class="font-bold mb-4">الفئات</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مقاهي')">مقاهي</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مطاعم')">مطاعم</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('بنوك')">بنوك</a></div></div>
+          <div><h4 class="font-bold mb-4">تواصل معنا</h4><div class="flex gap-3"><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-twitter-x-line"></i></a><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-instagram-line"></i></a><a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-all hover:-translate-y-1"><i class="ri-whatsapp-line"></i></a></div></div>
         </div>
-        <div class="border-t border-sikka-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span class="text-sikka-500 text-sm">© 2025 سِكّة. جميع الحقوق محفوظة</span>
-          <div class="flex items-center gap-4 text-sm text-sikka-500">
-            <a href="#" class="hover:text-white transition-colors">سياسة الخصوصية</a>
-            <a href="#" class="hover:text-white transition-colors">الشروط والأحكام</a>
-          </div>
+        <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span class="text-gray-500 text-sm">© 2025 سِكّة. جميع الحقوق محفوظة</span>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- ========== BUSINESSES PAGE ========== -->
+  <!-- BUSINESSES -->
   <div id="page-businesses" class="page">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-sikka-900 mb-6">جميع الأعمال</h1>
-
-      <!-- Filters -->
-      <div class="bg-white rounded-2xl border border-sikka-200 p-4 mb-6 shadow-sm" data-aos="fade-down">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6">جميع الأعمال</h1>
+      <div class="bg-white rounded-2xl border border-gray-200 p-4 mb-6 shadow-sm">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <select class="filter-select" id="filter-category" onchange="applyFilters()">
-            <option value="">كل الفئات</option>
-          </select>
-          <select class="filter-select" id="filter-city" onchange="applyFilters()">
-            <option value="">كل المدن</option>
-          </select>
-          <select class="filter-select" id="filter-area" onchange="applyFilters()">
-            <option value="">كل المناطق</option>
-          </select>
+          <select class="filter-select" id="filter-category" onchange="applyFilters()"><option value="">كل الفئات</option></select>
+          <select class="filter-select" id="filter-city" onchange="applyFilters()"><option value="">كل المدن</option></select>
+          <select class="filter-select" id="filter-area" onchange="applyFilters()"><option value="">كل المناطق</option></select>
           <select class="filter-select" id="filter-sort" onchange="applyFilters()">
-            <option value="relevance">الأكثر صلة</option>
-            <option value="rating">الأعلى تقييماً</option>
-            <option value="reviews">الأكثر تقييمات</option>
-            <option value="alpha">أبجدي</option>
+            <option value="relevance">الأكثر صلة</option><option value="rating">الأعلى تقييماً</option><option value="reviews">الأكثر تقييمات</option><option value="alpha">أبجدي</option>
           </select>
-        </div>
-        <div class="flex gap-2 mt-3">
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-sikka-700 bg-sikka-100 hover:bg-sikka-200 rounded-xl transition-all duration-200" onclick="toggleMapView()">
-            <i class="ri-map-pin-line"></i> الخريطة
-          </button>
         </div>
       </div>
-
       <div id="all-businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
     </div>
   </div>
 
-  <!-- ========== CATEGORIES PAGE ========== -->
+  <!-- CATEGORIES -->
   <div id="page-categories" class="page">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div class="text-center mb-10">
-        <h1 class="text-2xl sm:text-3xl font-bold text-sikka-900">فهرس الفئات</h1>
-        <p class="text-sikka-500 mt-2">تصفح جميع الفئات المتاحة</p>
-      </div>
+      <div class="text-center mb-10"><h1 class="text-2xl sm:text-3xl font-bold">فهرس الفئات</h1><p class="text-gray-500 mt-2">تصفح جميع الفئات المتاحة</p></div>
       <div id="categories-full-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
   </div>
 
-  <!-- ========== BLOG PAGE ========== -->
-  <div id="page-blog" class="page">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-sikka-900 mb-6">المدونة</h1>
-      <div id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </div>
-  </div>
+  <!-- BLOG -->
+  <div id="page-blog" class="page"><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><h1 class="text-2xl sm:text-3xl font-bold mb-6">المدونة</h1><div id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div></div></div>
 
-  <!-- ========== ADD BUSINESS PAGE ========== -->
+  <!-- ADD BUSINESS -->
   <div id="page-add" class="page">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <div class="text-center mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold text-sikka-900">أضف نشاطك التجاري</h1>
-        <p class="text-sikka-500 mt-2">سجّل نشاطك مجاناً واصل للعملاء</p>
-      </div>
-
-      <div class="bg-white rounded-2xl border border-sikka-200 p-6 sm:p-8 shadow-sm">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="sm:col-span-2"><label class="form-label">اسم النشاط *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم النشاط بالعربي"></div>
-          <div><label class="form-label">الاسم بالإنجليزي</label><input type="text" class="form-input" id="biz-name-en" placeholder="Business Name"></div>
-          <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختر الفئة</option></select></div>
-          <div><label class="form-label">المدينة *</label><input type="text" class="form-input" id="biz-city" placeholder="مثال: الرياض"></div>
-          <div><label class="form-label">الحي</label><input type="text" class="form-input" id="biz-district" placeholder="مثال: حي العليا"></div>
-          <div class="sm:col-span-2"><label class="form-label">العنوان التفصيلي *</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
-          <div><label class="form-label">الجوال *</label><input type="tel" class="form-input" id="biz-phone" placeholder="+966"></div>
-          <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="+966"></div>
-          <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
-          <div><label class="form-label">الموقع الإلكتروني</label><input type="url" class="form-input" id="biz-website" placeholder="https://"></div>
-          <div class="sm:col-span-2"><label class="form-label">الوصف</label><textarea class="form-input" id="biz-description" rows="3" placeholder="وصف النشاط التجاري"></textarea></div>
-          <div class="sm:col-span-2"><label class="form-label">الكلمات المفتاحية</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب (افصل بفاصلة)"></div>
-          <div class="sm:col-span-2"><label class="form-label">البراندات</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa (افصل بفاصلة)"></div>
-          <div><label class="form-label">ساعات العمل - السبت إلى الخميس</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
-          <div><label class="form-label">ساعات العمل - الجمعة</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
-          <div><label class="form-label">Latitude</label><input type="number" step="any" class="form-input" id="biz-lat" placeholder="24.7136"></div>
-          <div><label class="form-label">Longitude</label><input type="number" step="any" class="form-input" id="biz-lng" placeholder="46.6753"></div>
-        </div>
-        <div class="flex gap-3 mt-6">
-          <button class="flex-1 py-3 px-6 bg-gradient-to-l from-sikka-800 to-sikka-900 hover:from-sikka-700 hover:to-sikka-800 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-sikka-900/20 flex items-center justify-center gap-2" onclick="submitBusiness()">
-            <i class="ri-send-plane-line"></i> نشر النشاط
-          </button>
-          <button class="px-6 py-3 bg-sikka-100 hover:bg-sikka-200 text-sikka-700 rounded-xl font-medium transition-all duration-200" onclick="navigateTo('home')">إلغاء</button>
-        </div>
-      </div>
+      <div class="text-center mb-8"><h1 class="text-2xl sm:text-3xl font-bold">أضف نشاطك التجاري</h1><p class="text-gray-500 mt-2">سجّل نشاطك مجاناً واصل للعملاء</p></div>
+      <div id="add-business-content"></div>
     </div>
   </div>
 
-  <!-- ========== PROFILE PAGE ========== -->
+  <!-- PROFILE -->
   <div id="page-profile" class="page">
     <div class="max-w-md mx-auto px-4 sm:px-6 py-12">
-      <div class="bg-white rounded-2xl border border-sikka-200 p-8 shadow-sm text-center">
-        <div class="w-20 h-20 bg-gradient-to-br from-sikka-200 to-sikka-300 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="ri-user-line text-3xl text-sikka-600"></i>
-        </div>
-        <h2 id="profile-name" class="text-xl font-bold text-sikka-900 mb-1">ضيف</h2>
-        <p id="profile-email" class="text-sikka-500 text-sm mb-6">سجّل الدخول للوصول لحسابك</p>
-        <div id="auth-buttons">
-          <button class="w-full py-3 px-6 bg-gradient-to-l from-sikka-800 to-sikka-900 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg" onclick="showAuthModal()">
-            <i class="ri-login-box-line ml-2"></i>تسجيل دخول
-          </button>
-        </div>
-        <div id="profile-menu" style="display:none;">
-          <div class="space-y-2">
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-sikka-50 rounded-xl transition-colors text-right"><i class="ri-store-2-line text-sikka-400"></i> إعلاناتي</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-sikka-50 rounded-xl transition-colors text-right"><i class="ri-heart-line text-sikka-400"></i> المفضلة</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-sikka-50 rounded-xl transition-colors text-right"><i class="ri-settings-3-line text-sikka-400"></i> الإعدادات</a>
-            <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full text-right"><i class="ri-logout-box-r-line"></i> تسجيل خروج</button>
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
+        <div class="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-4"><i class="ri-user-line text-3xl text-gray-600"></i></div>
+        <h2 id="profile-name" class="text-xl font-bold mb-1">ضيف</h2>
+        <p id="profile-email" class="text-gray-500 text-sm mb-6">سجّل الدخول للوصول لحسابك</p>
+        <div id="auth-buttons"><button class="w-full py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium transition-all hover:shadow-lg" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button></div>
+        <div id="profile-menu" style="display:none">
+          <div class="space-y-2 text-right">
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-store-2-line text-gray-400"></i> إعلاناتي</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-heart-line text-gray-400"></i> المفضلة</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
+            <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> تسجيل خروج</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ========== BUSINESS DETAIL PAGE ========== -->
+  <!-- BUSINESS DETAIL -->
   <div id="page-business" class="page"><div id="business-detail"></div></div>
-
-  <!-- ========== POST DETAIL PAGE ========== -->
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
 
-  <!-- ========== MAP PAGE ========== -->
-  <div id="page-map" class="page">
-    <div class="flex h-[calc(100vh-64px)]">
-      <div id="leaflet-map" class="flex-1"></div>
-      <div class="w-80 bg-white border-l border-sikka-200 p-4 overflow-y-auto hidden sm:block">
-        <h3 class="font-bold text-sikka-900 mb-4">الأعمال القريبة</h3>
-        <div id="map-business-list" class="space-y-3"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========== ADMIN PAGE ========== -->
+  <!-- ADMIN -->
   <div id="page-admin" class="page">
     <div class="flex min-h-[calc(100vh-64px)]">
-      <aside class="w-56 bg-white border-l border-sikka-200 p-4 hidden md:block">
-        <h3 class="font-bold text-sm text-sikka-900 mb-4 px-3">لوحة التحكم</h3>
+      <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block">
+        <h3 class="font-bold text-sm mb-4 px-3">لوحة التحكم</h3>
         <div class="space-y-1">
           <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard')"><i class="ri-dashboard-line"></i> الرئيسية</a>
           <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')"><i class="ri-store-2-line"></i> الأعمال</a>
           <a href="#" class="admin-nav-item" onclick="showAdminTab('users')"><i class="ri-user-3-line"></i> المستخدمين</a>
           <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')"><i class="ri-article-line"></i> المقالات</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('categories')"><i class="ri-folder-line"></i> الفئات</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('reviews')"><i class="ri-star-line"></i> التقييمات</a>
         </div>
       </aside>
       <main class="flex-1 p-6"><div id="admin-content"></div></main>
@@ -524,15 +268,11 @@
   </div>
 
   <!-- Mobile Bottom Nav -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-sikka-200 z-50 md:hidden safe-area-bottom">
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 z-50 md:hidden">
     <div class="flex items-center justify-around h-16 px-2">
       <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')"><i class="ri-home-5-line"></i><span>الرئيسية</span></button>
       <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')"><i class="ri-apps-line"></i><span>الفئات</span></button>
-      <div class="relative -mt-6">
-        <button class="w-14 h-14 bg-gradient-to-br from-sikka-800 to-sikka-900 rounded-full flex items-center justify-center text-white shadow-lg shadow-sikka-900/30 hover:shadow-sikka-900/50 transition-all duration-300 hover:scale-110" onclick="navigateTo('add')">
-          <i class="ri-add-line text-2xl"></i>
-        </button>
-      </div>
+      <div class="relative -mt-6"><button class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-all" onclick="requireAuth('add')"><i class="ri-add-line text-2xl"></i></button></div>
       <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i><span>الأعمال</span></button>
       <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span>حسابي</span></button>
     </div>
@@ -542,38 +282,24 @@
   <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)hideAuthModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-gradient-to-br from-sikka-800 to-sikka-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i class="ri-road-map-line text-2xl text-white"></i>
-        </div>
-        <h2 class="text-xl font-bold text-sikka-900">تسجيل دخول</h2>
-        <p class="text-sikka-500 text-sm mt-1">سجّل الدخول لإضافة نشاطك وحفظ المفضلة</p>
+        <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-road-map-line text-2xl text-white"></i></div>
+        <h2 class="text-xl font-bold">تسجيل دخول</h2>
+        <p class="text-gray-500 text-sm mt-1">سجّل الدخول لإضافة نشاطك وحفظ المفضلة</p>
       </div>
       <div class="space-y-3">
-        <div>
-          <label class="form-label">البريد الإلكتروني</label>
-          <input type="email" class="form-input" id="email-input" placeholder="example@email.com">
-        </div>
-        <div>
-          <label class="form-label">كلمة المرور</label>
-          <input type="password" class="form-input" id="password-input" placeholder="••••••••">
-        </div>
+        <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="email-input" placeholder="example@email.com"></div>
+        <div><label class="form-label">كلمة المرور</label><input type="password" class="form-input" id="password-input" placeholder="••••••••"></div>
       </div>
-      <button class="w-full py-3 mt-4 bg-gradient-to-l from-sikka-800 to-sikka-900 hover:from-sikka-700 hover:to-sikka-800 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2" onclick="loginWithEmail()">
+      <div id="auth-error" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-sm"></div>
+      <button class="w-full py-3 mt-4 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2" onclick="loginWithEmail()">
         <i class="ri-login-box-line"></i> تسجيل دخول
       </button>
-      <div class="flex items-center gap-3 my-4">
-        <div class="flex-1 h-px bg-sikka-200"></div>
-        <span class="text-xs text-sikka-400">أو</span>
-        <div class="flex-1 h-px bg-sikka-200"></div>
-      </div>
-      <button class="w-full py-3 bg-white border-2 border-sikka-200 hover:border-sikka-300 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-3" onclick="loginWithGoogle()">
+      <div class="flex items-center gap-3 my-4"><div class="flex-1 h-px bg-gray-200"></div><span class="text-xs text-gray-400">أو</span><div class="flex-1 h-px bg-gray-200"></div></div>
+      <button class="w-full py-3 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-xl font-medium transition-all flex items-center justify-center gap-3" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         متابعة مع Google
       </button>
-      <div class="text-center mt-4 text-sm text-sikka-500">
-        ليس لديك حساب؟ <a href="#" class="font-semibold text-sikka-900 hover:underline" onclick="hideAuthModal();showSignupModal()">إنشاء حساب</a>
-      </div>
-      <button class="w-full py-2 mt-3 text-sm text-sikka-500 hover:text-sikka-700 transition-colors" onclick="hideAuthModal()">إلغاء</button>
+      <div class="text-center mt-4 text-sm text-gray-500">ليس لديك حساب؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideAuthModal();showSignupModal()">إنشاء حساب</a></div>
     </div>
   </div>
 
@@ -581,85 +307,64 @@
   <div id="signup-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)hideSignupModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-gradient-to-br from-sikka-800 to-sikka-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i class="ri-user-add-line text-2xl text-white"></i>
-        </div>
-        <h2 class="text-xl font-bold text-sikka-900">إنشاء حساب</h2>
-        <p class="text-sikka-500 text-sm mt-1">سجّل حساب جديد وابدأ</p>
+        <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-user-add-line text-2xl text-white"></i></div>
+        <h2 class="text-xl font-bold">إنشاء حساب</h2>
+        <p class="text-gray-500 text-sm mt-1">سجّل حساب جديد وابدأ</p>
       </div>
       <div class="space-y-3">
         <div><label class="form-label">الاسم</label><input type="text" class="form-input" id="signup-name" placeholder="الاسم الكامل"></div>
         <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="signup-email" placeholder="example@email.com"></div>
         <div><label class="form-label">كلمة المرور</label><input type="password" class="form-input" id="signup-password" placeholder="••••••••"></div>
       </div>
-      <button class="w-full py-3 mt-4 bg-gradient-to-l from-sikka-800 to-sikka-900 hover:from-sikka-700 hover:to-sikka-800 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2" onclick="signupWithEmail()">
+      <div id="signup-error" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-sm"></div>
+      <button class="w-full py-3 mt-4 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2" onclick="signupWithEmail()">
         <i class="ri-user-add-line"></i> إنشاء حساب
       </button>
-      <div class="flex items-center gap-3 my-4">
-        <div class="flex-1 h-px bg-sikka-200"></div>
-        <span class="text-xs text-sikka-400">أو</span>
-        <div class="flex-1 h-px bg-sikka-200"></div>
-      </div>
-      <button class="w-full py-3 bg-white border-2 border-sikka-200 hover:border-sikka-300 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-3" onclick="loginWithGoogle()">
+      <div class="flex items-center gap-3 my-4"><div class="flex-1 h-px bg-gray-200"></div><span class="text-xs text-gray-400">أو</span><div class="flex-1 h-px bg-gray-200"></div></div>
+      <button class="w-full py-3 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-xl font-medium transition-all flex items-center justify-center gap-3" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         التسجيل بـ Google
       </button>
-      <div class="text-center mt-4 text-sm text-sikka-500">
-        لديك حساب بالفعل؟ <a href="#" class="font-semibold text-sikka-900 hover:underline" onclick="hideSignupModal();showAuthModal()">تسجيل دخول</a>
-      </div>
-      <button class="w-full py-2 mt-3 text-sm text-sikka-500 hover:text-sikka-700 transition-colors" onclick="hideSignupModal()">إلغاء</button>
+      <div class="text-center mt-4 text-sm text-gray-500">لديك حساب بالفعل؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideSignupModal();showAuthModal()">تسجيل دخول</a></div>
     </div>
   </div>
 
   <!-- Review Modal -->
   <div id="review-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[1000] p-4" onclick="if(event.target===this)closeReviewModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
-      <h2 class="text-xl font-bold text-sikka-900 text-center mb-2">أضف تقييمك</h2>
-      <p class="text-sikka-500 text-sm text-center mb-6">شارك تجربتك مع هذا النشاط</p>
+      <h2 class="text-xl font-bold text-center mb-2">أضف تقييمك</h2>
+      <p class="text-gray-500 text-sm text-center mb-6">شارك تجربتك مع هذا النشاط</p>
       <div class="flex justify-center gap-2 mb-6" id="star-rating">
-        <button onclick="setRating(1)" class="text-3xl text-sikka-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
-        <button onclick="setRating(2)" class="text-3xl text-sikka-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
-        <button onclick="setRating(3)" class="text-3xl text-sikka-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
-        <button onclick="setRating(4)" class="text-3xl text-sikka-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
-        <button onclick="setRating(5)" class="text-3xl text-sikka-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
+        <button onclick="setRating(1)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
+        <button onclick="setRating(2)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
+        <button onclick="setRating(3)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
+        <button onclick="setRating(4)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
+        <button onclick="setRating(5)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
       </div>
       <div class="space-y-3">
         <div><label class="form-label">عنوان التقييم</label><input type="text" class="form-input" id="review-title" placeholder="مثال: تجربة ممتازة"></div>
         <div><label class="form-label">تفاصيل التقييم</label><textarea class="form-input" id="review-text" rows="4" placeholder="اكتب تجربتك بالتفصيل..."></textarea></div>
       </div>
-      <button class="w-full py-3 mt-4 bg-gradient-to-l from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2" onclick="submitReview()">
-        <i class="ri-send-plane-line"></i> إرسال التقييم
-      </button>
-      <button class="w-full py-2 mt-2 text-sm text-sikka-500 hover:text-sikka-700 transition-colors" onclick="closeReviewModal()">إلغاء</button>
+      <button class="w-full py-3 mt-4 bg-gradient-to-l from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2" onclick="submitReview()"><i class="ri-send-plane-line"></i> إرسال التقييم</button>
     </div>
   </div>
 
   <!-- Toast -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 -translate-y-20 bg-sikka-900 text-white px-6 py-3 rounded-2xl font-medium shadow-2xl z-[2000] transition-all duration-300 flex items-center gap-2"></div>
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 -translate-y-20 bg-gray-900 text-white px-6 py-3 rounded-2xl font-medium shadow-2xl z-[2000] transition-all duration-300 flex items-center gap-2"></div>
 
-  <!-- AOS Script -->
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    try { const r = await fetch('/api/config'); const { firebase: c } = await r.json(); if (c?.apiKey) initializeApp(c); } catch(e) {}
-  </script>
+  <script>AOS.init({ duration:600, easing:'ease-out-cubic', once:true, offset:50 });</script>
 
   <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- App -->
   <script src="js/app.js"></script>
-
-  <!-- Init AOS -->
-  <script>
-    AOS.init({
-      duration: 600,
-      easing: 'ease-out-cubic',
-      once: true,
-      offset: 50,
-    });
-  </script>
 </body>
 </html>
