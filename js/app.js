@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
   loadHome();
   setupSearch();
-  setupMobileNav();
   renderAlphaGrid();
+  populateAddFormCategories();
 });
 
 function checkAuth() {
@@ -51,15 +51,14 @@ async function api(endpoint, options = {}) {
     const d = await r.json();
     if (!r.ok) throw new Error(d.error);
     return d;
-  } catch(e) {
-    throw e;
-  }
+  } catch(e) { throw e; }
 }
 
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
+  t.innerHTML = `<i class="ri-${type === 'success' ? 'check-line' : 'error-warning-line'}"></i> ${msg}`;
+  t.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#0f172a';
+  t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
@@ -67,11 +66,19 @@ function navigateTo(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.mobile-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mobile-menu-item').forEach(n => n.classList.remove('active'));
+
   const el = document.getElementById(`page-${page}`);
   if (el) el.classList.add('active');
+
   document.querySelector(`[data-nav="${page}"]`)?.classList.add('active');
   document.querySelector(`.mobile-nav-item[data-page="${page}"]`)?.classList.add('active');
+
+  // Close mobile menu
+  document.getElementById('mobile-menu')?.classList.add('hidden');
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
   if (page === 'home') loadHome();
   if (page === 'businesses') loadAllBusinesses();
   if (page === 'blog') loadBlog();
@@ -79,11 +86,17 @@ function navigateTo(page) {
   if (page === 'profile') loadProfile();
   if (page === 'categories') loadCategoriesFull();
   if (page === 'map') initMap();
-  if (page === 'add') populateAddFormCategories();
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu?.classList.toggle('hidden');
 }
 
 function setupSearch() {
-  document.getElementById('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
+  document.getElementById('search-input')?.addEventListener('keypress', e => {
+    if (e.key === 'Enter') performSearch();
+  });
 }
 
 function switchSearchTab(btn, type) {
@@ -115,20 +128,16 @@ function quickSearch(term) {
   performSearch();
 }
 
-function setupMobileNav() {
-  document.querySelectorAll('.mobile-nav-item').forEach(item => {
-    item.addEventListener('click', () => { const p = item.dataset.page; if (p) navigateTo(p); });
-  });
-}
-
 function renderAlphaGrid() {
   const g = document.getElementById('alpha-grid');
   if (!g) return;
-  g.innerHTML = ARABIC_LETTERS.map(l => `<div class="alpha-letter" onclick="searchByLetter('${l}')">${l}</div>`).join('');
+  g.innerHTML = ARABIC_LETTERS.map(l =>
+    `<button class="alpha-btn" onclick="searchByLetter('${l}')">${l}</button>`
+  ).join('');
 }
 
 function searchByLetter(letter) {
-  document.querySelectorAll('.alpha-letter').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.alpha-btn').forEach(a => a.classList.remove('active'));
   event?.target?.classList.add('active');
   document.getElementById('search-input').value = letter;
   searchType = 'name';
@@ -159,11 +168,14 @@ async function loadHome() {
 function renderCategories(cats) {
   const g = document.getElementById('categories-grid');
   if (!g) return;
-  g.innerHTML = cats.slice(0, 8).map(c => `
-    <div class="category-card" onclick="quickSearch('${c.name}')">
-      <div class="category-icon"><i class="${c.icon || 'ri-building-line'}"></i></div>
-      <div class="category-name">${c.name}</div>
-      <div class="category-count">${c.count || 0} نشاط</div>
+  g.innerHTML = cats.slice(0, 8).map((c, i) => `
+    <div class="category-hover bg-white border border-sikka-200 rounded-2xl p-5 text-center cursor-pointer group"
+         onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+      <div class="w-14 h-14 bg-sikka-100 group-hover:bg-sikka-900 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+        <i class="${c.icon || 'ri-building-line'} text-xl text-sikka-500 group-hover:text-white transition-colors"></i>
+      </div>
+      <div class="text-sm font-bold text-sikka-900 mb-1">${c.name}</div>
+      <div class="text-xs text-sikka-400">${c.count || 0} نشاط</div>
     </div>
   `).join('');
 }
@@ -174,40 +186,43 @@ function renderBusinesses(businesses) {
   if (!businesses.length) {
     g.innerHTML = `
       <div class="empty-state">
-        <i class="ri-store-2-line"></i>
+        <div class="empty-state-icon"><i class="ri-store-2-line"></i></div>
         <h3>لا توجد أعمال بعد</h3>
         <p>كن أول من يضيف نشاطه التجاري</p>
       </div>
     `;
     return;
   }
-  g.innerHTML = businesses.map(b => renderBusinessCard(b)).join('');
+  g.innerHTML = businesses.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
-function renderBusinessCard(b) {
+function renderBusinessCard(b, i = 0) {
   const rating = b.rating?.average || 0;
   const reviewCount = b.rating?.count || 0;
   const city = b.location?.cityAr || b.location?.city || '';
   const phone = b.contact?.phone || b.phone || '';
   const catName = b.categoryNameAr || b.categoryName || '';
+
   return `
-    <div class="business-card" onclick="openBusiness('${b.slug || b.id}')">
-      <div class="business-card-img">
-        <div class="business-card-logo"><i class="ri-building-2-line"></i></div>
-        ${b.isVerified ? '<span class="badge">موثق</span>' : ''}
-        ${b.isFeatured ? '<span class="badge" style="background:var(--accent);">مميز</span>' : ''}
+    <div class="biz-card group" onclick="openBusiness('${b.slug || b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+      <div class="biz-card-img">
+        <div class="biz-card-logo"><i class="ri-building-2-line"></i></div>
+        ${b.isVerified ? '<span class="biz-badge verified">موثق</span>' : ''}
+        ${b.isFeatured ? '<span class="biz-badge featured">مميز</span>' : ''}
       </div>
-      <div class="business-card-body">
-        <div class="business-card-name">${b.nameAr || b.name}</div>
-        <div class="business-card-cat">${catName}</div>
-        <div class="business-card-info">
-          <span><i class="ri-map-pin-2-line"></i> ${city}</span>
+      <div class="biz-card-body">
+        <div class="biz-card-name">${b.nameAr || b.name}</div>
+        <div class="biz-card-cat">${catName}</div>
+        <div class="biz-card-info">
+          ${city ? `<span><i class="ri-map-pin-2-line"></i> ${city}</span>` : ''}
           ${phone ? `<span><i class="ri-phone-line"></i> ${phone}</span>` : ''}
         </div>
       </div>
-      <div class="business-card-footer">
-        <div class="business-rating"><i class="ri-star-fill"></i> ${rating.toFixed(1)} (${reviewCount})</div>
-        <span style="font-size:0.7rem;color:var(--text-muted);"><i class="ri-map-pin-line"></i> ${b.location?.districtAr || ''}</span>
+      <div class="biz-card-footer">
+        <div class="biz-rating">
+          <i class="ri-star-fill"></i> ${rating.toFixed(1)}
+          <span>(${reviewCount})</span>
+        </div>
       </div>
     </div>
   `;
@@ -217,27 +232,39 @@ function renderPosts(posts) {
   const g = document.getElementById('posts-grid');
   if (!g) return;
   if (!posts.length) {
-    g.innerHTML = '<div class="empty-state"><i class="ri-article-line"></i><h3>لا توجد مقالات بعد</h3></div>';
+    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات بعد</h3></div>';
     return;
   }
-  g.innerHTML = posts.map(p => `
-    <div class="blog-card" onclick="openPost('${p.slug}')">
+  g.innerHTML = posts.map((p, i) => `
+    <div class="blog-card" onclick="openPost('${p.slug}')" data-aos="fade-up" data-aos-delay="${i * 100}">
       <div class="blog-card-img"><i class="ri-article-line"></i></div>
       <div class="blog-card-body">
         <span class="blog-card-cat">${p.categoryAr || p.category || ''}</span>
         <div class="blog-card-title">${p.titleAr || p.title}</div>
         <div class="blog-card-excerpt">${p.excerptAr || p.excerpt || ''}</div>
-        <div class="blog-card-meta">${p.readTime || 5} دقائق قراءة</div>
+        <div class="blog-card-meta"><i class="ri-time-line"></i> ${p.readTime || 5} دقائق قراءة</div>
       </div>
     </div>
   `).join('');
 }
 
 function updateStats(bizCount) {
-  document.getElementById('stat-biz').textContent = bizCount;
-  document.getElementById('stat-users').textContent = '0';
-  document.getElementById('stat-reviews').textContent = '0';
-  document.getElementById('stat-cities').textContent = CITIES.length;
+  animateCounter('stat-biz', bizCount);
+  animateCounter('stat-users', 0);
+  animateCounter('stat-reviews', 0);
+  animateCounter('stat-cities', CITIES.length);
+}
+
+function animateCounter(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let current = 0;
+  const step = Math.max(1, Math.floor(target / 30));
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= target) { current = target; clearInterval(interval); }
+    el.textContent = current;
+  }, 30);
 }
 
 async function loadAllBusinesses() {
@@ -297,25 +324,19 @@ function applyFilters() {
   renderBusinessesTo(filtered, document.getElementById('all-businesses-grid'));
 }
 
-function toggleMapView() {
-  navigateTo('map');
-}
+function toggleMapView() { navigateTo('map'); }
 
 function renderBusinessesTo(list, container) {
   if (!list.length) {
-    container.innerHTML = '<div class="empty-state"><i class="ri-store-2-line"></i><h3>لا توجد أعمال</h3><p>لم يتم تسجيل أي نشاط تجاري بعد</p></div>';
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال</h3><p>لم يتم تسجيل أي نشاط تجاري بعد</p></div>';
     return;
   }
-  container.innerHTML = list.map(b => renderBusinessCard(b)).join('');
+  container.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
 function openBusiness(slug) {
   const biz = allBusinesses.find(b => (b.slug || b.id) === slug);
-  if (biz) {
-    renderBusinessDetail(biz);
-  } else {
-    renderBusinessDetail({ nameAr: slug, name: slug });
-  }
+  renderBusinessDetail(biz || { nameAr: slug, name: slug });
 }
 
 function renderBusinessDetail(b) {
@@ -325,7 +346,6 @@ function renderBusinessDetail(b) {
   const phone = b.contact?.phone || b.phone || '';
   const whatsapp = b.contact?.whatsapp || b.whatsapp || '';
   const email = b.contact?.email || b.email || '';
-  const website = b.contact?.website || b.website || '';
   const city = b.location?.cityAr || b.location?.city || '';
   const district = b.location?.districtAr || b.location?.district || '';
   const address = b.location?.addressAr || b.location?.address || '';
@@ -335,17 +355,16 @@ function renderBusinessDetail(b) {
   const brands = b.brands || [];
   const hours = b.workingHours || {};
   const branches = b.branches || [];
-  const photos = b.photos || [];
   const lat = b.location?.lat;
   const lng = b.location?.lng;
 
   const starsHtml = Array.from({length: 5}, (_, i) =>
-    `<i class="ri-star-${i < Math.floor(rating) ? 'fill' : 'line'}"></i>`
+    `<i class="ri-star-${i < Math.floor(rating) ? 'fill' : 'line'}" style="color:${i < Math.floor(rating) ? '#f59e0b' : '#cbd5e1'}"></i>`
   ).join('');
 
   const hoursHtml = hours.saturday ? `
     <div class="detail-section">
-      <h3><i class="ri-time-line"></i> ساعات العمل</h3>
+      <h3><i class="ri-time-line text-amber-500"></i> ساعات العمل</h3>
       ${Object.entries(hours).map(([day, time]) => `
         <div class="hours-row"><span>${getDayName(day)}</span><span>${time}</span></div>
       `).join('')}
@@ -354,49 +373,30 @@ function renderBusinessDetail(b) {
 
   const keywordsHtml = keywords.length ? `
     <div class="detail-section">
-      <h3><i class="ri-hashtag"></i> الكلمات المفتاحية</h3>
-      <div class="keywords-list">
-        ${keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
-      </div>
+      <h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3>
+      <div class="keywords-list">${keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div>
     </div>
   ` : '';
 
   const brandsHtml = brands.length ? `
     <div class="detail-section">
-      <h3><i class="ri-bookmark-line"></i> البراندات</h3>
-      <div class="keywords-list">
-        ${brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}
-      </div>
+      <h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3>
+      <div class="keywords-list">${brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div>
     </div>
   ` : '';
 
   const branchesHtml = branches.length ? `
     <div class="detail-section">
-      <h3><i class="ri-store-2-line"></i> الفروع (${branches.length})</h3>
+      <h3><i class="ri-store-2-line text-emerald-500"></i> الفروع (${branches.length})</h3>
       ${branches.map(br => `
-        <div class="branch-card">
-          <i class="ri-map-pin-line"></i>
-          <div>
-            <h4>${br.name || 'فرع'}</h4>
-            <p>${br.address || br.city || ''}</p>
-          </div>
-        </div>
+        <div class="branch-card"><i class="ri-map-pin-line"></i><div><h4>${br.name || 'فرع'}</h4><p>${br.address || br.city || ''}</p></div></div>
       `).join('')}
-    </div>
-  ` : '';
-
-  const photosHtml = photos.length ? `
-    <div class="detail-section">
-      <h3><i class="ri-image-line"></i> الصور</h3>
-      <div class="photo-grid">
-        ${photos.map(p => `<div class="photo-item"><i class="ri-image-line"></i></div>`).join('')}
-      </div>
     </div>
   ` : '';
 
   c.innerHTML = `
     <div class="detail-hero">
-      ${lat && lng ? `<div id="detail-map" style="width:100%;height:100%;"></div>` : `<div style="font-size:4rem;"><i class="ri-building-2-line" style="color:var(--text-muted);"></i></div>`}
+      ${lat && lng ? `<div id="detail-map" style="width:100%;height:100%;"></div>` : `<div style="font-size:4rem;"><i class="ri-building-2-line" style="color:#cbd5e1;"></i></div>`}
       <button class="back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
     </div>
     <div class="detail-content">
@@ -413,39 +413,27 @@ function renderBusinessDetail(b) {
       </div>
 
       <div class="detail-actions">
-        ${phone ? `<a href="tel:${phone}" class="btn btn-call btn-lg"><i class="ri-phone-line"></i> اتصل</a>` : ''}
-        ${whatsapp ? `<a href="https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="btn btn-whatsapp btn-lg"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
-        ${email ? `<a href="mailto:${email}" class="btn btn-email btn-lg"><i class="ri-mail-line"></i> إيميل</a>` : ''}
-        ${lat && lng ? `<a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="btn btn-map btn-lg"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
-        <button class="btn btn-review btn-lg" onclick="openReviewModal('${b.id || b.slug}')"><i class="ri-star-line"></i> تقييم</button>
-        <button class="btn btn-share btn-lg" onclick="shareBusiness('${b.nameAr || b.name}')"><i class="ri-share-line"></i> مشاركة</button>
+        ${phone ? `<a href="tel:${phone}" class="action-btn call"><i class="ri-phone-line"></i> اتصل</a>` : ''}
+        ${whatsapp ? `<a href="https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
+        ${email ? `<a href="mailto:${email}" class="action-btn email"><i class="ri-mail-line"></i> إيميل</a>` : ''}
+        ${lat && lng ? `<a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
+        <button class="action-btn review" onclick="openReviewModal('${b.id || b.slug}')"><i class="ri-star-line"></i> تقييم</button>
+        <button class="action-btn share" onclick="shareBusiness('${b.nameAr || b.name}')"><i class="ri-share-line"></i> مشاركة</button>
       </div>
 
-      ${desc ? `
-        <div class="detail-section">
-          <h3><i class="ri-information-line"></i> عن النشاط</h3>
-          <p>${desc}</p>
-        </div>
-      ` : ''}
-
-      ${address ? `
-        <div class="detail-section">
-          <h3><i class="ri-map-pin-line"></i> العنوان</h3>
-          <p>${address}, ${district}, ${city}</p>
-        </div>
-      ` : ''}
-
+      ${desc ? `<div class="detail-section"><h3><i class="ri-information-line text-sikka-500"></i> عن النشاط</h3><p>${desc}</p></div>` : ''}
+      ${address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${address}, ${district}, ${city}</p></div>` : ''}
       ${hoursHtml}
       ${keywordsHtml}
       ${brandsHtml}
       ${branchesHtml}
-      ${photosHtml}
 
       <div class="detail-section">
-        <h3><i class="ri-star-line"></i> التقييمات</h3>
+        <h3><i class="ri-star-line text-amber-500"></i> التقييمات</h3>
         <div id="reviews-list">
-          <div class="review-form-box">
-            <p style="color:var(--text-muted);font-size:0.85rem;">سجّل الدخول لرؤية وإضافة التقييمات</p>
+          <div class="bg-sikka-50 rounded-2xl p-6 text-center">
+            <i class="ri-chat-smile-3-line text-3xl text-sikka-300 mb-3 block"></i>
+            <p class="text-sikka-500 text-sm">سجّل الدخول لرؤية وإضافة التقييمات</p>
           </div>
         </div>
       </div>
@@ -468,10 +456,7 @@ function renderBusinessDetail(b) {
 }
 
 function getDayName(day) {
-  const days = {
-    saturday: 'السبت', sunday: 'الأحد', monday: 'الإثنين', tuesday: 'الثلاثاء',
-    wednesday: 'الأربعاء', thursday: 'الخميس', friday: 'الجمعة'
-  };
+  const days = { saturday:'السبت', sunday:'الأحد', monday:'الإثنين', tuesday:'الثلاثاء', wednesday:'الأربعاء', thursday:'الخميس', friday:'الجمعة' };
   return days[day] || day;
 }
 
@@ -496,17 +481,20 @@ function openReviewModal(bizId) {
   document.querySelectorAll('#star-rating i').forEach(s => s.className = 'ri-star-line');
   document.getElementById('review-title').value = '';
   document.getElementById('review-text').value = '';
-  document.getElementById('review-modal').classList.add('active');
+  document.getElementById('review-modal').classList.remove('hidden');
+  document.getElementById('review-modal').classList.add('flex');
 }
 
 function closeReviewModal() {
-  document.getElementById('review-modal').classList.remove('active');
+  document.getElementById('review-modal').classList.add('hidden');
+  document.getElementById('review-modal').classList.remove('flex');
 }
 
 function setRating(r) {
   currentRating = r;
-  document.querySelectorAll('#star-rating i').forEach((s, i) => {
-    s.className = i < r ? 'ri-star-fill active' : 'ri-star-line';
+  document.querySelectorAll('#star-rating button').forEach((btn, i) => {
+    const icon = btn.querySelector('i');
+    icon.className = i < r ? 'ri-star-fill text-amber-400' : 'ri-star-line text-sikka-300';
   });
 }
 
@@ -522,17 +510,15 @@ async function submitReview() {
     showToast('تم إرسال التقييم!');
     closeReviewModal();
   } catch (e) {
-    showToast('أضف تقييمك بنجاح', 'success');
+    showToast('تم إرسال التقييم بنجاح', 'success');
     closeReviewModal();
   }
 }
 
 // MAP
 async function loadMapData() {
-  try {
-    const d = await api('/businesses');
-    return d.businesses || [];
-  } catch { return []; }
+  try { const d = await api('/businesses'); return d.businesses || []; }
+  catch { return []; }
 }
 
 function initMap() {
@@ -542,9 +528,7 @@ function initMap() {
     if (mapInstance) { mapInstance.remove(); mapInstance = null; }
 
     mapInstance = L.map('leaflet-map').setView([24.7136, 46.6753], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap'
-    }).addTo(mapInstance);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapInstance);
 
     const biz = await loadMapData();
     const list = document.getElementById('map-business-list');
@@ -554,28 +538,26 @@ function initMap() {
           <h4>${b.nameAr || b.name}</h4>
           <p>${b.categoryNameAr || ''} - ${b.location?.cityAr || b.location?.city || ''}</p>
         </div>
-      `).join('') : '<p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px;">لا توجد أعمال على الخريطة</p>';
+      `).join('') : '<p class="text-sikka-400 text-sm text-center py-8">لا توجد أعمال على الخريطة</p>';
     }
 
     biz.forEach(b => {
-      const lat = b.location?.lat;
-      const lng = b.location?.lng;
+      const lat = b.location?.lat, lng = b.location?.lng;
       if (lat && lng) {
-        L.marker([lat, lng]).addTo(mapInstance)
-          .bindPopup(`<b>${b.nameAr || b.name}</b><br>${b.categoryNameAr || ''}`);
+        L.marker([lat, lng]).addTo(mapInstance).bindPopup(`<b>${b.nameAr || b.name}</b><br>${b.categoryNameAr || ''}`);
       }
     });
   }, 200);
 }
 
-// CATEGORIES FULL PAGE
+// CATEGORIES FULL
 function loadCategoriesFull() {
   const g = document.getElementById('categories-full-grid');
   if (!g) return;
-  g.innerHTML = CATEGORIES.map(c => `
-    <div class="category-full-card" onclick="quickSearch('${c.name}')">
-      <div class="category-full-icon"><i class="${c.icon}"></i></div>
-      <div class="category-full-info">
+  g.innerHTML = CATEGORIES.map((c, i) => `
+    <div class="cat-full-card" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+      <div class="cat-full-icon"><i class="${c.icon}"></i></div>
+      <div class="cat-full-info">
         <h3>${c.name}</h3>
         <p>${c.desc}</p>
         <div class="count">${c.count || 0} نشاط</div>
@@ -611,11 +593,11 @@ async function loadBlog() {
 
 function renderPostsTo(posts, container) {
   if (!posts.length) {
-    container.innerHTML = '<div class="empty-state"><i class="ri-article-line"></i><h3>لا توجد مقالات</h3></div>';
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات</h3></div>';
     return;
   }
-  container.innerHTML = posts.map(p => `
-    <div class="blog-card" onclick="openPost('${p.slug}')">
+  container.innerHTML = posts.map((p, i) => `
+    <div class="blog-card" onclick="openPost('${p.slug}')" data-aos="fade-up" data-aos-delay="${i * 100}">
       <div class="blog-card-img"><i class="ri-article-line"></i></div>
       <div class="blog-card-body">
         <span class="blog-card-cat">${p.categoryAr || ''}</span>
@@ -628,7 +610,17 @@ function renderPostsTo(posts, container) {
 
 function openPost(slug) {
   const c = document.getElementById('post-detail');
-  c.innerHTML = `<div style="max-width:600px;margin:0 auto;padding:36px 24px;"><button onclick="closeDetail()" style="display:flex;align-items:center;gap:6px;color:var(--text);margin-bottom:20px;font-size:0.85rem;"><i class="ri-arrow-right-line"></i> العودة</button><h1 style="font-size:1.4rem;font-weight:700;margin-bottom:10px;">${slug}</h1><p style="color:var(--text-secondary);">المحتوى غير متاح حالياً</p></div>`;
+  c.innerHTML = `
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <button onclick="closeDetail()" class="flex items-center gap-2 text-sikka-600 hover:text-sikka-900 mb-6 font-medium">
+        <i class="ri-arrow-right-line"></i> العودة
+      </button>
+      <div class="bg-white rounded-2xl border border-sikka-200 p-6 sm:p-8">
+        <h1 class="text-2xl font-bold text-sikka-900 mb-4">${slug}</h1>
+        <p class="text-sikka-500">المحتوى غير متاح حالياً</p>
+      </div>
+    </div>
+  `;
   document.getElementById('page-post-detail').classList.add('active');
   document.querySelectorAll('.page:not(#page-post-detail)').forEach(p => p.classList.remove('active'));
   window.scrollTo({ top: 0 });
@@ -639,15 +631,33 @@ function loadAdmin() {
   const c = document.getElementById('admin-content');
   if (!c) return;
   c.innerHTML = `
-    <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:20px;">لوحة التحكم</h2>
-    <div class="admin-stats">
-      <div class="admin-stat"><div class="admin-stat-label">الأعمال</div><div class="admin-stat-value">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">المستخدمين</div><div class="admin-stat-value">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">المقالات</div><div class="admin-stat-value">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">الزيارات</div><div class="admin-stat-value">0</div></div>
+    <h2 class="text-2xl font-bold text-sikka-900 mb-6">لوحة التحكم</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white border border-sikka-200 rounded-2xl p-5">
+        <div class="text-sm text-sikka-500 mb-2">الأعمال</div>
+        <div class="text-3xl font-bold text-sikka-900">0</div>
+      </div>
+      <div class="bg-white border border-sikka-200 rounded-2xl p-5">
+        <div class="text-sm text-sikka-500 mb-2">المستخدمين</div>
+        <div class="text-3xl font-bold text-sikka-900">0</div>
+      </div>
+      <div class="bg-white border border-sikka-200 rounded-2xl p-5">
+        <div class="text-sm text-sikka-500 mb-2">المقالات</div>
+        <div class="text-3xl font-bold text-sikka-900">0</div>
+      </div>
+      <div class="bg-white border border-sikka-200 rounded-2xl p-5">
+        <div class="text-sm text-sikka-500 mb-2">الزيارات</div>
+        <div class="text-3xl font-bold text-sikka-900">0</div>
+      </div>
     </div>
-    <h3 style="font-size:1rem;font-weight:600;margin-bottom:12px;">آخر الأعمال</h3>
-    <div class="empty-state" style="padding:40px;"><i class="ri-inbox-line"></i><h3>لا توجد بيانات</h3><p>لم يتم تسجيل أي نشاط بعد</p></div>
+    <div class="bg-white border border-sikka-200 rounded-2xl p-6">
+      <h3 class="font-bold text-sikka-900 mb-4">آخر الأعمال</h3>
+      <div class="text-center py-12">
+        <div class="w-16 h-16 bg-sikka-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-inbox-line text-2xl text-sikka-300"></i></div>
+        <h4 class="font-bold text-sikka-900 mb-2">لا توجد بيانات</h4>
+        <p class="text-sikka-500 text-sm">لم يتم تسجيل أي نشاط بعد</p>
+      </div>
+    </div>
   `;
 }
 
@@ -657,10 +667,26 @@ function showAdminTab(tab) {
 }
 
 // AUTH
-function showAuthModal() { document.getElementById('auth-modal').classList.add('active'); }
-function hideAuthModal() { document.getElementById('auth-modal').classList.remove('active'); }
-function showSignupModal() { document.getElementById('signup-modal').classList.add('active'); }
-function hideSignupModal() { document.getElementById('signup-modal').classList.remove('active'); }
+function showAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+function hideAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+function showSignupModal() {
+  const modal = document.getElementById('signup-modal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+function hideSignupModal() {
+  const modal = document.getElementById('signup-modal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
 
 async function loginWithEmail() {
   const email = document.getElementById('email-input')?.value;
@@ -748,7 +774,7 @@ function updateProfileUI() {
     if (m) m.style.display = 'block';
   } else {
     if (n) n.textContent = 'ضيف';
-    if (e) e.textContent = 'سجّل الدخول';
+    if (e) e.textContent = 'سجّل الدخول للوصول لحسابك';
     if (a) a.style.display = 'block';
     if (m) m.style.display = 'none';
   }
@@ -768,12 +794,13 @@ function submitBusiness() {
   if (isStaticMode) { showAuthModal(); return; }
   const name = document.getElementById('biz-name')?.value;
   if (!name) return showToast('أدخل اسم النشاط', 'error');
-  showToast('تم إضافة نشاطك!');
+  showToast('تم إضافة نشاطك بنجاح!');
   navigateTo('home');
 }
 
 function loadProfile() {}
 
+// Window exports
 window.navigateTo = navigateTo;
 window.openBusiness = openBusiness;
 window.openPost = openPost;
@@ -799,3 +826,4 @@ window.closeReviewModal = closeReviewModal;
 window.setRating = setRating;
 window.submitReview = submitReview;
 window.shareBusiness = shareBusiness;
+window.toggleMobileMenu = toggleMobileMenu;
