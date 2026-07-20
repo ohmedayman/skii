@@ -59,7 +59,20 @@ function loadData() {
     businesses = b ? JSON.parse(b) : [...DEFAULT_BUSINESSES];
     reviews = r ? JSON.parse(r) : {};
     users = u ? JSON.parse(u) : [];
-    if (!b) saveData(); // Save defaults first time
+    if (!b) saveData();
+
+    // Ensure admin account exists
+    if (!users.find(u => u.email === 'admin@sikka.com')) {
+      users.push({
+        id: 'admin_001',
+        name: 'مدير سِكّة',
+        email: 'admin@sikka.com',
+        password: 'admin123',
+        isAdmin: true,
+        createdAt: new Date().toISOString()
+      });
+      saveData();
+    }
   } catch(e) {
     businesses = [...DEFAULT_BUSINESSES];
     reviews = {};
@@ -172,15 +185,39 @@ function updateAuthUI() {
 }
 
 function loginWithEmail() {
-  const email = document.getElementById('email-input')?.value;
-  const pass = document.getElementById('password-input')?.value;
+  const emailEl = document.getElementById('email-input');
+  const passEl = document.getElementById('password-input');
   const errEl = document.getElementById('auth-error');
 
-  if (!email || !pass) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); return; }
+  console.log('📧 Email element:', emailEl);
+  console.log('🔑 Pass element:', passEl);
+
+  const email = emailEl ? emailEl.value.trim() : '';
+  const pass = passEl ? passEl.value : '';
+
+  console.log('📧 Email value:', email);
+  console.log('🔑 Pass value:', pass ? '***' : 'EMPTY');
+
+  if (!email || !pass) {
+    console.log('❌ Missing fields');
+    if (errEl) {
+      errEl.textContent = 'أكمل جميع الحقول';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
 
   const user = users.find(u => u.email === email && u.password === pass);
-  if (!user) { errEl.textContent = 'البريد أو كلمة المرور غير صحيحة'; errEl.classList.remove('hidden'); return; }
+  if (!user) {
+    console.log('❌ User not found');
+    if (errEl) {
+      errEl.textContent = 'البريد أو كلمة المرور غير صحيحة - سجّل حساب جديد أولاً';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
 
+  console.log('✅ Login success:', user.name);
   currentUser = user;
   localStorage.setItem('sikka_current_user', JSON.stringify(user));
   hideAuthModal();
