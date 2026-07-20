@@ -7,6 +7,7 @@
   <title>سِكّة | دليل الأعمال</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
   <header class="header">
@@ -18,6 +19,7 @@
       <nav class="nav-links">
         <a href="#" class="nav-link active" data-nav="home" onclick="navigateTo('home')">الرئيسية</a>
         <a href="#" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')">الأعمال</a>
+        <a href="#" class="nav-link" data-nav="categories" onclick="navigateTo('categories')">الفئات</a>
         <a href="#" class="nav-link" data-nav="blog" onclick="navigateTo('blog')">المدونة</a>
         <a href="#" class="nav-link" data-nav="add" onclick="navigateTo('add')">أضف نشاطك</a>
         <a href="#" class="nav-link" data-nav="admin" onclick="navigateTo('admin')">الإدارة</a>
@@ -34,8 +36,16 @@
       <h1>ابدأ رحلتك مع <strong>سِكّة</strong></h1>
       <p>اكتشف أفضل الأعمال والخدمات في المملكة العربية السعودية</p>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="ابحث عن نشاط تجاري أو خدمة...">
-        <button class="btn btn-primary" onclick="performSearch()">بحث</button>
+        <div class="search-tabs">
+          <button class="search-tab active" onclick="switchSearchTab(this,'name')"><i class="ri-search-line"></i> بالاسم</button>
+          <button class="search-tab" onclick="switchSearchTab(this,'keyword')"><i class="ri-keyboard-line"></i> بالكلمة</button>
+          <button class="search-tab" onclick="switchSearchTab(this,'category')"><i class="ri-folder-line"></i> بالفئة</button>
+          <button class="search-tab" onclick="switchSearchTab(this,'brand')"><i class="ri-bookmark-line"></i> بالبراند</button>
+        </div>
+        <div class="search-input-row">
+          <input type="text" id="search-input" placeholder="ابحث عن نشاط تجاري أو خدمة...">
+          <button class="btn btn-primary" onclick="performSearch()">بحث</button>
+        </div>
       </div>
       <div class="search-tags">
         <span class="search-tag" onclick="quickSearch('مقاهي')">مقاهي</span>
@@ -43,12 +53,16 @@
         <span class="search-tag" onclick="quickSearch('بنوك')">بنوك</span>
         <span class="search-tag" onclick="quickSearch('تسوق')">تسوق</span>
         <span class="search-tag" onclick="quickSearch('صحة')">صحة</span>
+        <span class="search-tag" onclick="quickSearch('تعليم')">تعليم</span>
+        <span class="search-tag" onclick="quickSearch('عقارات')">عقارات</span>
+        <span class="search-tag" onclick="quickSearch('سيارات')">سيارات</span>
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
         <div><h2 class="section-title">تصفح حسب الفئات</h2><p class="section-subtitle">اختر الفئة المناسبة</p></div>
+        <button class="btn btn-outline" onclick="navigateTo('categories')">عرض الكل</button>
       </div>
       <div id="categories-grid" class="categories-grid"></div>
     </section>
@@ -60,6 +74,15 @@
           <button class="btn btn-outline" onclick="navigateTo('businesses')">عرض الكل</button>
         </div>
         <div id="businesses-grid" class="businesses-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" style="max-width:100%;padding-left:0;padding-right:0;">
+      <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+        <div class="section-header">
+          <div><h2 class="section-title">تصفح بالأبجدية</h2><p class="section-subtitle">ابحث حسب الحرف الأول</p></div>
+        </div>
+        <div class="alpha-grid" id="alpha-grid"></div>
       </div>
     </section>
 
@@ -93,8 +116,8 @@
             <div class="logo"><div class="logo-icon" style="width:28px;height:28px;font-size:0.85rem;"><i class="ri-road-map-line"></i></div><span class="logo-text" style="font-size:1.1rem;">سِكّة</span></div>
             <p>دليل الأعمال الذكي في المملكة العربية السعودية</p>
           </div>
-          <div class="footer-col"><h4>روابط سريعة</h4><a href="#">الرئيسية</a><a href="#">المدونة</a><a href="#">أضف نشاطك</a></div>
-          <div class="footer-col"><h4>الفئات</h4><a href="#">مقاهي</a><a href="#">مطاعم</a><a href="#">بنوك</a><a href="#">تسوق</a></div>
+          <div class="footer-col"><h4>روابط سريعة</h4><a href="#" onclick="navigateTo('home')">الرئيسية</a><a href="#" onclick="navigateTo('categories')">الفئات</a><a href="#" onclick="navigateTo('blog')">المدونة</a><a href="#" onclick="navigateTo('add')">أضف نشاطك</a></div>
+          <div class="footer-col"><h4>الفئات</h4><a href="#" onclick="quickSearch('مقاهي')">مقاهي</a><a href="#" onclick="quickSearch('مطاعم')">مطاعم</a><a href="#" onclick="quickSearch('بنوك')">بنوك</a><a href="#" onclick="quickSearch('تسوق')">تسوق</a></div>
           <div class="footer-col"><h4>الدعم</h4><a href="#">تواصل معنا</a><a href="#">الأسئلة الشائعة</a><a href="#">سياسة الخصوصية</a></div>
         </div>
         <div class="footer-bottom">
@@ -105,23 +128,75 @@
     </footer>
   </div>
 
-  <div id="page-businesses" class="page"><section class="section"><h1 class="section-title" style="margin-bottom:20px;">جميع الأعمال</h1><div id="all-businesses-grid" class="businesses-grid"></div></section></div>
+  <div id="page-businesses" class="page">
+    <section class="section">
+      <h1 class="section-title" style="margin-bottom:20px;">جميع الأعمال</h1>
+      <div class="filters-bar" id="filters-bar">
+        <div class="filter-group">
+          <select class="filter-select" id="filter-category" onchange="applyFilters()">
+            <option value="">كل الفئات</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select class="filter-select" id="filter-city" onchange="applyFilters()">
+            <option value="">كل المدن</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select class="filter-select" id="filter-area" onchange="applyFilters()">
+            <option value="">كل المناطق</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select class="filter-select" id="filter-sort" onchange="applyFilters()">
+            <option value="relevance">الأكثر صلة</option>
+            <option value="rating">الأعلى تقييماً</option>
+            <option value="reviews">الأكثر تقييمات</option>
+            <option value="alpha">أبجدي</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <button class="btn btn-outline btn-sm" onclick="toggleMapView()"><i class="ri-map-pin-line"></i> الخريطة</button>
+        </div>
+      </div>
+      <div id="all-businesses-grid" class="businesses-grid"></div>
+    </section>
+  </div>
+
+  <div id="page-categories" class="page">
+    <section class="section">
+      <h1 class="section-title" style="margin-bottom:20px;">فهرس الفئات</h1>
+      <p class="section-subtitle" style="margin-bottom:24px;">تصفح جميع الفئات المتاحة</p>
+      <div id="categories-full-grid" class="categories-grid-full"></div>
+    </section>
+  </div>
+
   <div id="page-blog" class="page"><section class="section"><h1 class="section-title" style="margin-bottom:20px;">المدونة</h1><div id="blog-list" class="blog-grid"></div></section></div>
 
   <div id="page-add" class="page">
     <div class="form-page">
       <h1>أضف نشاطك التجاري</h1>
-      <p>سجّل نشاطك مجاناً</p>
+      <p>سجّل نشاطك مجاناً واصل للعملاء</p>
       <div class="form-grid">
-        <div class="input-group full"><label>اسم النشاط *</label><input type="text" class="input" id="biz-name" placeholder="اسم النشاط"></div>
-        <div class="input-group"><label>الفئة *</label><select class="input" id="biz-category"><option value="">اختر</option><option>مقاهي</option><option>مطاعم</option><option>بنوك</option><option>تسوق</option><option>صحة</option><option>خدمات</option></select></div>
-        <div class="input-group"><label>المدينة *</label><input type="text" class="input" id="biz-city" placeholder="المدينة"></div>
+        <div class="input-group full"><label>اسم النشاط *</label><input type="text" class="input" id="biz-name" placeholder="اسم النشاط بالعربي"></div>
+        <div class="input-group"><label>الاسم بالإنجليزي</label><input type="text" class="input" id="biz-name-en" placeholder="Business Name"></div>
+        <div class="input-group"><label>الفئة *</label><select class="input" id="biz-category"><option value="">اختر الفئة</option></select></div>
+        <div class="input-group"><label>المدينة *</label><input type="text" class="input" id="biz-city" placeholder="مثال: الرياض"></div>
+        <div class="input-group"><label>الحي</label><input type="text" class="input" id="biz-district" placeholder="مثال: حي العليا"></div>
+        <div class="input-group full"><label>العنوان التفصيلي *</label><input type="text" class="input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
         <div class="input-group"><label>الجوال *</label><input type="tel" class="input" id="biz-phone" placeholder="+966"></div>
         <div class="input-group"><label>واتساب</label><input type="tel" class="input" id="biz-whatsapp" placeholder="+966"></div>
-        <div class="input-group full"><label>العنوان *</label><input type="text" class="input" id="biz-address" placeholder="العنوان"></div>
-        <div class="input-group full"><label>الوصف</label><textarea class="input" id="biz-description" rows="3" placeholder="وصف النشاط"></textarea></div>
+        <div class="input-group"><label>البريد الإلكتروني</label><input type="email" class="input" id="biz-email" placeholder="email@example.com"></div>
+        <div class="input-group"><label>الموقع الإلكتروني</label><input type="url" class="input" id="biz-website" placeholder="https://"></div>
+        <div class="input-group full"><label>الوصف</label><textarea class="input" id="biz-description" rows="3" placeholder="وصف النشاط التجاري"></textarea></div>
+        <div class="input-group full"><label>الكلمات المفتاحية</label><input type="text" class="input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب، كابتشينو (افصل بفاصلة)"></div>
+        <div class="input-group full"><label>البراندات</label><input type="text" class="input" id="biz-brands" placeholder="Starbucks, Costa (افصل بفاصلة)"></div>
+        <div class="input-group"><label>ساعات العمل - السبت إلى الخميس</label><input type="text" class="input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
+        <div class="input-group"><label>ساعات العمل - الجمعة</label><input type="text" class="input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
+        <div class="input-group full"><label>ال Latitude</label><input type="number" step="any" class="input" id="biz-lat" placeholder="24.7136"></div>
+        <div class="input-group full"><label>ال Longitude</label><input type="number" step="any" class="input" id="biz-lng" placeholder="46.6753"></div>
       </div>
-      <div style="margin-top:16px;display:flex;gap:8px;"><button class="btn btn-primary btn-lg" style="flex:1;" onclick="submitBusiness()">نشر</button><button class="btn btn-outline btn-lg" onclick="navigateTo('home')">إلغاء</button></div>
+      <div style="margin-top:16px;display:flex;gap:8px;"><button class="btn btn-primary btn-lg" style="flex:1;" onclick="submitBusiness()">نشر النشاط</button><button class="btn btn-outline btn-lg" onclick="navigateTo('home')">إلغاء</button></div>
     </div>
   </div>
 
@@ -145,6 +220,16 @@
   <div id="page-business" class="page"><div id="business-detail"></div></div>
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
 
+  <div id="page-map" class="page">
+    <div class="map-container">
+      <div id="leaflet-map" style="width:100%;height:100vh;"></div>
+      <div class="map-sidebar" id="map-sidebar">
+        <h3 style="font-size:1rem;font-weight:600;margin-bottom:12px;">الأعمال القريبة</h3>
+        <div id="map-business-list"></div>
+      </div>
+    </div>
+  </div>
+
   <div id="page-admin" class="page">
     <div class="admin-layout">
       <aside class="admin-sidebar">
@@ -154,6 +239,8 @@
           <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')"><i class="ri-store-2-line"></i> الأعمال</a>
           <a href="#" class="admin-nav-item" onclick="showAdminTab('users')"><i class="ri-user-3-line"></i> المستخدمين</a>
           <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')"><i class="ri-article-line"></i> المقالات</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('categories')"><i class="ri-folder-line"></i> الفئات</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('reviews')"><i class="ri-star-line"></i> التقييمات</a>
         </div>
       </aside>
       <main class="admin-main"><div id="admin-content"></div></main>
@@ -163,9 +250,9 @@
   <nav class="mobile-nav">
     <div class="mobile-nav-inner">
       <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')"><i class="ri-home-5-line"></i><span>الرئيسية</span></button>
-      <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i><span>الأعمال</span></button>
+      <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')"><i class="ri-folder-line"></i><span>الفئات</span></button>
       <div class="mobile-nav-center"><button class="center-btn" onclick="navigateTo('add')"><i class="ri-add-line"></i></button></div>
-      <button class="mobile-nav-item" data-page="blog" onclick="navigateTo('blog')"><i class="ri-article-line"></i><span>المدونة</span></button>
+      <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i><span>الأعمال</span></button>
       <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span>حسابي</span></button>
     </div>
   </nav>
@@ -199,12 +286,31 @@
     </div>
   </div>
 
+  <div id="review-modal" class="modal-overlay" onclick="if(event.target===this)closeReviewModal()">
+    <div class="modal">
+      <h2>أضف تقييمك</h2>
+      <p>شارك تجربتك مع هذا النشاط</p>
+      <div class="star-rating" id="star-rating">
+        <i class="ri-star-line" onclick="setRating(1)"></i>
+        <i class="ri-star-line" onclick="setRating(2)"></i>
+        <i class="ri-star-line" onclick="setRating(3)"></i>
+        <i class="ri-star-line" onclick="setRating(4)"></i>
+        <i class="ri-star-line" onclick="setRating(5)"></i>
+      </div>
+      <div class="input-group"><label>عنوان التقييم</label><input type="text" class="input" id="review-title" placeholder="مثال: تجربة ممتازة"></div>
+      <div class="input-group"><label>تفاصيل التقييم</label><textarea class="input" id="review-text" rows="4" placeholder="اكتب تجربتك بالتفصيل..."></textarea></div>
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;" onclick="submitReview()">إرسال التقييم</button>
+      <button class="btn btn-ghost" style="width:100%;" onclick="closeReviewModal()">إلغاء</button>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     try { const r = await fetch('/api/config'); const { firebase: c } = await r.json(); if (c?.apiKey) initializeApp(c); } catch(e) {}
   </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
