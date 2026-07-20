@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0f172a">
-  <title>سِكّة | دليل الأعمال الذكي</title>
+  <meta name="description" content="سِكّة - دليل الأعمال الذكي في مصر. اكتشف أفضل المحلات والمطاعم والخدمات حسب موقعك وتقييمات الناس.">
+  <title>سِكّة | دليل الأعمال الذكي في مصر</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,7 +49,7 @@
             </button>
           </div>
           <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5" onclick="requireAuth('add')">
-            <i class="ri-add-line"></i><span class="hidden sm:inline">أضف نشاطك</span>
+            <i class="ri-add-line"></i><span class="hidden sm:inline">سجّل شغلك</span>
           </button>
           <button class="md:hidden p-2 hover:bg-gray-100 rounded-xl" onclick="toggleMobileMenu()">
             <i class="ri-menu-3-line text-xl"></i>
@@ -62,7 +63,7 @@
         <a href="#" class="mobile-menu-item" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i>الأعمال</a>
         <a href="#" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
         <a href="#" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
-        <a href="#" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>أضف نشاطك</a>
+        <a href="#" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>سجّل شغلك</a>
       </div>
     </div>
   </header>
@@ -78,13 +79,13 @@
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
         <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/80 text-sm mb-6 animate__animated animate__fadeInDown">
           <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-          دليل الأعمال الذكي في السعودية
+          دليل الأعمال الذكي في مصر
         </span>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 animate__animated animate__fadeInUp">
           ابدأ رحلتك مع
           <span class="block mt-2 bg-gradient-to-l from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent">سِكّة</span>
         </h1>
-        <p class="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10 animate__animated animate__fadeInUp" style="animation-delay:.2s">اكتشف أفضل الأعمال والخدمات في المملكة العربية السعودية</p>
+        <p class="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10 animate__animated animate__fadeInUp" style="animation-delay:.2s">اكتشف أفضل الأعمال والخدمات في مصر</p>
         <div class="max-w-3xl mx-auto animate__animated animate__fadeInUp" style="animation-delay:.4s">
           <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl">
             <div class="flex gap-1 mb-2 px-1">
@@ -94,7 +95,7 @@
               <button class="search-tab" onclick="switchSearchTab(this,'brand')"><i class="ri-bookmark-line"></i><span>بالبراند</span></button>
             </div>
             <div class="flex gap-2">
-              <input type="text" id="search-input" class="flex-1 px-5 py-3.5 bg-white rounded-xl text-gray-900 placeholder-gray-400 outline-none text-sm sm:text-base font-medium" placeholder="ابحث عن نشاط تجاري أو خدمة...">
+              <input type="text" id="search-input" class="flex-1 px-5 py-3.5 bg-white rounded-xl text-gray-900 placeholder-gray-400 outline-none text-sm sm:text-base font-medium" placeholder="دور على أي حاجة...">
               <button class="px-6 sm:px-8 py-3.5 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center gap-2" onclick="performSearch()">
                 <i class="ri-search-line"></i><span class="hidden sm:inline">بحث</span>
               </button>
@@ -115,8 +116,8 @@
     <section class="py-16 bg-white" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-10">
-          <div><h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2><p class="text-gray-500 mt-1">اختر الفئة المناسبة</p></div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('categories')">عرض الكل <i class="ri-arrow-left-line"></i></button>
+          <div><h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2>            <p class="text-gray-500 mt-1">اختار الفئة اللي تناسبك</p></div>
+          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('categories')">شوف الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4"></div>
       </div>
@@ -125,8 +126,8 @@
     <section class="py-16 bg-gray-50" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-10">
-          <div><h2 class="text-2xl sm:text-3xl font-bold">أفضل الأعمال</h2><p class="text-gray-500 mt-1">اكتشف الأعمال الأكثر تقييماً</p></div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">عرض الكل <i class="ri-arrow-left-line"></i></button>
+          <div><h2 class="text-2xl sm:text-3xl font-bold">أحسن الأعمال</h2><p class="text-gray-500 mt-1">شوف الأعمال اللي عليها تقييمات كويسة</p></div>
+          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">شوف الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
       </div>
@@ -134,7 +135,7 @@
 
     <section class="py-16 bg-white" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10"><h2 class="text-2xl sm:text-3xl font-bold">تصفح بالأبجدية</h2><p class="text-gray-500 mt-1">ابحث حسب الحرف الأول</p></div>
+        <div class="text-center mb-10"><h2 class="text-2xl sm:text-3xl font-bold">دور بالحروف</h2><p class="text-gray-500 mt-1">دور على حسب الحرف الأول</p></div>
         <div id="alpha-grid" class="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl mx-auto"></div>
       </div>
     </section>
@@ -144,7 +145,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
             <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20"><i class="ri-store-2-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-biz">0</div><div class="text-sm text-gray-500 mt-1">نشاط تجاري</div>
+            <div class="text-3xl sm:text-4xl font-bold" id="stat-biz">0</div><div class="text-sm text-gray-500 mt-1">شغل</div>
           </div>
           <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
             <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20"><i class="ri-user-3-line text-2xl text-white"></i></div>
@@ -165,10 +166,10 @@
     <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" data-aos="fade-up">
       <div class="absolute inset-0"><div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div><div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div></div>
       <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">هل تملك نشاطاً تجارياً؟</h2>
-        <p class="text-lg text-white/70 mb-8">سجّل نشاطك مجاناً وابدأ في الوصول للعملاء</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">عندك شغل أو محل؟</h2>
+        <p class="text-lg text-white/70 mb-8">سجّل شغلك مجاناً وابدأ توصلك للزباين</p>
         <button class="px-8 py-4 bg-white text-gray-900 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all hover:shadow-2xl hover:-translate-y-1" onclick="requireAuth('add')">
-          <i class="ri-add-circle-line ml-2"></i>أضف نشاطك الآن
+          <i class="ri-add-circle-line ml-2"></i>سجّل شغلك دلوقتي
         </button>
       </div>
     </section>
@@ -178,7 +179,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center"><i class="ri-road-map-line text-lg"></i></div><span class="text-xl font-bold">سِكّة</span></div>
-            <p class="text-gray-400 text-sm leading-relaxed">دليل الأعمال الذكي في المملكة العربية السعودية</p>
+            <p class="text-gray-400 text-sm leading-relaxed">دليل الأعمال الذكي في مصر</p>
           </div>
           <div><h4 class="font-bold mb-4">روابط سريعة</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('home')">الرئيسية</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a></div></div>
           <div><h4 class="font-bold mb-4">الفئات</h4><div class="space-y-2"><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مقاهي')">مقاهي</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('مطاعم')">مطاعم</a><a href="#" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="quickSearch('بنوك')">بنوك</a></div></div>
@@ -194,14 +195,14 @@
   <!-- BUSINESSES -->
   <div id="page-businesses" class="page">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <h1 class="text-2xl sm:text-3xl font-bold mb-6">جميع الأعمال</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6">كل الأعمال</h1>
       <div class="bg-white rounded-2xl border border-gray-200 p-4 mb-6 shadow-sm">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <select class="filter-select" id="filter-category" onchange="applyFilters()"><option value="">كل الفئات</option></select>
-          <select class="filter-select" id="filter-city" onchange="applyFilters()"><option value="">كل المدن</option></select>
+          <select class="filter-select" id="filter-city" onchange="applyFilters()"><option value="">كل المحافظات</option></select>
           <select class="filter-select" id="filter-area" onchange="applyFilters()"><option value="">كل المناطق</option></select>
           <select class="filter-select" id="filter-sort" onchange="applyFilters()">
-            <option value="relevance">الأكثر صلة</option><option value="rating">الأعلى تقييماً</option><option value="reviews">الأكثر تقييمات</option><option value="alpha">أبجدي</option>
+            <option value="relevance">الأكثر صلة</option><option value="rating">الأعلى تقييم</option><option value="reviews">الأكتر تقييمات</option><option value="alpha">أبجدي</option>
           </select>
         </div>
       </div>
@@ -212,7 +213,7 @@
   <!-- CATEGORIES -->
   <div id="page-categories" class="page">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div class="text-center mb-10"><h1 class="text-2xl sm:text-3xl font-bold">فهرس الفئات</h1><p class="text-gray-500 mt-2">تصفح جميع الفئات المتاحة</p></div>
+      <div class="text-center mb-10"><h1 class="text-2xl sm:text-3xl font-bold">كل الفئات</h1><p class="text-gray-500 mt-2">شوف كل الفئات المتاحة</p></div>
       <div id="categories-full-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
   </div>
@@ -223,7 +224,7 @@
   <!-- ADD BUSINESS -->
   <div id="page-add" class="page">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <div class="text-center mb-8"><h1 class="text-2xl sm:text-3xl font-bold">أضف نشاطك التجاري</h1><p class="text-gray-500 mt-2">سجّل نشاطك مجاناً واصل للعملاء</p></div>
+      <div class="text-center mb-8"><h1 class="text-2xl sm:text-3xl font-bold">سجّل شغلك</h1><p class="text-gray-500 mt-2">سجّل شغلك مجاناً وابدأ توصلك للزباين</p></div>
       <div id="add-business-content"></div>
     </div>
   </div>
@@ -234,14 +235,14 @@
       <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
         <div class="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-4"><i class="ri-user-line text-3xl text-gray-600"></i></div>
         <h2 id="profile-name" class="text-xl font-bold mb-1">ضيف</h2>
-        <p id="profile-email" class="text-gray-500 text-sm mb-6">سجّل الدخول للوصول لحسابك</p>
+        <p id="profile-email" class="text-gray-500 text-sm mb-6">ادخل عشان توصل حسابك</p>
         <div id="auth-buttons"><button class="w-full py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium transition-all hover:shadow-lg" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button></div>
         <div id="profile-menu" style="display:none">
           <div class="space-y-2 text-right">
             <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line text-gray-400"></i> لوحة التحكم</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> إضافة نشاط جديد</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> سجّل شغل جديد</a>
             <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('profile')"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
-            <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> تسجيل خروج</button>
+            <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> خروج</button>
           </div>
         </div>
       </div>
@@ -255,18 +256,24 @@
   <!-- CUSTOMER DASHBOARD -->
   <div id="page-dashboard" class="page">
     <div class="flex min-h-[calc(100vh-64px)]">
-      <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block">
-        <h3 class="font-bold text-sm mb-4 px-3">لوحة التحكم</h3>
+      <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block" id="dash-sidebar">
+        <div class="flex items-center gap-2 mb-4 px-3">
+          <button class="md:hidden p-1 hover:bg-gray-100 rounded-lg" onclick="document.getElementById('dash-sidebar').classList.toggle('hidden')"><i class="ri-close-line"></i></button>
+          <h3 class="font-bold text-sm">لوحة التحكم</h3>
+        </div>
         <div class="space-y-1">
           <a href="#" class="admin-nav-item active" onclick="showDashTab('overview')"><i class="ri-dashboard-line"></i> نظرة عامة</a>
-          <a href="#" class="admin-nav-item" onclick="showDashTab('edit')"><i class="ri-edit-line"></i> تعديل النشاط</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('edit')"><i class="ri-edit-line"></i> تعديل الشغل</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('photos')"><i class="ri-image-line"></i> الصور</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('reviews')"><i class="ri-star-line"></i> التقييمات</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('offers')"><i class="ri-megaphone-line"></i> العروض والتسويق</a>
           <a href="#" class="admin-nav-item" onclick="showDashTab('settings')"><i class="ri-settings-3-line"></i> الإعدادات</a>
         </div>
       </aside>
-      <main class="flex-1 p-6"><div id="dashboard-content"></div></main>
+      <main class="flex-1 p-6">
+        <button class="md:hidden mb-4 flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-xl text-sm" onclick="document.getElementById('dash-sidebar').classList.toggle('hidden')"><i class="ri-menu-line"></i> القائمة</button>
+        <div id="dashboard-content"></div>
+      </main>
     </div>
   </div>
 
@@ -303,14 +310,14 @@
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-road-map-line text-2xl text-white"></i></div>
         <h2 class="text-xl font-bold">تسجيل دخول</h2>
-        <p class="text-gray-500 text-sm mt-1">سجّل الدخول لإضافة نشاطك وحفظ المفضلة</p>
+        <p class="text-gray-500 text-sm mt-1">ادخل عشان تضيف شغلك وتحفظ المفضلة</p>
       </div>
       <div class="space-y-3">
         <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="email-input" placeholder="admin@sikka.com"></div>
-        <div><label class="form-label">كلمة المرور</label><input type="password" class="form-input" id="password-input" placeholder="admin123"></div>
+        <div><label class="form-label">كلمة السر</label><input type="password" class="form-input" id="password-input" placeholder="admin123"></div>
       </div>
       <div class="mt-3 p-3 bg-blue-50 text-blue-700 rounded-xl text-xs">
-        <i class="ri-information-line"></i> للتجربة: البريد: <strong>admin@sikka.com</strong> | كلمة المرور: <strong>admin123</strong>
+        <i class="ri-information-line"></i> للتجربة: البريد: <strong>admin@sikka.com</strong> | كلمة السر: <strong>admin123</strong>
       </div>
       <div id="auth-error" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-sm"></div>
       <button class="w-full py-3 mt-4 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2" onclick="loginWithEmail()">
@@ -321,7 +328,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         متابعة مع Google
       </button>
-      <div class="text-center mt-4 text-sm text-gray-500">ليس لديك حساب؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideAuthModal();showSignupModal()">إنشاء حساب</a></div>
+      <div class="text-center mt-4 text-sm text-gray-500">مش عندك حساب؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideAuthModal();showSignupModal()">اعمل حساب جديد</a></div>
     </div>
   </div>
 
@@ -330,32 +337,32 @@
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-user-add-line text-2xl text-white"></i></div>
-        <h2 class="text-xl font-bold">إنشاء حساب</h2>
+        <h2 class="text-xl font-bold">عمل حساب جديد</h2>
         <p class="text-gray-500 text-sm mt-1">سجّل حساب جديد وابدأ</p>
       </div>
       <div class="space-y-3">
         <div><label class="form-label">الاسم</label><input type="text" class="form-input" id="signup-name" placeholder="الاسم الكامل"></div>
         <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="signup-email" placeholder="example@email.com"></div>
-        <div><label class="form-label">كلمة المرور</label><input type="password" class="form-input" id="signup-password" placeholder="••••••••"></div>
+        <div><label class="form-label">كلمة السر</label><input type="password" class="form-input" id="signup-password" placeholder="••••••••"></div>
       </div>
       <div id="signup-error" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-sm"></div>
       <button class="w-full py-3 mt-4 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2" onclick="signupWithEmail()">
-        <i class="ri-user-add-line"></i> إنشاء حساب
+        <i class="ri-user-add-line"></i> عمل حساب
       </button>
       <div class="flex items-center gap-3 my-4"><div class="flex-1 h-px bg-gray-200"></div><span class="text-xs text-gray-400">أو</span><div class="flex-1 h-px bg-gray-200"></div></div>
       <button class="w-full py-3 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-xl font-medium transition-all flex items-center justify-center gap-3" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         التسجيل بـ Google
       </button>
-      <div class="text-center mt-4 text-sm text-gray-500">لديك حساب بالفعل؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideSignupModal();showAuthModal()">تسجيل دخول</a></div>
+      <div class="text-center mt-4 text-sm text-gray-500">عندك حساب بالفعل؟ <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideSignupModal();showAuthModal()">ادخل</a></div>
     </div>
   </div>
 
   <!-- Review Modal -->
   <div id="review-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeReviewModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
-      <h2 class="text-xl font-bold text-center mb-2">أضف تقييمك</h2>
-      <p class="text-gray-500 text-sm text-center mb-6">شارك تجربتك مع هذا النشاط</p>
+      <h2 class="text-xl font-bold text-center mb-2">اكتب تقييمك</h2>
+      <p class="text-gray-500 text-sm text-center mb-6">شاركتنا رأيك في المكان ده</p>
       <div class="flex justify-center gap-2 mb-6" id="star-rating">
         <button onclick="setRating(1)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
         <button onclick="setRating(2)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
@@ -364,8 +371,8 @@
         <button onclick="setRating(5)" class="text-3xl text-gray-300 hover:text-amber-400 transition-colors"><i class="ri-star-line"></i></button>
       </div>
       <div class="space-y-3">
-        <div><label class="form-label">عنوان التقييم</label><input type="text" class="form-input" id="review-title" placeholder="مثال: تجربة ممتازة"></div>
-        <div><label class="form-label">تفاصيل التقييم</label><textarea class="form-input" id="review-text" rows="4" placeholder="اكتب تجربتك بالتفصيل..."></textarea></div>
+        <div><label class="form-label">عنوان التقييم</label><input type="text" class="form-input" id="review-title" placeholder="مثال: مكان ممتاز"></div>
+        <div><label class="form-label">تفاصيل التقييم</label><textarea class="form-input" id="review-text" rows="4" placeholder="اكتب رأيك بالتفصيل..."></textarea></div>
       </div>
       <button class="w-full py-3 mt-4 bg-gradient-to-l from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2" onclick="submitReview()"><i class="ri-send-plane-line"></i> إرسال التقييم</button>
     </div>

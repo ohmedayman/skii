@@ -12,14 +12,14 @@ let currentRating = 0;
 
 // ==================== INIT DATA ====================
 const DEFAULT_BUSINESSES = [
-  { id:'b1', name:'ستاربكس', nameAr:'ستاربكس', nameEn:'Starbucks', categoryNameAr:'المقاهي', location:{ city:'الرياض', district:'حي العليا', address:'شارع التحلية 55' }, contact:{ phone:'0501234567', whatsapp:'966501234567', email:'info@starbucks.sa' }, description:'مقهى ستاربكس يقدم أفضل أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'6:00 ص - 12:00 م', friday:'2:00 م - 12:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], createdAt:'2025-01-15' },
-  { id:'b2', name:'بيتزا هت', nameAr:'بيتزا هت', nameEn:'Pizza Hut', categoryNameAr:'المطاعم', location:{ city:'جدة', district:'الروضة', address:'شارع الأمير سلطان 100' }, contact:{ phone:'0509876543', whatsapp:'966509876543' }, description:'مطعم بيتزا هت يقدم أشهى البيتزا والمعجنات الإيطالية بأسعار مناسبة للجميع.', keywords:['بيتزا','مطعم','وجبات سريعة'], brands:['Pizza Hut'], workingHours:{ saturday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, ownerId:'demo', views:220, photos:[], offers:[], createdAt:'2025-02-10' },
-  { id:'b3', name:'مصرف الراجحي', nameAr:'مصرف الراجحي', nameEn:'Al Rajhi Bank', categoryNameAr:'البنوك', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 1000' }, contact:{ phone:'920001122' }, description:'مصرف الراجحي أكبر مصرف إسلامي في العالم يقدم خدمات مالية متنوعة.', keywords:['بنك','مصرف','خدمات مالية','قروض'], brands:['Al Rajhi'], workingHours:{ saturday:'9:30 ص - 4:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:500, photos:[], offers:[], createdAt:'2025-01-20' },
-  { id:'b4', name:'نمشي', nameAr:'نمشي', nameEn:'Namshi', categoryNameAr:'التجزئة', location:{ city:'الرياض', district:'حي النخيل', address:'مجمع الراشد' }, contact:{ phone:'0505551234', email:'support@namshi.com' }, description:'متجر نمشي للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء'], brands:['Namshi'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, ownerId:'demo', views:180, photos:[], offers:[], createdAt:'2025-03-01' },
-  { id:'b5', name:'مستشفى الملك فيصل', nameAr:'مستشفى الملك فيصل التخصصي', nameEn:'King Faisal Hospital', categoryNameAr:'الصحة', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 2000' }, contact:{ phone:'0114646464' }, description:'مستشفى الملك فيصل التخصصي من أفضل المستشفيات في المملكة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, ownerId:'demo', views:800, photos:[], offers:[], createdAt:'2025-01-10' },
-  { id:'b6', name:'جامعة الملك سعود', nameAr:'جامعة الملك سعود', nameEn:'King Saud University', categoryNameAr:'التعليم', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الأمير سلطان بن عبدالعزيز' }, contact:{ phone:'0114671111' }, description:'جامعة الملك سعود هي أقدم وأكبر جامعات المملكة العربية السعودية.', keywords:['جامعة','تعليم','دراسة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, ownerId:'demo', views:600, photos:[], offers:[], createdAt:'2025-01-05' },
-  { id:'b7', name:'أرامكو', nameAr:'أرامكو السعودية', nameEn:'Saudi Aramco', categoryNameAr:'الخدمات', location:{ city:'الظهران', district:'حي الظهران', address:'مقر أرامكو' }, contact:{ phone:'0138751000', email:'info@aramco.com' }, description:'أرامكو هي أكبر شركة نفط في العالم.', keywords:['نفط','طاقة','شركة'], brands:['Aramco'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, ownerId:'demo', views:900, photos:[], offers:[], createdAt:'2025-02-20' },
-  { id:'b8', name:'المتحف الوطني', nameAr:'المتحف الوطني السعودي', nameEn:'National Museum', categoryNameAr:'السفر والسياحة', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الملك عبدالعزيز' }, contact:{ phone:'0112001000' }, description:'المتحف الوطني السعودي يعرض تاريخ المملكة وتراثها العريق.', keywords:['متحف','سياحة','تراث','ثقافة'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:400, photos:[], offers:[], createdAt:'2025-03-10' },
+  { id:'b1', name:'ستاربكس مصر', nameAr:'ستاربكس مصر', nameEn:'Starbucks Egypt', categoryNameAr:'المقاهي', location:{ city:'القاهرة', district:'مدينة نصر', address:'شارع مصطفى النحاس' }, contact:{ phone:'0222738476', whatsapp:'201065000001', email:'info@starbucks.eg' }, description:'مقهى ستاربكس بيقدم أحسن أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'7:00 ص - 1:00 م', friday:'2:00 م - 1:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], createdAt:'2025-01-15' },
+  { id:'b2', name:'كنتاكي', nameAr:'ケンタッكي / كنتاكي', nameEn:'KFC Egypt', categoryNameAr:'المطاعم', location:{ city:'القاهرة', district:'التجمع الخامس', address:'مول العرب' }, contact:{ phone:'0226140050', whatsapp:'201065000002' }, description:'مطعم كنتاكي بيقدم أشهى الدجاج المقلي والوجبات السريعة بأسعار مناسبة.', keywords:['دجاج','مطعم','وجبات سريعة','فرايز'], brands:['KFC'], workingHours:{ saturday:'11:00 ص - 2:00 م', friday:'1:00 م - 2:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, ownerId:'demo', views:220, photos:[], offers:[], createdAt:'2025-02-10' },
+  { id:'b3', name:'البنك الأهلي المصري', nameAr:'البنك الأهلي المصري', nameEn:'National Bank of Egypt', categoryNameAr:'البنوك', location:{ city:'القاهرة', district:'وسط البلد', address:'شارع محمد محمود' }, contact:{ phone:'19623' }, description:'البنك الأهلي المصري أكبر بنك في مصر بيفتحلك حسابات وقروض وخدمات مالية متنوعة.', keywords:['بنك','حساب','قروض','خدمات مالية'], brands:['NBE'], workingHours:{ saturday:'8:30 ص - 2:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:500, photos:[], offers:[], createdAt:'2025-01-20' },
+  { id:'b4', name:'بلازا مصر', nameAr:'بلازا مصر', nameEn:'Plaza Egypt', categoryNameAr:'التجزئة', location:{ city:'الإسكندرية', district:'سيدي جابر', address:'شارع فوزي معاذ' }, contact:{ phone:'0334456789', email:'info@plaza.eg' }, description:'متجر بلازا للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء','ماركات'], brands:['Plaza'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, ownerId:'demo', views:180, photos:[], offers:[], createdAt:'2025-03-01' },
+  { id:'b5', name:'مستشفى دار الفؤاد', nameAr:'مستشفى دار الفؤاد', nameEn:'Dar Al Fouad Hospital', categoryNameAr:'الصحة', location:{ city:'القاهرة', district:'السادس من أكتوبر', address:'شارع المحور' }, contact:{ phone:'0228100010' }, description:'مستشفى دار الفؤاد من أحسن المستشفيات في مصر في التخصصات المختلفة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, ownerId:'demo', views:800, photos:[], offers:[], createdAt:'2025-01-10' },
+  { id:'b6', name:'جامعة القاهرة', nameAr:'جامعة القاهرة', nameEn:'Cairo University', categoryNameAr:'التعليم', location:{ city:'القاهرة', district:'الجيزة', address:'شارع صلاح سالم' }, contact:{ phone:'0227954000' }, description:'جامعة القاهرة هي أكبر وأقدم جامعات مصر والشرق الأوسط.', keywords:['جامعة','تعليم','دراسة','طلبة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, ownerId:'demo', views:600, photos:[], offers:[], createdAt:'2025-01-05' },
+  { id:'b7', name:'فاليو للخدمات', nameAr:'فاليو', nameEn:'Fawry', categoryNameAr:'الخدمات', location:{ city:'القاهرة', district:' المعادي', address:'شارع 9' }, contact:{ phone:'19666', email:'info@fawry.com' }, description:'فاليو أكبر منصة خدمات مالية إلكترونية في مصر.', keywords:['دفع','فواتير','خدمات','مالية'], brands:['Fawry'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, ownerId:'demo', views:900, photos:[], offers:[], createdAt:'2025-02-20' },
+  { id:'b8', name:'المتحف المصري', nameAr:'المتحف المصري', nameEn:'Egyptian Museum', categoryNameAr:'السفر والسياحة', location:{ city:'القاهرة', district:'التحرير', address:'ميدان التحرير' }, contact:{ phone:'0225782452' }, description:'المتحف المصري أكبر متحف في الشرق الأوسط فيه آلاف القطع الأثرية.', keywords:['متحف','سياحة','تراث','ثقافة','أثر'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:400, photos:[], offers:[], createdAt:'2025-03-10' },
 ];
 
 const CATEGORIES = [
@@ -64,7 +64,7 @@ const DEFAULT_STYLE = { bg: 'linear-gradient(135deg,#64748b,#475569)', icon: 'ri
 function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
 
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
-const CITIES = ['الرياض','جدة','مكة المكرمة','المدينة المنورة','الدمام','الظهران','الخبر','تبوك','أبها'];
+const CITIES = ['القاهرة','الإسكندرية','الجيزة','المنصورة','طنطا','أسيوط','السويس','الفيوم','أسوان','الاقصر','شرم الشيخ','دهب','مرسى مطروح','الزقازيق'];
 
 // ==================== STORAGE ====================
 function saveData() {
@@ -91,6 +91,12 @@ function loadData() {
       if (!biz.offers) { biz.offers = []; migrated = true; }
       if (!biz.ownerId && biz.userId) { biz.ownerId = biz.userId; migrated = true; }
     });
+
+    // Force reset if data has Saudi cities (old data)
+    if (businesses.length && businesses[0].location?.city === 'الرياض') {
+      businesses = [...DEFAULT_BUSINESSES];
+      migrated = true;
+    }
 
     // Ensure admin account exists
     if (!users.find(u => u.email === 'admin@sikka.com')) {
@@ -163,10 +169,10 @@ function show404() {
       <div class="max-w-md mx-auto px-4 py-20 text-center">
         <div style="font-size:6rem;margin-bottom:1rem">🔍</div>
         <h1 class="text-6xl font-bold text-gray-900 mb-4">404</h1>
-        <h2 class="text-xl font-bold text-gray-700 mb-2">الصفحة غير موجودة</h2>
-        <p class="text-gray-500 mb-8">يبدو أن الرابط الذي زرته غير صحيح أو تم نقله</p>
+        <h2 class="text-xl font-bold text-gray-700 mb-2">الصفحة مش موجودة</h2>
+        <p class="text-gray-500 mb-8">يبدو إن الرابط ده غلط أو اتنقل</p>
         <a href="#" onclick="navigateTo('home')" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
-          <i class="ri-home-5-line"></i> العودة للرئيسية
+          <i class="ri-home-5-line"></i> ارجع للرئيسية
         </a>
       </div>
     `;
@@ -263,7 +269,7 @@ function updateAuthUI() {
   } else {
     if (btns) btns.innerHTML = `<button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="showAuthModal()"><i class="ri-login-box-line"></i> دخول</button>`;
     if (name) name.textContent = 'ضيف';
-    if (email) email.textContent = 'سجّل الدخول للوصول لحسابك';
+    if (email) email.textContent = 'ادخل عشان توصل حسابك';
     if (authBtns) authBtns.style.display = 'block';
     if (menu) menu.style.display = 'none';
     if (adminLink) adminLink.style.display = 'none';
@@ -287,7 +293,7 @@ function loginWithEmail() {
   if (!email || !pass) {
     console.log('❌ Missing fields');
     if (errEl) {
-      errEl.textContent = 'أكمل جميع الحقول';
+      errEl.textContent = 'ابدأ كل الخانات';
       errEl.classList.remove('hidden');
     }
     return;
@@ -297,7 +303,7 @@ function loginWithEmail() {
   if (!user) {
     console.log('❌ User not found');
     if (errEl) {
-      errEl.textContent = 'البريد أو كلمة المرور غير صحيحة - سجّل حساب جديد أولاً';
+      errEl.textContent = 'الإيميل أو كلمة السر غلط - سجّل حساب جديد الأول';
       errEl.classList.remove('hidden');
     }
     return;
@@ -308,7 +314,7 @@ function loginWithEmail() {
   localStorage.setItem('sikka_current_user', JSON.stringify(user));
   hideAuthModal();
   updateAuthUI();
-  showToast('مرحباً بك ' + user.name + '!');
+  showToast('أهلاً بيك ' + user.name + '!');
 }
 
 function signupWithEmail() {
@@ -317,9 +323,9 @@ function signupWithEmail() {
   const pass = document.getElementById('signup-password')?.value;
   const errEl = document.getElementById('signup-error');
 
-  if (!name || !email || !pass) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); return; }
-  if (pass.length < 4) { errEl.textContent = 'كلمة المرور يجب أن تكون 4 أحرف على الأقل'; errEl.classList.remove('hidden'); return; }
-  if (users.find(u => u.email === email)) { errEl.textContent = 'البريد الإلكتروني مستخدم بالفعل'; errEl.classList.remove('hidden'); return; }
+  if (!name || !email || !pass) { errEl.textContent = 'ابدأ كل الخانات'; errEl.classList.remove('hidden'); return; }
+  if (pass.length < 4) { errEl.textContent = 'كلمة السر لازم تكون 4 حروف على الأقل'; errEl.classList.remove('hidden'); return; }
+  if (users.find(u => u.email === email)) { errEl.textContent = 'الإيميل ده متسجل قبل كده'; errEl.classList.remove('hidden'); return; }
 
   const user = {
     id: 'user_' + Date.now(),
@@ -336,7 +342,7 @@ function signupWithEmail() {
   saveData();
   hideSignupModal();
   updateAuthUI();
-  showToast('تم إنشاء الحساب بنجاح!');
+  showToast('تم عمل الحساب بنجاح!');
 }
 
 function loginWithGoogle() {
@@ -356,14 +362,14 @@ function loginWithGoogle() {
   hideAuthModal();
   hideSignupModal();
   updateAuthUI();
-  showToast('مرحباً بك!');
+  showToast('أهلاً بيك!');
 }
 
 function logout() {
   currentUser = null;
   localStorage.removeItem('sikka_current_user');
   updateAuthUI();
-  showToast('تم تسجيل الخروج');
+  showToast('اتعمل خروج');
   navigateTo('home');
 }
 
@@ -372,7 +378,7 @@ function switchSearchTab(btn, type) {
   searchType = type;
   document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  const placeholders = { name:'ابحث بالاسم...', keyword:'ابحث بالكلمة المفتاحية...', category:'اكتب اسم الفئة...', brand:'ابحث بالبراند...' };
+  const placeholders = { name:'دور بالاسم...', keyword:'دور بالكلمة...', category:'اكتب اسم الفئة...', brand:'دور بالبراند...' };
   document.getElementById('search-input').placeholder = placeholders[type] || placeholders.name;
 }
 
@@ -415,7 +421,11 @@ function loadHome() {
   renderBusinesses(approved.slice(0, 8));
   renderCategories(CATEGORIES);
   animateCounter('stat-biz', approved.length);
-  animateCounter('stat-cities', CITIES.length);
+  animateCounter('stat-users', users.length);
+  const totalReviews = Object.values(reviews).flat().length + approved.reduce((s, b) => s + (b.rating?.count || 0), 0);
+  animateCounter('stat-reviews', totalReviews);
+  const cities = [...new Set(approved.map(b => b.location?.city).filter(Boolean))];
+  animateCounter('stat-cities', cities.length || CITIES.length);
 }
 
 function renderCategories(cats) {
@@ -429,7 +439,7 @@ function renderCategories(cats) {
         <span style="font-size:1.5rem;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))">${style.emoji}</span>
       </div>
       <div class="text-sm font-bold mb-1">${c.name}</div>
-      <div class="text-xs text-gray-400">${approved.filter(b => b.categoryNameAr === c.name).length} نشاط</div>
+      <div class="text-xs text-gray-400">${approved.filter(b => b.categoryNameAr === c.name).length} شغل</div>
     </div>
   `}).join('');
 }
@@ -438,7 +448,7 @@ function renderBusinesses(list) {
   const g = document.getElementById('businesses-grid');
   if (!g) return;
   if (!list.length) {
-    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال بعد</h3><p>كن أول من يضيف نشاطه التجاري</p></div>';
+    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش أعمال لسه</h3><p>كون أول واحد يسجّل شغله</p></div>';
     return;
   }
   g.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
@@ -501,7 +511,7 @@ function populateFilters(list) {
   const citySelect = document.getElementById('filter-city');
   const areaSelect = document.getElementById('filter-area');
   if (catSelect) catSelect.innerHTML = '<option value="">كل الفئات</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-  if (citySelect) citySelect.innerHTML = '<option value="">كل المدن</option>' + cities.map(c => `<option value="${c}">${c}</option>`).join('');
+  if (citySelect) citySelect.innerHTML = '<option value="">كل المحافظات</option>' + cities.map(c => `<option value="${c}">${c}</option>`).join('');
   if (areaSelect) areaSelect.innerHTML = '<option value="">كل المناطق</option>' + areas.map(a => `<option value="${a}">${a}</option>`).join('');
 }
 
@@ -524,14 +534,14 @@ function applyFilters() {
 
 function renderBusinessesTo(list, container) {
   if (!container) return;
-  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال</h3></div>'; return; }
+  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش أعمال</h3></div>'; return; }
   container.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
 // ==================== BUSINESS DETAIL ====================
 function openBusiness(id) {
   const b = businesses.find(biz => biz.id === id);
-  if (!b) { showToast('النشاط غير موجود', 'error'); return; }
+  if (!b) { showToast('الشغل مش موجود', 'error'); return; }
   b.views = (b.views || 0) + 1;
   saveData();
   history.pushState({ page: 'business', id }, '', '#/business/' + id);
@@ -549,7 +559,7 @@ function renderBusinessDetail(b) {
   const hours = b.workingHours || {};
   const hoursHtml = hours.saturday ? `
     <div class="detail-section">
-      <h3><i class="ri-time-line text-amber-500"></i> ساعات العمل</h3>
+      <h3><i class="ri-time-line text-amber-500"></i> مواعيد الشغل</h3>
       ${Object.entries(hours).filter(([_, v]) => v).map(([day, time]) => `<div class="hours-row"><span>${getDayName(day)}</span><span>${time}</span></div>`).join('')}
     </div>
   ` : '';
@@ -572,7 +582,7 @@ function renderBusinessDetail(b) {
       </div>
     `).join('');
   } else {
-    reviewsHtml = '<p class="text-gray-500 text-sm text-center py-4">لا توجد تقييمات بعد. كن أول من يقيّم!</p>';
+    reviewsHtml = '<p class="text-gray-500 text-sm text-center py-4">مفيش تقييمات لسه. كون أول واحد يقيّم!</p>';
   }
 
   const style = getCategoryStyle(b.categoryNameAr);
@@ -604,7 +614,7 @@ function renderBusinessDetail(b) {
         <button class="action-btn share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
         <button class="action-btn review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> تقييم</button>
       </div>
-      ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن النشاط</h3><p>${b.description}</p></div>` : ''}
+      ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن الشغل</h3><p>${b.description}</p></div>` : ''}
       ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
       ${hoursHtml}${keywordsHtml}${brandsHtml}
       <div class="detail-section">
@@ -645,7 +655,7 @@ function shareBusiness(id) {
   if (navigator.share) {
     navigator.share({ url });
   } else {
-    navigator.clipboard.writeText(url).then(() => showToast('تم نسخ الرابط', 'success'));
+    navigator.clipboard.writeText(url).then(() => showToast('اتنسخ الرابط', 'success'));
   }
 }
 
@@ -659,10 +669,10 @@ function loadDashboard() {
     document.getElementById('dashboard-content').innerHTML = `
       <div class="max-w-md mx-auto text-center py-20">
         <div style="font-size:4rem;margin-bottom:1rem">🏪</div>
-        <h2 class="text-xl font-bold mb-2">ليس لديك نشاط مسجل</h2>
-        <p class="text-gray-500 mb-6">أضف نشاطك التجاري ليظهر في الدليل ويظهر لك لوحة التحكم</p>
+        <h2 class="text-xl font-bold mb-2">م عندك شغل متسجل</h2>
+        <p class="text-gray-500 mb-6">سجّل شغلك عشان يظهر في الدليل ويظهر لك لوحة التحكم</p>
         <button onclick="navigateTo('add')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
-          <i class="ri-add-line ml-1"></i> أضف نشاطك الآن
+          <i class="ri-add-line ml-1"></i> سجّل شغلك دلوقتي
         </button>
       </div>`;
     return;
@@ -703,7 +713,7 @@ function renderDashOverview(c, b) {
   const offers = b.offers || [];
 
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">نظرة عامة على نشاطك</h2>
+    <h2 class="text-2xl font-bold mb-6">نظرة عامة على شغلك</h2>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       <div class="bg-white border border-gray-200 rounded-2xl p-5">
         <div class="text-sm text-gray-500 mb-1">التقييم</div>
@@ -735,44 +745,44 @@ function renderDashOverview(c, b) {
           <div class="text-xs text-gray-400">${b.location?.city || ''} ${b.location?.district ? '- ' + b.location.district : ''}</div>
         </div>
       </div>
-      <p class="text-gray-500 text-sm">${b.description || 'لم تتم إضافة وصف بعد'}</p>
+      <p class="text-gray-500 text-sm">${b.description || 'م اتضاف وصف لسه'}</p>
     </div>
     <div class="flex gap-3">
-      <button onclick="showDashTab('edit')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-edit-line ml-1"></i> تعديل النشاط</button>
-      <a href="#/business/${b.id}" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all text-sm"><i class="ri-eye-line ml-1"></i> عرض الصفحة</a>
+      <button onclick="showDashTab('edit')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-edit-line ml-1"></i> تعديل الشغل</button>
+      <a href="#/business/${b.id}" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all text-sm"><i class="ri-eye-line ml-1"></i> شوف الصفحة</a>
     </div>
   `;
 }
 
 function renderDashEdit(c, b) {
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">تعديل النشاط</h2>
+    <h2 class="text-2xl font-bold mb-6">تعديل الشغل</h2>
     <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">اسم النشاط بالعربي</label><input class="form-input" id="de-nameAr" value="${b.nameAr || ''}"></div>
-        <div><label class="form-label">اسم النشاط بالإنجليزي</label><input class="form-input" id="de-nameEn" value="${b.nameEn || ''}"></div>
+        <div><label class="form-label">اسم الشغل بالعربي</label><input class="form-input" id="de-nameAr" value="${b.nameAr || ''}"></div>
+        <div><label class="form-label">اسم الشغل بالإنجليزي</label><input class="form-input" id="de-nameEn" value="${b.nameEn || ''}"></div>
       </div>
       <div><label class="form-label">الوصف</label><textarea class="form-input" id="de-desc" rows="3">${b.description || ''}</textarea></div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div><label class="form-label">المدينة</label><input class="form-input" id="de-city" value="${b.location?.city || ''}"></div>
         <div><label class="form-label">الحي</label><input class="form-input" id="de-district" value="${b.location?.district || ''}"></div>
       </div>
-      <div><label class="form-label">العنوان التفصيلي</label><input class="form-input" id="de-address" value="${b.location?.address || ''}"></div>
+      <div><label class="form-label">العنوان بالتفصيل</label><input class="form-input" id="de-address" value="${b.location?.address || ''}"></div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">رقم الهاتف</label><input class="form-input" id="de-phone" value="${b.contact?.phone || ''}"></div>
+        <div><label class="form-label">رقم التليفون</label><input class="form-input" id="de-phone" value="${b.contact?.phone || ''}"></div>
         <div><label class="form-label">واتساب</label><input class="form-input" id="de-whatsapp" value="${b.contact?.whatsapp || ''}"></div>
       </div>
       <div><label class="form-label">الإيميل</label><input class="form-input" id="de-email" value="${b.contact?.email || ''}"></div>
-      <div><label class="form-label">الكلمات المفتاحية (مفصولة بفاصلة)</label><input class="form-input" id="de-keywords" value="${(b.keywords || []).join(', ')}"></div>
-      <div><label class="form-label">البراندات (مفصولة بفاصلة)</label><input class="form-input" id="de-brands" value="${(b.brands || []).join(', ')}"></div>
+      <div><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input class="form-input" id="de-keywords" value="${(b.keywords || []).join(', ')}"></div>
+      <div><label class="form-label">البراندات (افصل بفاصلة)</label><input class="form-input" id="de-brands" value="${(b.brands || []).join(', ')}"></div>
       <div class="grid grid-cols-2 gap-4">
-        <div><label class="form-label">ساعات العمل (السبت)</label><input class="form-input" id="de-sat" value="${b.workingHours?.saturday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الأحد)</label><input class="form-input" id="de-sun" value="${b.workingHours?.sunday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الاثنين)</label><input class="form-input" id="de-mon" value="${b.workingHours?.monday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الثلاثاء)</label><input class="form-input" id="de-tue" value="${b.workingHours?.tuesday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الأربعاء)</label><input class="form-input" id="de-wed" value="${b.workingHours?.wednesday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الخميس)</label><input class="form-input" id="de-thu" value="${b.workingHours?.thursday || ''}"></div>
-        <div><label class="form-label">ساعات العمل (الجمعة)</label><input class="form-input" id="de-fri" value="${b.workingHours?.friday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (السبت)</label><input class="form-input" id="de-sat" value="${b.workingHours?.saturday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الأحد)</label><input class="form-input" id="de-sun" value="${b.workingHours?.sunday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الاثنين)</label><input class="form-input" id="de-mon" value="${b.workingHours?.monday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الثلاثاء)</label><input class="form-input" id="de-tue" value="${b.workingHours?.tuesday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الأربعاء)</label><input class="form-input" id="de-wed" value="${b.workingHours?.wednesday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الخميس)</label><input class="form-input" id="de-thu" value="${b.workingHours?.thursday || ''}"></div>
+        <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input class="form-input" id="de-fri" value="${b.workingHours?.friday || ''}"></div>
       </div>
       <button onclick="saveDashEdit('${b.id}')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all"><i class="ri-save-line ml-1"></i> حفظ التعديلات</button>
     </div>
@@ -813,7 +823,7 @@ function renderDashPhotos(c, b) {
   c.innerHTML = `
     <h2 class="text-2xl font-bold mb-6">إدارة الصور</h2>
     <div class="bg-white border border-gray-200 rounded-2xl p-6">
-      <p class="text-gray-500 text-sm mb-4">أضف صوراً لنشاطك التجاري لتظهر للعملاء</p>
+      <p class="text-gray-500 text-sm mb-4">أضف صور لشغلك عشان يظهر للزباين</p>
       <div class="mb-4">
         <label class="form-label">رابط الصورة</label>
         <div class="flex gap-2">
@@ -827,7 +837,7 @@ function renderDashPhotos(c, b) {
             <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-3xl\\'></i></div>'">
             <button onclick="removeBizPhoto('${b.id}',${i})" class="absolute top-2 left-2 w-7 h-7 bg-red-500 text-white rounded-lg flex items-center justify-center text-xs hover:bg-red-600"><i class="ri-close-line"></i></button>
           </div>
-        `).join('') : '<div class="col-span-full text-center py-8 text-gray-400"><i class="ri-image-line text-3xl"></i><p class="mt-2 text-sm">لا توجد صور بعد</p></div>'}
+        `).join('') : '<div class="col-span-full text-center py-8 text-gray-400"><i class="ri-image-line text-3xl"></i><p class="mt-2 text-sm">مفيش صور لسه</p></div>'}
       </div>
     </div>
   `;
@@ -835,13 +845,13 @@ function renderDashPhotos(c, b) {
 
 function addBizPhoto(id) {
   const url = document.getElementById('photo-url-input')?.value?.trim();
-  if (!url) { showToast('أدخل رابط الصورة', 'error'); return; }
+  if (!url) { showToast('اكتب رابط الصورة', 'error'); return; }
   const b = businesses.find(biz => biz.id === id);
   if (!b) return;
   if (!b.photos) b.photos = [];
   b.photos.push(url);
   saveData();
-  showToast('تمت إضافة الصورة', 'success');
+  showToast('اتضافت الصورة', 'success');
   renderDashPhotos(document.getElementById('dashboard-content'), b);
 }
 
@@ -850,7 +860,7 @@ function removeBizPhoto(id, idx) {
   if (!b || !b.photos) return;
   b.photos.splice(idx, 1);
   saveData();
-  showToast('تم حذف الصورة', 'success');
+  showToast('اتحذفت الصورة', 'success');
   renderDashPhotos(document.getElementById('dashboard-content'), b);
 }
 
@@ -889,7 +899,7 @@ function renderDashReviews(c, b) {
           ${r.title ? `<div class="font-bold text-sm mb-1">${r.title}</div>` : ''}
           ${r.comment ? `<div class="text-gray-500 text-sm">${r.comment}</div>` : ''}
         </div>
-      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-star-line text-3xl"></i><p class="mt-2">لا توجد تقييمات بعد</p></div>'}
+      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-star-line text-3xl"></i><p class="mt-2">مفيش تقييمات لسه</p></div>'}
     </div>
   `;
 }
@@ -926,7 +936,7 @@ function renderDashOffers(c, b) {
             <button onclick="removeBizOffer('${b.id}',${i})" class="text-red-400 hover:text-red-600 text-sm"><i class="ri-delete-bin-line"></i></button>
           </div>
         </div>
-      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-megaphone-line text-3xl"></i><p class="mt-2">لا توجد عروض بعد</p></div>'}
+      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-megaphone-line text-3xl"></i><p class="mt-2">مفيش عروض لسه</p></div>'}
     </div>
   `;
 }
@@ -936,13 +946,13 @@ function addBizOffer(id) {
   const desc = document.getElementById('offer-desc')?.value?.trim();
   const date = document.getElementById('offer-date')?.value;
   const code = document.getElementById('offer-code')?.value?.trim();
-  if (!title) { showToast('أدخل عنوان العرض', 'error'); return; }
+  if (!title) { showToast('اكتب عنوان العرض', 'error'); return; }
   const b = businesses.find(biz => biz.id === id);
   if (!b) return;
   if (!b.offers) b.offers = [];
   b.offers.push({ title, description: desc, endDate: date, code, createdAt: new Date().toISOString() });
   saveData();
-  showToast('تم نشر العرض', 'success');
+  showToast('اتنشر العرض', 'success');
   renderDashOffers(document.getElementById('dashboard-content'), b);
 }
 
@@ -951,7 +961,7 @@ function removeBizOffer(id, idx) {
   if (!b || !b.offers) return;
   b.offers.splice(idx, 1);
   saveData();
-  showToast('تم حذف العرض', 'success');
+  showToast('اتحذف العرض', 'success');
   renderDashOffers(document.getElementById('dashboard-content'), b);
 }
 
@@ -976,30 +986,30 @@ function renderDashSettings(c, b) {
 
 function saveDashSettings() {
   const name = document.getElementById('set-name')?.value?.trim();
-  if (!name) { showToast('أدخل الاسم', 'error'); return; }
+  if (!name) { showToast('اكتب الاسم', 'error'); return; }
   currentUser.name = name;
   localStorage.setItem('sikka_current_user', JSON.stringify(currentUser));
   const u = users.find(u => u.id === currentUser.id);
   if (u) u.name = name;
   saveData();
   updateAuthUI();
-  showToast('تم حفظ المعلومات', 'success');
+  showToast('اتحفظت المعلومات', 'success');
 }
 
 function deleteDashAccount(bizId) {
-  if (!confirm('هل أنت متأكد من حذف حسابك ونشاطك؟')) return;
+  if (!confirm('متأكد إنك عايز تمسح حسابك وشغلك؟')) return;
   businesses = businesses.filter(b => b.id !== bizId);
   users = users.filter(u => u.id !== currentUser.id);
   reviews[bizId] = undefined;
   delete reviews[bizId];
   saveData();
   logout();
-  showToast('تم الحذف بنجاح', 'success');
+  showToast('اتمسح بنجاح', 'success');
 }
 
 // ==================== REVIEWS ====================
 function openReviewModal(bizId) {
-  if (!currentUser) { showAuthModal(); showToast('يجب تسجيل الدخول', 'info'); return; }
+  if (!currentUser) { showAuthModal(); showToast('لازم تسجل دخول', 'info'); return; }
   currentReviewBizId = bizId;
   currentRating = 0;
   document.querySelectorAll('#star-rating button i').forEach(s => s.className = 'ri-star-line');
@@ -1019,7 +1029,7 @@ function setRating(r) {
 
 function submitReview() {
   if (!currentUser) { showAuthModal(); return; }
-  if (!currentRating) { showToast('اختر تقييم', 'error'); return; }
+  if (!currentRating) { showToast('اختار تقييم', 'error'); return; }
   const title = document.getElementById('review-title')?.value;
   const text = document.getElementById('review-text')?.value;
 
@@ -1042,7 +1052,7 @@ function submitReview() {
   }
 
   saveData();
-  showToast('تم إرسال التقييم!');
+  showToast('اتبعت التقييم!');
   closeReviewModal();
   openBusiness(currentReviewBizId);
 }
@@ -1056,9 +1066,9 @@ function renderAddForm() {
     c.innerHTML = `
       <div class="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
         <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-lock-line text-3xl text-gray-400"></i></div>
-        <h3 class="text-xl font-bold mb-2">يجب تسجيل الدخول</h3>
-        <p class="text-gray-500 mb-6">سجّل الدخول أو أنشئ حساب جديد لإضافة نشاطك التجاري</p>
-        <button class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button>
+        <h3 class="text-xl font-bold mb-2">لازم تسجل دخول</h3>
+        <p class="text-gray-500 mb-6">سجّل دخول أو اعمل حساب جديد عشان تضيف شغلك</p>
+        <button class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>ادخل</button>
       </div>
     `;
     return;
@@ -1067,22 +1077,22 @@ function renderAddForm() {
   c.innerHTML = `
     <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="sm:col-span-2"><label class="form-label">اسم النشاط *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم النشاط بالعربي"></div>
+        <div class="sm:col-span-2"><label class="form-label">اسم الشغل *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم الشغل بالعربي"></div>
         <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختر الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
-        <div><label class="form-label">المدينة *</label><input type="text" class="form-input" id="biz-city" placeholder="مثال: الرياض"></div>
-        <div><label class="form-label">الحي</label><input type="text" class="form-input" id="biz-district" placeholder="مثال: حي العليا"></div>
-        <div class="sm:col-span-2"><label class="form-label">العنوان التفصيلي</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
-        <div><label class="form-label">الجوال *</label><input type="tel" class="form-input" id="biz-phone" placeholder="05XXXXXXXX"></div>
-        <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="966XXXXXXXXX"></div>
-        <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
-        <div class="sm:col-span-2"><label class="form-label">الوصف</label><textarea class="form-input" id="biz-description" rows="3" placeholder="وصف النشاط التجاري"></textarea></div>
+        <div><label class="form-label">المدينة *</label><input type="text" class="form-input" id="biz-city" placeholder="مثال: القاهرة"></div>
+        <div><label class="form-label">الحي</label><input type="text" class="form-input" id="biz-district" placeholder="مثال: المعادي"></div>
+        <div class="sm:col-span-2"><label class="form-label">العنوان بالتفصيل</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
+        <div><label class="form-label">التليفون *</label><input type="tel" class="form-input" id="biz-phone" placeholder="01XXXXXXXXX"></div>
+        <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="201XXXXXXXXX"></div>
+        <div><label class="form-label">الإيميل</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
+        <div class="sm:col-span-2"><label class="form-label">الوصف</label><textarea class="form-input" id="biz-description" rows="3" placeholder="وصف شغلك"></textarea></div>
         <div class="sm:col-span-2"><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب"></div>
         <div class="sm:col-span-2"><label class="form-label">البراندات (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa"></div>
-        <div><label class="form-label">ساعات العمل (السبت-الخميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
-        <div><label class="form-label">ساعات العمل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
+        <div><label class="form-label">مواعيد الشغل (السبت-الخميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
+        <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
       </div>
       <div class="flex gap-3 mt-6">
-        <button class="flex-1 py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()"><i class="ri-send-plane-line"></i> نشر النشاط</button>
+        <button class="flex-1 py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()"><i class="ri-send-plane-line"></i> نشر الشغل</button>
         <button class="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all" onclick="navigateTo('home')">إلغاء</button>
       </div>
     </div>
@@ -1092,7 +1102,7 @@ function renderAddForm() {
 function submitBusiness() {
   if (!currentUser) { showAuthModal(); return; }
   const name = document.getElementById('biz-name')?.value;
-  if (!name) { showToast('أدخل اسم النشاط', 'error'); return; }
+  if (!name) { showToast('اكتب اسم الشغل', 'error'); return; }
 
   const newBiz = {
     id: 'biz_' + Date.now(),
@@ -1131,7 +1141,7 @@ function submitBusiness() {
 
   businesses.push(newBiz);
   saveData();
-  showToast('تم إضافة نشاطك بنجاح!');
+  showToast('اتضاف شغلك بنجاح!');
   navigateTo('home');
 }
 
@@ -1141,10 +1151,11 @@ function loadCategoriesFull() {
   if (!g) return;
   g.innerHTML = CATEGORIES.map((c, i) => {
     const count = businesses.filter(b => b.categoryNameAr === c.name && b.status === 'approved').length;
+    const style = getCategoryStyle(c.name);
     return `
       <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
-        <div class="w-14 h-14 bg-gray-100 group-hover:bg-gray-900 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all"><i class="${c.icon} text-xl text-gray-500 group-hover:text-white transition-colors"></i></div>
-        <div><h3 class="font-bold mb-1">${c.name}</h3><p class="text-gray-500 text-sm">${c.desc}</p><p class="text-xs text-gray-400 mt-1">${count} نشاط</p></div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all" style="background:${style.bg}"><span style="font-size:1.5rem">${style.emoji}</span></div>
+        <div><h3 class="font-bold mb-1">${c.name}</h3><p class="text-gray-500 text-sm">${c.desc}</p><p class="text-xs text-gray-400 mt-1">${count} شغل</p></div>
       </div>
     `;
   }).join('');
@@ -1154,13 +1165,13 @@ function loadCategoriesFull() {
 function loadBlog() {
   const g = document.getElementById('blog-list');
   if (!g) return;
-  g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات بعد</h3><p>قريباً إن شاء الله</p></div>';
+  g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>مفيش مقالات لسه</h3><p>قريب إن شاء الله</p></div>';
 }
 
 function openPost(id) {
   const c = document.getElementById('post-detail');
   if (!c) return;
-  c.innerHTML = `<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8"><button onclick="closeDetail()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium"><i class="ri-arrow-right-line"></i> العودة</button><div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8"><h1 class="text-2xl font-bold mb-4">${id}</h1><p class="text-gray-500">المحتوى غير متاح حالياً</p></div></div>`;
+  c.innerHTML = `<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8"><button onclick="closeDetail()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium"><i class="ri-arrow-right-line"></i> ارجع</button><div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8"><h1 class="text-2xl font-bold mb-4">${id}</h1><p class="text-gray-500">المحتوى مش متاح دلوقتي</p></div></div>`;
   document.getElementById('page-post-detail')?.classList.add('active');
   document.querySelectorAll('.page:not(#page-post-detail)').forEach(p => p.classList.remove('active'));
 }
@@ -1213,22 +1224,22 @@ function loadAdmin() {
             }).join('')}</tbody>
           </table>
         </div>
-      ` : '<p class="text-gray-500 text-center py-8">لا توجد أعمال بعد</p>'}
+      ` : '<p class="text-gray-500 text-center py-8">مفيش أعمال لسه</p>'}
     </div>
   `;
 }
 
 function approveBusiness(id, status) {
   const b = businesses.find(biz => biz.id === id);
-  if (b) { b.status = status; saveData(); showToast('تم تحديث الحالة'); loadAdmin(); }
+  if (b) { b.status = status; saveData(); showToast('اتحديث الحالة'); loadAdmin(); }
 }
 
 function deleteBusiness(id) {
-  if (!confirm('هل أنت متأكد من الحذف؟')) return;
+  if (!confirm('متأكد من الحذف؟')) return;
   businesses = businesses.filter(b => b.id !== id);
   delete reviews[id];
   saveData();
-  showToast('تم الحذف');
+  showToast('اتحذف');
   loadAdmin();
 }
 
@@ -1254,6 +1265,7 @@ window.submitBusiness = submitBusiness;
 window.performSearch = performSearch;
 window.quickSearch = quickSearch;
 window.showAdminTab = showAdminTab;
+window.showDashTab = showDashTab;
 window.switchSearchTab = switchSearchTab;
 window.applyFilters = applyFilters;
 window.searchByLetter = searchByLetter;
@@ -1265,3 +1277,11 @@ window.toggleMobileMenu = toggleMobileMenu;
 window.requireAuth = requireAuth;
 window.approveBusiness = approveBusiness;
 window.deleteBusiness = deleteBusiness;
+window.shareBusiness = shareBusiness;
+window.addBizPhoto = addBizPhoto;
+window.removeBizPhoto = removeBizPhoto;
+window.addBizOffer = addBizOffer;
+window.removeBizOffer = removeBizOffer;
+window.saveDashEdit = saveDashEdit;
+window.saveDashSettings = saveDashSettings;
+window.deleteDashAccount = deleteDashAccount;
