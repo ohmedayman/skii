@@ -94,7 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAlphaGrid();
   document.getElementById('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
   updateAuthUI();
+  handleHash();
 });
+
+window.addEventListener('popstate', () => handleHash());
+
+function handleHash() {
+  const hash = location.hash;
+  if (hash.startsWith('#/business/')) {
+    const id = hash.replace('#/business/', '');
+    const b = businesses.find(biz => biz.id === id);
+    if (b) {
+      loadData();
+      renderBusinessDetail(b);
+    }
+  }
+}
 
 // ==================== TOAST ====================
 function showToast(msg, type = 'success') {
@@ -442,6 +457,7 @@ function renderBusinessesTo(list, container) {
 function openBusiness(id) {
   const b = businesses.find(biz => biz.id === id);
   if (!b) { showToast('النشاط غير موجود', 'error'); return; }
+  history.pushState({ page: 'business', id }, '', '#/business/' + id);
   renderBusinessDetail(b);
 }
 
@@ -504,6 +520,7 @@ function renderBusinessDetail(b) {
         ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
         ${b.contact?.email ? `<a href="mailto:${b.contact.email}" class="action-btn email"><i class="ri-mail-line"></i> إيميل</a>` : ''}
         ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
+        <button class="action-btn share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
         <button class="action-btn review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> تقييم</button>
       </div>
       ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن النشاط</h3><p>${b.description}</p></div>` : ''}
@@ -537,8 +554,18 @@ function getDayName(day) {
 }
 
 function closeDetail() {
+  history.pushState({ page: 'home' }, '', '#/');
   document.getElementById('page-business')?.classList.remove('active');
   document.getElementById('page-home')?.classList.add('active');
+}
+
+function shareBusiness(id) {
+  const url = location.origin + location.pathname + '#/business/' + id;
+  if (navigator.share) {
+    navigator.share({ url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => showToast('تم نسخ الرابط', 'success'));
+  }
 }
 
 // ==================== REVIEWS ====================
