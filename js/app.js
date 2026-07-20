@@ -1,30 +1,27 @@
-// ==================== FIREBASE CONFIG ====================
-const firebaseConfig = {
-  apiKey: "AIzaSyDEYpUv2SQvIW17o9c5xQnsHWp2yRrw9B",
-  authDomain: "sikka-e74f6.firebaseapp.com",
-  projectId: "sikka-e74f6",
-  storageBucket: "sikka-e74f6.firebasestorage.app",
-  messagingSenderId: "666858367619",
-  appId: "1:666858367619:web:c671bad75fa36b141049b6"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// ==================== SIKKA - Self-Contained SaaS Platform ====================
+// No Firebase, No Backend - Works everywhere!
 
 // ==================== STATE ====================
 let currentUser = null;
-let currentUserData = null;
+let businesses = [];
+let reviews = {};
+let users = [];
 let searchType = 'name';
 let currentReviewBizId = null;
 let currentRating = 0;
-let allBusinesses = [];
-let isAdmin = false;
 
-// Admin emails
-const ADMIN_EMAILS = ['ohmedayman@gmail.com', 'admin@sikka.com'];
+// ==================== INIT DATA ====================
+const DEFAULT_BUSINESSES = [
+  { id:'b1', name:'ستاربكس', nameAr:'ستاربكس', nameEn:'Starbucks', categoryNameAr:'المقاهي', location:{ city:'الرياض', district:'حي العليا', address:'شارع التحلية 55' }, contact:{ phone:'0501234567', whatsapp:'966501234567', email:'info@starbucks.sa' }, description:'مقهى ستاربكس يقدم أفضل أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'6:00 ص - 12:00 م', friday:'2:00 م - 12:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, createdAt:'2025-01-15' },
+  { id:'b2', name:'بيتزا هت', nameAr:'بيتزا هت', nameEn:'Pizza Hut', categoryNameAr:'المطاعم', location:{ city:'جدة', district:'الروضة', address:'شارع الأمير سلطان 100' }, contact:{ phone:'0509876543', whatsapp:'966509876543' }, description:'مطعم بيتزا هت يقدم أشهى البيتزا والمعجنات الإيطالية بأسعار مناسبة للجميع.', keywords:['بيتزا','مطعم','وجبات سريعة'], brands:['Pizza Hut'], workingHours:{ saturday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, createdAt:'2025-02-10' },
+  { id:'b3', name:'مصرف الراجحي', nameAr:'مصرف الراجحي', nameEn:'Al Rajhi Bank', categoryNameAr:'البنوك', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 1000' }, contact:{ phone:'920001122' }, description:'مصرف الراجحي أكبر مصرف إسلامي في العالم يقدم خدمات مالية متنوعة.', keywords:['بنك','مصرف','خدمات مالية','قروض'], brands:['Al Rajhi'], workingHours:{ saturday:'9:30 ص - 4:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, createdAt:'2025-01-20' },
+  { id:'b4', name:'نمشي', nameAr:'نمشي', nameEn:'Namshi', categoryNameAr:'التجزئة', location:{ city:'الرياض', district:'حي النخيل', address:'مجمع الراشد' }, contact:{ phone:'0505551234', email:'support@namshi.com' }, description:'متجر نمشي للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء'], brands:['Namshi'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, createdAt:'2025-03-01' },
+  { id:'b5', name:'مستشفى الملك فيصل', nameAr:'مستشفى الملك فيصل التخصصي', nameEn:'King Faisal Hospital', categoryNameAr:'الصحة', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 2000' }, contact:{ phone:'0114646464' }, description:'مستشفى الملك فيصل التخصصي من أفضل المستشفيات في المملكة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, createdAt:'2025-01-10' },
+  { id:'b6', name:'جامعة الملك سعود', nameAr:'جامعة الملك سعود', nameEn:'King Saud University', categoryNameAr:'التعليم', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الأمير سلطان بن عبدالعزيز' }, contact:{ phone:'0114671111' }, description:'جامعة الملك سعود هي أقدم وأكبر جامعات المملكة العربية السعودية.', keywords:['جامعة','تعليم','دراسة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, createdAt:'2025-01-05' },
+  { id:'b7', name:'أرامكو', nameAr:'أرامكو السعودية', nameEn:'Saudi Aramco', categoryNameAr:'الخدمات', location:{ city:'الظهران', district:'حي الظهران', address:'مقر أرامكو' }, contact:{ phone:'0138751000', email:'info@aramco.com' }, description:'أرامكو هي أكبر شركة نفط في العالم.', keywords:['نفط','طاقة','شركة'], brands:['Aramco'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, createdAt:'2025-02-20' },
+  { id:'b8', name:'المتحف الوطني', nameAr:'المتحف الوطني السعودي', nameEn:'National Museum', categoryNameAr:'السفر والسياحة', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الملك عبدالعزيز' }, contact:{ phone:'0112001000' }, description:'المتحف الوطني السعودي يعرض تاريخ المملكة وتراثها العريق.', keywords:['متحف','سياحة','تراث','ثقافة'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, createdAt:'2025-03-10' },
+];
 
-// ==================== CATEGORIES ====================
 const CATEGORIES = [
   { slug:'coffee', name:'المقاهي', icon:'ri-cup-line', desc:'مقاهي وقهوة مختصة' },
   { slug:'restaurants', name:'المطاعم', icon:'ri-restaurant-line', desc:'مطاعم ووجبات سريعة' },
@@ -45,23 +42,45 @@ const CATEGORIES = [
 ];
 
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
+const CITIES = ['الرياض','جدة','مكة المكرمة','المدينة المنورة','الدمام','الظهران','الخبر','تبوك','أبها'];
+
+// ==================== STORAGE ====================
+function saveData() {
+  localStorage.setItem('sikka_businesses', JSON.stringify(businesses));
+  localStorage.setItem('sikka_reviews', JSON.stringify(reviews));
+  localStorage.setItem('sikka_users', JSON.stringify(users));
+}
+
+function loadData() {
+  try {
+    const b = localStorage.getItem('sikka_businesses');
+    const r = localStorage.getItem('sikka_reviews');
+    const u = localStorage.getItem('sikka_users');
+    businesses = b ? JSON.parse(b) : [...DEFAULT_BUSINESSES];
+    reviews = r ? JSON.parse(r) : {};
+    users = u ? JSON.parse(u) : [];
+    if (!b) saveData(); // Save defaults first time
+  } catch(e) {
+    businesses = [...DEFAULT_BUSINESSES];
+    reviews = {};
+    users = [];
+  }
+
+  // Load current user
+  const savedUser = localStorage.getItem('sikka_current_user');
+  if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+  }
+}
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Sikka starting...');
-
-  auth.onAuthStateChanged(user => {
-    currentUser = user;
-    isAdmin = user && ADMIN_EMAILS.includes(user.email);
-    console.log('👤 Auth state:', user ? user.email : 'guest');
-    updateAuthUI();
-    if (user) loadUserProfile();
-  });
-
+  loadData();
   loadHome();
-  setupSearch();
   renderAlphaGrid();
   document.getElementById('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
+  updateAuthUI();
 });
 
 // ==================== TOAST ====================
@@ -97,50 +116,35 @@ function navigateTo(page) {
   if (page === 'profile') loadProfile();
   if (page === 'categories') loadCategoriesFull();
   if (page === 'add') renderAddForm();
-  if (page === 'seed') seedData();
 }
 
 function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
 
-// ==================== AUTH GATE ====================
+// ==================== AUTH ====================
 function requireAuth(action) {
-  console.log('🔒 requireAuth:', action, 'logged in:', !!currentUser);
   if (currentUser) {
     navigateTo(action);
   } else {
     showAuthModal();
-    showToast('يجب تسجيل الدخول أولاً', 'info');
   }
 }
 
-// ==================== AUTH UI ====================
 function showAuthModal() {
-  const m = document.getElementById('auth-modal');
-  if (!m) return;
-  m.style.display = 'flex';
-  document.getElementById('auth-error')?.classList.add('hidden');
+  document.getElementById('auth-modal').style.display = 'flex';
+  document.getElementById('auth-error').classList.add('hidden');
   document.getElementById('email-input').value = '';
   document.getElementById('password-input').value = '';
 }
-function hideAuthModal() {
-  const m = document.getElementById('auth-modal');
-  if (!m) return;
-  m.style.display = 'none';
-}
+function hideAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
 function showSignupModal() {
-  const m = document.getElementById('signup-modal');
-  if (!m) return;
-  m.style.display = 'flex';
-  document.getElementById('signup-error')?.classList.add('hidden');
+  document.getElementById('signup-modal').style.display = 'flex';
+  document.getElementById('signup-error').classList.add('hidden');
   document.getElementById('signup-name').value = '';
   document.getElementById('signup-email').value = '';
   document.getElementById('signup-password').value = '';
 }
-function hideSignupModal() {
-  const m = document.getElementById('signup-modal');
-  if (!m) return;
-  m.style.display = 'none';
-}
+function hideSignupModal() { document.getElementById('signup-modal').style.display = 'none'; }
 
 function updateAuthUI() {
   const btns = document.getElementById('header-auth-btns');
@@ -151,13 +155,12 @@ function updateAuthUI() {
   const adminLink = document.getElementById('admin-nav-link');
 
   if (currentUser) {
-    const displayName = currentUser.displayName || currentUser.email?.split('@')[0] || 'حسابي';
-    if (btns) btns.innerHTML = `<button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span class="hidden sm:inline">${displayName}</span></button>`;
-    if (name) name.textContent = displayName;
-    if (email) email.textContent = currentUser.email || '';
+    if (btns) btns.innerHTML = `<button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span class="hidden sm:inline">${currentUser.name}</span></button>`;
+    if (name) name.textContent = currentUser.name;
+    if (email) email.textContent = currentUser.email;
     if (authBtns) authBtns.style.display = 'none';
     if (menu) menu.style.display = 'block';
-    if (adminLink) adminLink.style.display = isAdmin ? 'flex' : 'none';
+    if (adminLink) adminLink.style.display = currentUser.isAdmin ? 'flex' : 'none';
   } else {
     if (btns) btns.innerHTML = `<button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="showAuthModal()"><i class="ri-login-box-line"></i> دخول</button>`;
     if (name) name.textContent = 'ضيف';
@@ -168,124 +171,77 @@ function updateAuthUI() {
   }
 }
 
-// ==================== AUTH FUNCTIONS ====================
-async function loginWithEmail() {
+function loginWithEmail() {
   const email = document.getElementById('email-input')?.value;
   const pass = document.getElementById('password-input')?.value;
   const errEl = document.getElementById('auth-error');
 
-  if (!email || !pass) {
-    if (errEl) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); }
-    return;
-  }
+  if (!email || !pass) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); return; }
 
-  try {
-    console.log('🔐 Signing in with email...');
-    await auth.signInWithEmailAndPassword(email, pass);
-    hideAuthModal();
-    showToast('مرحباً بك!');
-  } catch (e) {
-    console.error('❌ Login error:', e.code);
-    const msgs = {
-      'auth/user-not-found': 'البريد الإلكتروني غير مسجل',
-      'auth/wrong-password': 'كلمة المرور غير صحيحة',
-      'auth/invalid-email': 'البريد الإلكتروني غير صالح',
-      'auth/too-many-requests': 'حاول مرة أخرى لاحقاً',
-      'auth/invalid-credential': 'بيانات الدخول غير صحيحة',
-      'auth/network-request-failed': 'خطأ في الاتصال بالشبكة',
-    };
-    if (errEl) {
-      errEl.textContent = msgs[e.code] || `خطأ: ${e.message}`;
-      errEl.classList.remove('hidden');
-    }
-  }
+  const user = users.find(u => u.email === email && u.password === pass);
+  if (!user) { errEl.textContent = 'البريد أو كلمة المرور غير صحيحة'; errEl.classList.remove('hidden'); return; }
+
+  currentUser = user;
+  localStorage.setItem('sikka_current_user', JSON.stringify(user));
+  hideAuthModal();
+  updateAuthUI();
+  showToast('مرحباً بك ' + user.name + '!');
 }
 
-async function signupWithEmail() {
+function signupWithEmail() {
   const name = document.getElementById('signup-name')?.value;
   const email = document.getElementById('signup-email')?.value;
   const pass = document.getElementById('signup-password')?.value;
   const errEl = document.getElementById('signup-error');
 
-  if (!name || !email || !pass) {
-    if (errEl) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); }
-    return;
-  }
-  if (pass.length < 6) {
-    if (errEl) { errEl.textContent = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'; errEl.classList.remove('hidden'); }
-    return;
-  }
+  if (!name || !email || !pass) { errEl.textContent = 'أكمل جميع الحقول'; errEl.classList.remove('hidden'); return; }
+  if (pass.length < 4) { errEl.textContent = 'كلمة المرور يجب أن تكون 4 أحرف على الأقل'; errEl.classList.remove('hidden'); return; }
+  if (users.find(u => u.email === email)) { errEl.textContent = 'البريد الإلكتروني مستخدم بالفعل'; errEl.classList.remove('hidden'); return; }
 
-  try {
-    console.log('📝 Creating account...');
-    const res = await auth.createUserWithEmailAndPassword(email, pass);
-    await res.user.updateProfile({ displayName: name });
-    await db.collection('users').doc(res.user.uid).set({
-      uid: res.user.uid,
-      displayName: name,
-      email: email,
-      isAdmin: ADMIN_EMAILS.includes(email),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    hideSignupModal();
-    showToast('تم إنشاء الحساب بنجاح!');
-  } catch (e) {
-    console.error('❌ Signup error:', e.code);
-    const msgs = {
-      'auth/email-already-in-use': 'البريد الإلكتروني مستخدم بالفعل',
-      'auth/invalid-email': 'البريد الإلكتروني غير صالح',
-      'auth/weak-password': 'كلمة المرور ضعيفة',
-    };
-    if (errEl) {
-      errEl.textContent = msgs[e.code] || `خطأ: ${e.message}`;
-      errEl.classList.remove('hidden');
-    }
-  }
+  const user = {
+    id: 'user_' + Date.now(),
+    name: name,
+    email: email,
+    password: pass,
+    isAdmin: email === 'admin@sikka.com',
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(user);
+  currentUser = user;
+  localStorage.setItem('sikka_current_user', JSON.stringify(user));
+  saveData();
+  hideSignupModal();
+  updateAuthUI();
+  showToast('تم إنشاء الحساب بنجاح!');
 }
 
-async function loginWithGoogle() {
-  try {
-    console.log('🔐 Signing in with Google...');
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const res = await auth.signInWithPopup(provider);
-    await db.collection('users').doc(res.user.uid).set({
-      uid: res.user.uid,
-      displayName: res.user.displayName,
-      email: res.user.email,
-      photoURL: res.user.photoURL,
-      isAdmin: ADMIN_EMAILS.includes(res.user.email),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    }, { merge: true });
-    hideAuthModal();
-    hideSignupModal();
-    showToast('مرحباً بك!');
-  } catch (e) {
-    console.error('❌ Google sign-in error:', e.code);
-    if (e.code !== 'auth/popup-closed-by-user') {
-      showToast('فشل تسجيل الدخول بـ Google', 'error');
-    }
+function loginWithGoogle() {
+  // Simulate Google login
+  const name = 'مستخدم Google';
+  const email = 'google_' + Date.now() + '@gmail.com';
+
+  let user = users.find(u => u.email === email);
+  if (!user) {
+    user = { id: 'user_' + Date.now(), name, email, password: '', isAdmin: false, createdAt: new Date().toISOString() };
+    users.push(user);
+    saveData();
   }
+
+  currentUser = user;
+  localStorage.setItem('sikka_current_user', JSON.stringify(user));
+  hideAuthModal();
+  hideSignupModal();
+  updateAuthUI();
+  showToast('مرحباً بك!');
 }
 
 function logout() {
-  auth.signOut();
   currentUser = null;
-  currentUserData = null;
-  isAdmin = false;
+  localStorage.removeItem('sikka_current_user');
+  updateAuthUI();
   showToast('تم تسجيل الخروج');
   navigateTo('home');
-}
-
-async function loadUserProfile() {
-  if (!currentUser) return;
-  try {
-    const doc = await db.collection('users').doc(currentUser.uid).get();
-    currentUserData = doc.data();
-    isAdmin = currentUserData?.isAdmin || ADMIN_EMAILS.includes(currentUser.email);
-    updateAuthUI();
-  } catch (e) {
-    console.log('Profile load error:', e);
-  }
 }
 
 // ==================== SEARCH ====================
@@ -297,36 +253,21 @@ function switchSearchTab(btn, type) {
   document.getElementById('search-input').placeholder = placeholders[type] || placeholders.name;
 }
 
-async function performSearch() {
+function performSearch() {
   const q = document.getElementById('search-input')?.value?.trim();
   if (!q) { loadHome(); return; }
 
-  try {
-    const snapshot = await db.collection('businesses').where('status', '==', 'approved').get();
-    const all = [];
-    snapshot.forEach(doc => all.push({ id: doc.id, ...doc.data() }));
+  const approved = businesses.filter(b => b.status === 'approved');
+  const filtered = approved.filter(b => {
+    const searchIn = [b.name || '', b.nameAr || '', b.nameEn || '', b.categoryNameAr || '', b.location?.city || '', b.location?.district || '', ...(b.keywords || []), ...(b.brands || [])].join(' ').toLowerCase();
+    return searchIn.includes(q.toLowerCase());
+  });
 
-    const filtered = all.filter(b => {
-      const searchIn = [
-        b.name || '', b.nameAr || '', b.nameEn || '',
-        b.categoryNameAr || '', b.categoryName || '',
-        b.location?.city || '', b.location?.district || '',
-        ...(b.keywords || []), ...(b.keywordsAr || []),
-        ...(b.brands || [])
-      ].join(' ').toLowerCase();
-      return searchIn.includes(q.toLowerCase());
-    });
-
-    renderBusinesses(filtered);
-  } catch (e) {
-    console.error('Search error:', e);
-    renderBusinesses([]);
-  }
+  renderBusinesses(filtered);
 }
 
 function quickSearch(term) {
   document.getElementById('search-input').value = term;
-  searchType = 'keyword';
   navigateTo('businesses');
   setTimeout(() => performSearch(), 100);
 }
@@ -341,26 +282,17 @@ function searchByLetter(letter) {
   document.querySelectorAll('.alpha-btn').forEach(a => a.classList.remove('active'));
   event?.target?.classList.add('active');
   document.getElementById('search-input').value = letter;
-  searchType = 'name';
   navigateTo('businesses');
   setTimeout(() => performSearch(), 100);
 }
 
 // ==================== HOME ====================
-async function loadHome() {
-  try {
-    const snapshot = await db.collection('businesses').where('status', '==', 'approved').limit(8).get();
-    const businesses = [];
-    snapshot.forEach(doc => businesses.push({ id: doc.id, ...doc.data() }));
-    renderBusinesses(businesses);
-    renderCategories(CATEGORIES);
-    animateCounter('stat-biz', businesses.length);
-    animateCounter('stat-cities', 16);
-  } catch (e) {
-    console.error('Load home error:', e);
-    renderCategories(CATEGORIES);
-    renderBusinesses([]);
-  }
+function loadHome() {
+  const approved = businesses.filter(b => b.status === 'approved');
+  renderBusinesses(approved.slice(0, 8));
+  renderCategories(CATEGORIES);
+  animateCounter('stat-biz', approved.length);
+  animateCounter('stat-cities', CITIES.length);
 }
 
 function renderCategories(cats) {
@@ -369,27 +301,30 @@ function renderCategories(cats) {
   g.innerHTML = cats.slice(0, 8).map((c, i) => `
     <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
       <div class="w-14 h-14 bg-gray-100 group-hover:bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300">
-        <i class="${c.icon || 'ri-building-line'} text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+        <i class="${c.icon} text-xl text-gray-500 group-hover:text-white transition-colors"></i>
       </div>
       <div class="text-sm font-bold mb-1">${c.name}</div>
-      <div class="text-xs text-gray-400">${c.count || 0} نشاط</div>
+      <div class="text-xs text-gray-400">${approved.filter(b => b.categoryNameAr === c.name).length} نشاط</div>
     </div>
   `).join('');
 }
 
-function renderBusinesses(businesses) {
+function renderBusinesses(list) {
   const g = document.getElementById('businesses-grid');
   if (!g) return;
-  if (!businesses.length) {
-    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال بعد</h3><p>كن أول من يضيف نشاطه التجاري</p><button onclick="navigateTo(\'seed\')" class="mt-4 px-4 py-2 bg-gray-900 text-white rounded-xl text-sm">تحميل بيانات تجريبية</button></div>';
+  if (!list.length) {
+    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال بعد</h3><p>كن أول من يضيف نشاطه التجاري</p></div>';
     return;
   }
-  g.innerHTML = businesses.map((b, i) => renderBusinessCard(b, i)).join('');
+  g.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
 function renderBusinessCard(b, i = 0) {
   const rating = b.rating?.average || 0;
   const reviewCount = b.rating?.count || 0;
+  const reviewList = reviews[b.id] || [];
+  const totalReviews = reviewCount + reviewList.length;
+
   return `
     <div class="biz-card group" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
       <div class="biz-card-img">
@@ -398,14 +333,14 @@ function renderBusinessCard(b, i = 0) {
       </div>
       <div class="biz-card-body">
         <div class="biz-card-name">${b.nameAr || b.name}</div>
-        <div class="biz-card-cat">${b.categoryNameAr || b.categoryName || ''}</div>
+        <div class="biz-card-cat">${b.categoryNameAr || ''}</div>
         <div class="biz-card-info">
           ${b.location?.city ? `<span><i class="ri-map-pin-2-line"></i> ${b.location.city}</span>` : ''}
           ${b.contact?.phone ? `<span><i class="ri-phone-line"></i> ${b.contact.phone}</span>` : ''}
         </div>
       </div>
       <div class="biz-card-footer">
-        <div class="biz-rating"><i class="ri-star-fill"></i> ${rating.toFixed(1)} <span>(${reviewCount})</span></div>
+        <div class="biz-rating"><i class="ri-star-fill"></i> ${rating.toFixed(1)} <span>(${totalReviews})</span></div>
       </div>
     </div>
   `;
@@ -413,9 +348,9 @@ function renderBusinessCard(b, i = 0) {
 
 function animateCounter(id, target) {
   const el = document.getElementById(id);
-  if (!el || target === 0) return;
+  if (!el || target === 0) { if(el) el.textContent = target; return; }
   let current = 0;
-  const step = Math.max(1, Math.floor(target / 30));
+  const step = Math.max(1, Math.floor(target / 20));
   const interval = setInterval(() => {
     current += step;
     if (current >= target) { current = target; clearInterval(interval); }
@@ -424,23 +359,17 @@ function animateCounter(id, target) {
 }
 
 // ==================== BUSINESSES PAGE ====================
-async function loadAllBusinesses() {
-  try {
-    const snapshot = await db.collection('businesses').where('status', '==', 'approved').get();
-    allBusinesses = [];
-    snapshot.forEach(doc => allBusinesses.push({ id: doc.id, ...doc.data() }));
-    populateFilters(allBusinesses);
-    renderBusinessesTo(allBusinesses, document.getElementById('all-businesses-grid'));
-  } catch (e) {
-    console.error('Load businesses error:', e);
-    renderBusinessesTo([], document.getElementById('all-businesses-grid'));
-  }
+function loadAllBusinesses() {
+  const approved = businesses.filter(b => b.status === 'approved');
+  populateFilters(approved);
+  renderBusinessesTo(approved, document.getElementById('all-businesses-grid'));
 }
 
-function populateFilters(businesses) {
-  const cats = [...new Set(businesses.map(b => b.categoryNameAr || b.categoryName).filter(Boolean))];
-  const cities = [...new Set(businesses.map(b => b.location?.city).filter(Boolean))];
-  const areas = [...new Set(businesses.map(b => b.location?.district).filter(Boolean))];
+function populateFilters(list) {
+  const cats = [...new Set(list.map(b => b.categoryNameAr).filter(Boolean))];
+  const cities = [...new Set(list.map(b => b.location?.city).filter(Boolean))];
+  const areas = [...new Set(list.map(b => b.location?.district).filter(Boolean))];
+
   const catSelect = document.getElementById('filter-category');
   const citySelect = document.getElementById('filter-city');
   const areaSelect = document.getElementById('filter-area');
@@ -454,32 +383,29 @@ function applyFilters() {
   const city = document.getElementById('filter-city')?.value || '';
   const area = document.getElementById('filter-area')?.value || '';
   const sort = document.getElementById('filter-sort')?.value || 'relevance';
-  let filtered = [...allBusinesses];
-  if (cat) filtered = filtered.filter(b => (b.categoryNameAr || b.categoryName) === cat);
+  let filtered = businesses.filter(b => b.status === 'approved');
+
+  if (cat) filtered = filtered.filter(b => b.categoryNameAr === cat);
   if (city) filtered = filtered.filter(b => b.location?.city === city);
   if (area) filtered = filtered.filter(b => b.location?.district === area);
   if (sort === 'rating') filtered.sort((a, b) => (b.rating?.average || 0) - (a.rating?.average || 0));
   else if (sort === 'reviews') filtered.sort((a, b) => (b.rating?.count || 0) - (a.rating?.count || 0));
-  else if (sort === 'alpha') filtered.sort((a, b) => (a.nameAr || a.name || '').localeCompare(b.nameAr || b.name || '', 'ar'));
+  else if (sort === 'alpha') filtered.sort((a, b) => (a.nameAr || '').localeCompare(b.nameAr || '', 'ar'));
+
   renderBusinessesTo(filtered, document.getElementById('all-businesses-grid'));
 }
 
 function renderBusinessesTo(list, container) {
   if (!container) return;
-  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال</h3><p>لم يتم تسجيل أي نشاط تجاري بعد</p></div>'; return; }
+  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>لا توجد أعمال</h3></div>'; return; }
   container.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
 }
 
 // ==================== BUSINESS DETAIL ====================
-async function openBusiness(id) {
-  try {
-    const doc = await db.collection('businesses').doc(id).get();
-    if (!doc.exists) { showToast('النشاط غير موجود', 'error'); return; }
-    renderBusinessDetail({ id: doc.id, ...doc.data() });
-  } catch (e) {
-    console.error('Open business error:', e);
-    showToast('خطأ في تحميل البيانات', 'error');
-  }
+function openBusiness(id) {
+  const b = businesses.find(biz => biz.id === id);
+  if (!b) { showToast('النشاط غير موجود', 'error'); return; }
+  renderBusinessDetail(b);
 }
 
 function renderBusinessDetail(b) {
@@ -487,19 +413,10 @@ function renderBusinessDetail(b) {
   if (!c) return;
   const rating = b.rating?.average || 0;
   const reviewCount = b.rating?.count || 0;
-  const phone = b.contact?.phone || '';
-  const whatsapp = b.contact?.whatsapp || '';
-  const email = b.contact?.email || '';
-  const city = b.location?.city || '';
-  const district = b.location?.district || '';
-  const address = b.location?.address || '';
-  const desc = b.description || '';
-  const keywords = b.keywords || [];
-  const brands = b.brands || [];
-  const hours = b.workingHours || {};
-  const lat = b.location?.lat;
-  const lng = b.location?.lng;
+  const bizReviews = reviews[b.id] || [];
+  const totalReviews = reviewCount + bizReviews.length;
 
+  const hours = b.workingHours || {};
   const hoursHtml = hours.saturday ? `
     <div class="detail-section">
       <h3><i class="ri-time-line text-amber-500"></i> ساعات العمل</h3>
@@ -507,12 +424,30 @@ function renderBusinessDetail(b) {
     </div>
   ` : '';
 
-  const keywordsHtml = keywords.length ? `<div class="detail-section"><h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3><div class="keywords-list">${keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
-  const brandsHtml = brands.length ? `<div class="detail-section"><h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3><div class="keywords-list">${brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
+  const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
+  const brandsHtml = b.brands?.length ? `<div class="detail-section"><h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
+
+  // Build reviews HTML
+  let reviewsHtml = '';
+  if (bizReviews.length) {
+    reviewsHtml = bizReviews.map(r => `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">${r.userName[0]}</div>
+          <div><div class="review-name">${r.userName}</div><div class="review-date">${r.date}</div></div>
+        </div>
+        <div class="review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}" style="color:${i < r.rating ? '#f59e0b' : '#cbd5e1'}"></i>`).join('')}</div>
+        ${r.title ? `<div class="review-title">${r.title}</div>` : ''}
+        ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
+      </div>
+    `).join('');
+  } else {
+    reviewsHtml = '<p class="text-gray-500 text-sm text-center py-4">لا توجد تقييمات بعد. كن أول من يقيّم!</p>';
+  }
 
   c.innerHTML = `
     <div class="detail-hero">
-      ${lat && lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem"><i class="ri-building-2-line" style="color:#cbd5e1"></i></div>`}
+      ${b.location?.lat && b.location?.lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem"><i class="ri-building-2-line" style="color:#cbd5e1"></i></div>`}
       <button class="back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
     </div>
     <div class="detail-content">
@@ -520,26 +455,26 @@ function renderBusinessDetail(b) {
         <div class="detail-logo"><i class="ri-building-2-line"></i></div>
         <div>
           <h1 class="detail-name">${b.nameAr || b.name}</h1>
-          <div class="detail-category">${b.categoryNameAr || b.categoryName || ''}</div>
+          <div class="detail-category">${b.categoryNameAr || ''}</div>
           <div class="detail-stats">
-            <div class="detail-stat"><i class="ri-star-fill"></i> ${rating.toFixed(1)} (${reviewCount} تقييم)</div>
-            ${city ? `<div class="detail-stat"><i class="ri-map-pin-2-line"></i> ${city}${district ? ' - ' + district : ''}</div>` : ''}
+            <div class="detail-stat"><i class="ri-star-fill"></i> ${rating.toFixed(1)} (${totalReviews} تقييم)</div>
+            ${b.location?.city ? `<div class="detail-stat"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' - ' + b.location.district : ''}</div>` : ''}
           </div>
         </div>
       </div>
       <div class="detail-actions">
-        ${phone ? `<a href="tel:${phone}" class="action-btn call"><i class="ri-phone-line"></i> اتصل</a>` : ''}
-        ${whatsapp ? `<a href="https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
-        ${email ? `<a href="mailto:${email}" class="action-btn email"><i class="ri-mail-line"></i> إيميل</a>` : ''}
-        ${lat && lng ? `<a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
+        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="action-btn call"><i class="ri-phone-line"></i> اتصل</a>` : ''}
+        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
+        ${b.contact?.email ? `<a href="mailto:${b.contact.email}" class="action-btn email"><i class="ri-mail-line"></i> إيميل</a>` : ''}
+        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
         <button class="action-btn review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> تقييم</button>
       </div>
-      ${desc ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن النشاط</h3><p>${desc}</p></div>` : ''}
-      ${address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${address}${district ? ', ' + district : ''}${city ? ', ' + city : ''}</p></div>` : ''}
+      ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن النشاط</h3><p>${b.description}</p></div>` : ''}
+      ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
       ${hoursHtml}${keywordsHtml}${brandsHtml}
       <div class="detail-section">
-        <h3><i class="ri-star-line text-amber-500"></i> التقييمات</h3>
-        <div id="reviews-list"><div class="bg-gray-50 rounded-2xl p-6 text-center"><p class="text-gray-500 text-sm">جاري تحميل التقييمات...</p></div></div>
+        <h3><i class="ri-star-line text-amber-500"></i> التقييمات (${totalReviews})</h3>
+        <div id="reviews-list">${reviewsHtml}</div>
       </div>
     </div>
   `;
@@ -548,17 +483,15 @@ function renderBusinessDetail(b) {
   document.querySelectorAll('.page:not(#page-business)').forEach(p => p.classList.remove('active'));
   window.scrollTo({ top: 0 });
 
-  if (lat && lng) {
+  if (b.location?.lat && b.location?.lng) {
     setTimeout(() => {
       try {
-        const detailMap = L.map('detail-map').setView([lat, lng], 15);
+        const detailMap = L.map('detail-map').setView([b.location.lat, b.location.lng], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(detailMap);
-        L.marker([lat, lng]).addTo(detailMap);
+        L.marker([b.location.lat, b.location.lng]).addTo(detailMap);
       } catch(e) {}
     }, 200);
   }
-
-  loadReviews(b.id);
 }
 
 function getDayName(day) {
@@ -572,28 +505,6 @@ function closeDetail() {
 }
 
 // ==================== REVIEWS ====================
-async function loadReviews(bizId) {
-  try {
-    const snap = await db.collection('businesses').doc(bizId).collection('reviews').orderBy('createdAt', 'desc').get();
-    const reviews = [];
-    snap.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
-    const list = document.getElementById('reviews-list');
-    if (!list) return;
-    if (!reviews.length) { list.innerHTML = '<div class="bg-gray-50 rounded-2xl p-6 text-center"><i class="ri-chat-smile-3-line text-3xl text-gray-300 mb-3 block"></i><p class="text-gray-500 text-sm">لا توجد تقييمات بعد. كن أول من يقيّم!</p></div>'; return; }
-    list.innerHTML = reviews.map(r => `
-      <div class="review-card">
-        <div class="review-header">
-          <div class="review-avatar">${(r.userName || 'م')[0]}</div>
-          <div><div class="review-name">${r.userName || 'مجهول'}</div><div class="review-date">${r.createdAt?.toDate ? new Date(r.createdAt.toDate()).toLocaleDateString('ar-SA') : ''}</div></div>
-        </div>
-        <div class="review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}" style="color:${i < r.rating ? '#f59e0b' : '#cbd5e1'}"></i>`).join('')}</div>
-        ${r.title ? `<div class="review-title">${r.title}</div>` : ''}
-        ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
-      </div>
-    `).join('');
-  } catch (e) { console.log('Reviews error:', e); }
-}
-
 function openReviewModal(bizId) {
   if (!currentUser) { showAuthModal(); showToast('يجب تسجيل الدخول', 'info'); return; }
   currentReviewBizId = bizId;
@@ -601,47 +512,46 @@ function openReviewModal(bizId) {
   document.querySelectorAll('#star-rating button i').forEach(s => s.className = 'ri-star-line');
   document.getElementById('review-title').value = '';
   document.getElementById('review-text').value = '';
-  const m = document.getElementById('review-modal');
-  if (m) m.style.display = 'flex';
+  document.getElementById('review-modal').style.display = 'flex';
 }
 
-function closeReviewModal() {
-  const m = document.getElementById('review-modal');
-  if (m) m.style.display = 'none';
-}
+function closeReviewModal() { document.getElementById('review-modal').style.display = 'none'; }
 
 function setRating(r) {
   currentRating = r;
   document.querySelectorAll('#star-rating button').forEach((btn, i) => {
-    const icon = btn.querySelector('i');
-    icon.className = i < r ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300';
+    btn.querySelector('i').className = i < r ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300';
   });
 }
 
-async function submitReview() {
+function submitReview() {
   if (!currentUser) { showAuthModal(); return; }
   if (!currentRating) { showToast('اختر تقييم', 'error'); return; }
   const title = document.getElementById('review-title')?.value;
   const text = document.getElementById('review-text')?.value;
-  try {
-    await db.collection('businesses').doc(currentReviewBizId).collection('reviews').add({
-      userId: currentUser.uid,
-      userName: currentUser.displayName || 'مجهول',
-      rating: currentRating,
-      title: title || '',
-      comment: text || '',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    const bizRef = db.collection('businesses').doc(currentReviewBizId);
-    const bizDoc = await bizRef.get();
-    const bizData = bizDoc.data();
-    const newCount = (bizData.rating?.count || 0) + 1;
-    const newAvg = ((bizData.rating?.average || 0) * (bizData.rating?.count || 0) + currentRating) / newCount;
-    await bizRef.update({ 'rating.average': newAvg, 'rating.count': newCount });
-    showToast('تم إرسال التقييم!');
-    closeReviewModal();
-    openBusiness(currentReviewBizId);
-  } catch (e) { console.error('Submit review error:', e); showToast('حدث خطأ', 'error'); }
+
+  if (!reviews[currentReviewBizId]) reviews[currentReviewBizId] = [];
+  reviews[currentReviewBizId].push({
+    userId: currentUser.id,
+    userName: currentUser.name,
+    rating: currentRating,
+    title: title || '',
+    comment: text || '',
+    date: new Date().toLocaleDateString('ar-SA')
+  });
+
+  // Update average
+  const b = businesses.find(biz => biz.id === currentReviewBizId);
+  if (b) {
+    const allRatings = reviews[currentReviewBizId].map(r => r.rating);
+    const avg = allRatings.reduce((a, b) => a + b, 0) / allRatings.length;
+    b.rating = { average: avg, count: allRatings.length };
+  }
+
+  saveData();
+  showToast('تم إرسال التقييم!');
+  closeReviewModal();
+  openBusiness(currentReviewBizId);
 }
 
 // ==================== ADD BUSINESS ====================
@@ -655,9 +565,7 @@ function renderAddForm() {
         <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-lock-line text-3xl text-gray-400"></i></div>
         <h3 class="text-xl font-bold mb-2">يجب تسجيل الدخول</h3>
         <p class="text-gray-500 mb-6">سجّل الدخول أو أنشئ حساب جديد لإضافة نشاطك التجاري</p>
-        <button class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showAuthModal()">
-          <i class="ri-login-box-line ml-2"></i>تسجيل دخول
-        </button>
+        <button class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button>
       </div>
     `;
     return;
@@ -667,114 +575,89 @@ function renderAddForm() {
     <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="sm:col-span-2"><label class="form-label">اسم النشاط *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم النشاط بالعربي"></div>
-        <div><label class="form-label">الاسم بالإنجليزي</label><input type="text" class="form-input" id="biz-name-en" placeholder="Business Name"></div>
-        <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختر الفئة</option>${CATEGORIES.map(c => `<option value="${c.slug}">${c.name}</option>`).join('')}</select></div>
+        <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختر الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
         <div><label class="form-label">المدينة *</label><input type="text" class="form-input" id="biz-city" placeholder="مثال: الرياض"></div>
         <div><label class="form-label">الحي</label><input type="text" class="form-input" id="biz-district" placeholder="مثال: حي العليا"></div>
-        <div class="sm:col-span-2"><label class="form-label">العنوان التفصيلي *</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
-        <div><label class="form-label">الجوال *</label><input type="tel" class="form-input" id="biz-phone" placeholder="+966"></div>
-        <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="+966"></div>
+        <div class="sm:col-span-2"><label class="form-label">العنوان التفصيلي</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
+        <div><label class="form-label">الجوال *</label><input type="tel" class="form-input" id="biz-phone" placeholder="05XXXXXXXX"></div>
+        <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="966XXXXXXXXX"></div>
         <div><label class="form-label">البريد الإلكتروني</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
-        <div><label class="form-label">الموقع الإلكتروني</label><input type="url" class="form-input" id="biz-website" placeholder="https://"></div>
         <div class="sm:col-span-2"><label class="form-label">الوصف</label><textarea class="form-input" id="biz-description" rows="3" placeholder="وصف النشاط التجاري"></textarea></div>
         <div class="sm:col-span-2"><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب"></div>
         <div class="sm:col-span-2"><label class="form-label">البراندات (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa"></div>
         <div><label class="form-label">ساعات العمل (السبت-الخميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
         <div><label class="form-label">ساعات العمل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
-        <div><label class="form-label">Latitude</label><input type="number" step="any" class="form-input" id="biz-lat" placeholder="24.7136"></div>
-        <div><label class="form-label">Longitude</label><input type="number" step="any" class="form-input" id="biz-lng" placeholder="46.6753"></div>
       </div>
-      <div id="add-error" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-sm"></div>
       <div class="flex gap-3 mt-6">
-        <button class="flex-1 py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2" onclick="submitBusiness()"><i class="ri-send-plane-line"></i> نشر النشاط</button>
+        <button class="flex-1 py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()"><i class="ri-send-plane-line"></i> نشر النشاط</button>
         <button class="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all" onclick="navigateTo('home')">إلغاء</button>
       </div>
-      <p class="text-xs text-gray-400 mt-4 text-center">* سيتم مراجعة النشاط من الإدارة قبل نشره</p>
     </div>
   `;
 }
 
-async function submitBusiness() {
+function submitBusiness() {
   if (!currentUser) { showAuthModal(); return; }
   const name = document.getElementById('biz-name')?.value;
   if (!name) { showToast('أدخل اسم النشاط', 'error'); return; }
-  const errEl = document.getElementById('add-error');
 
-  try {
-    await db.collection('businesses').add({
-      name: name,
-      nameAr: name,
-      nameEn: document.getElementById('biz-name-en')?.value || '',
-      categorySlug: document.getElementById('biz-category')?.value || '',
-      categoryNameAr: CATEGORIES.find(c => c.slug === document.getElementById('biz-category')?.value)?.name || '',
-      location: {
-        city: document.getElementById('biz-city')?.value || '',
-        district: document.getElementById('biz-district')?.value || '',
-        address: document.getElementById('biz-address')?.value || '',
-        lat: parseFloat(document.getElementById('biz-lat')?.value) || null,
-        lng: parseFloat(document.getElementById('biz-lng')?.value) || null,
-      },
-      contact: {
-        phone: document.getElementById('biz-phone')?.value || '',
-        whatsapp: document.getElementById('biz-whatsapp')?.value || '',
-        email: document.getElementById('biz-email')?.value || '',
-        website: document.getElementById('biz-website')?.value || '',
-      },
-      description: document.getElementById('biz-description')?.value || '',
-      keywords: (document.getElementById('biz-keywords')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
-      brands: (document.getElementById('biz-brands')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
-      workingHours: {
-        saturday: document.getElementById('biz-hours-week')?.value || '',
-        friday: document.getElementById('biz-hours-fri')?.value || '',
-      },
-      rating: { average: 0, count: 0 },
-      status: 'approved',
-      userId: currentUser.uid,
-      userName: currentUser.displayName || '',
-      isVerified: false,
-      isFeatured: false,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    showToast('تم إضافة نشاطك بنجاح!');
-    navigateTo('home');
-  } catch (e) {
-    console.error('Submit business error:', e);
-    if (errEl) { errEl.textContent = 'حدث خطأ - حاول مرة أخرى'; errEl.classList.remove('hidden'); }
-  }
+  const newBiz = {
+    id: 'biz_' + Date.now(),
+    name: name,
+    nameAr: name,
+    nameEn: '',
+    categoryNameAr: document.getElementById('biz-category')?.value || '',
+    location: {
+      city: document.getElementById('biz-city')?.value || '',
+      district: document.getElementById('biz-district')?.value || '',
+      address: document.getElementById('biz-address')?.value || '',
+    },
+    contact: {
+      phone: document.getElementById('biz-phone')?.value || '',
+      whatsapp: document.getElementById('biz-whatsapp')?.value || '',
+      email: document.getElementById('biz-email')?.value || '',
+    },
+    description: document.getElementById('biz-description')?.value || '',
+    keywords: (document.getElementById('biz-keywords')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
+    brands: (document.getElementById('biz-brands')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
+    workingHours: {
+      saturday: document.getElementById('biz-hours-week')?.value || '',
+      friday: document.getElementById('biz-hours-fri')?.value || '',
+    },
+    rating: { average: 0, count: 0 },
+    status: 'approved',
+    userId: currentUser.id,
+    userName: currentUser.name,
+    isVerified: false,
+    createdAt: new Date().toISOString()
+  };
+
+  businesses.push(newBiz);
+  saveData();
+  showToast('تم إضافة نشاطك بنجاح!');
+  navigateTo('home');
 }
 
 // ==================== CATEGORIES PAGE ====================
 function loadCategoriesFull() {
   const g = document.getElementById('categories-full-grid');
   if (!g) return;
-  g.innerHTML = CATEGORIES.map((c, i) => `
-    <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
-      <div class="w-14 h-14 bg-gray-100 group-hover:bg-gray-900 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all"><i class="${c.icon} text-xl text-gray-500 group-hover:text-white transition-colors"></i></div>
-      <div><h3 class="font-bold mb-1">${c.name}</h3><p class="text-gray-500 text-sm">${c.desc}</p></div>
-    </div>
-  `).join('');
+  g.innerHTML = CATEGORIES.map((c, i) => {
+    const count = businesses.filter(b => b.categoryNameAr === c.name && b.status === 'approved').length;
+    return `
+      <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+        <div class="w-14 h-14 bg-gray-100 group-hover:bg-gray-900 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all"><i class="${c.icon} text-xl text-gray-500 group-hover:text-white transition-colors"></i></div>
+        <div><h3 class="font-bold mb-1">${c.name}</h3><p class="text-gray-500 text-sm">${c.desc}</p><p class="text-xs text-gray-400 mt-1">${count} نشاط</p></div>
+      </div>
+    `;
+  }).join('');
 }
 
 // ==================== BLOG ====================
-async function loadBlog() {
+function loadBlog() {
   const g = document.getElementById('blog-list');
   if (!g) return;
-  try {
-    const snap = await db.collection('posts').orderBy('createdAt', 'desc').get();
-    const posts = [];
-    snap.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
-    if (!posts.length) { g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات بعد</h3></div>'; return; }
-    g.innerHTML = posts.map((p, i) => `
-      <div class="blog-card" onclick="openPost('${p.id}')" data-aos="fade-up" data-aos-delay="${i * 100}">
-        <div class="blog-card-img"><i class="ri-article-line"></i></div>
-        <div class="blog-card-body">
-          <span class="blog-card-cat">${p.category || ''}</span>
-          <div class="blog-card-title">${p.title}</div>
-          <div class="blog-card-excerpt">${p.excerpt || ''}</div>
-        </div>
-      </div>
-    `).join('');
-  } catch (e) { g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات</h3></div>'; }
+  g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>لا توجد مقالات بعد</h3><p>قريباً إن شاء الله</p></div>';
 }
 
 function openPost(id) {
@@ -783,92 +666,73 @@ function openPost(id) {
   c.innerHTML = `<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8"><button onclick="closeDetail()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium"><i class="ri-arrow-right-line"></i> العودة</button><div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8"><h1 class="text-2xl font-bold mb-4">${id}</h1><p class="text-gray-500">المحتوى غير متاح حالياً</p></div></div>`;
   document.getElementById('page-post-detail')?.classList.add('active');
   document.querySelectorAll('.page:not(#page-post-detail)').forEach(p => p.classList.remove('active'));
-  window.scrollTo({ top: 0 });
 }
 
-// ==================== SEED DATA ====================
-async function seedData() {
-  showToast('جاري تحميل البيانات التجريبية...', 'info');
-
-  const seedBusinesses = [
-    { name:'ستاربكس', nameAr:'ستاربكس', nameEn:'Starbucks', categorySlug:'coffee', categoryNameAr:'المقاهي', location:{ city:'الرياض', district:'حي العليا', address:'شارع التحلية', lat:24.7136, lng:46.6753 }, contact:{ phone:'+966501234567', whatsapp:'+966501234567', email:'info@starbucks-sa.com' }, description:'مقهى ستاربكس يقدم أفضل أنواع القهوة المختصة والمشروبات الباردة والساخنة', keywords:['قهوة','مقهى','كابتشينو','لاتيه','إسبريسو'], brands:['Starbucks'], workingHours:{ saturday:'6:00 ص - 12:00 م', friday:'2:00 م - 12:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true },
-    { name:'مطعم بيتزا هت', nameAr:'مطعم بيتزا هت', nameEn:'Pizza Hut', categorySlug:'restaurants', categoryNameAr:'المطاعم', location:{ city:'جدة', district:'الروضة', address:'شارع الأمير سلطان', lat:21.5433, lng:39.1728 }, contact:{ phone:'+966509876543', whatsapp:'+966509876543' }, description:'مطعم بيتزا هت يقدم أشهى البيتزا والمعجنات الإيطالية', keywords:['بيتزا','مطعم','وجبات سريعة','معجنات'], brands:['Pizza Hut'], workingHours:{ saturday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true },
-    { name:'مصرف الراجحي', nameAr:'مصرف الراجحي', nameEn:'Al Rajhi Bank', categorySlug:'banking', categoryNameAr:'البنوك', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد', lat:24.7136, lng:46.6753 }, contact:{ phone:'+966920001122' }, description:'مصرف الراجحي أكبر مصرف إسلامي في العالم', keywords:['بنك','مصرف','خدمات مالية','قروض','توفير'], brands:['Al Rajhi'], workingHours:{ saturday:'9:30 ص - 4:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true },
-    { name:'محل نمشي', nameAr:'محل نمشي', nameEn:'Namshi', categorySlug:'retail', categoryNameAr:'التجزئة', location:{ city:'الرياض', district:'حي النخيل', address:'مجمع الراشد', lat:24.7000, lng:46.6500 }, contact:{ phone:'+966505551234', email:'support@namshi.com' }, description:'متجر نمشي للأزياء العصرية والإلكترونيات', keywords:['تسوق','ملابس','أزياء','إلكترونيات'], brands:['Namshi'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true },
-    { name:'مستشفىKing Faisal', nameAr:'مستشفى الملك فيصل التخصصي', nameEn:'King Faisal Hospital', categorySlug:'health', categoryNameAr:'الصحة', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد', lat:24.7000, lng:46.6800 }, contact:{ phone:'+966114646464' }, description:'مستشفى الملك فيصل التخصصي من أفضل المستشفيات في المملكة', keywords:['مستشفى','عيادة','طب','صحة','علاج'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true },
-    { name:'جامعة الملك سعود', nameAr:'جامعة الملك سعود', nameEn:'King Saud University', categorySlug:'education', categoryNameAr:'التعليم', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الأمير سلطان بن عبدالعزيز', lat:24.7200, lng:46.6200 }, contact:{ phone:'+966114671111' }, description:'جامعة الملك سعود هي أقدم وأكبر جامعات المملكة العربية السعودية', keywords:['جامعة','تعليم','دراسة','بكالوريوس','ماجستير'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true },
-    { name:'شركة أرامكو', nameAr:'شركة أرامكو السعودية', nameEn:'Saudi Aramco', categorySlug:'services', categoryNameAr:'الخدمات', location:{ city:'الظهران', district:'حي الظهران', address:'مقر أرامكو السعودي', lat:26.2800, lng:50.2000 }, contact:{ phone:'+966138751000', email:'info@aramco.com' }, description:'أرامكو هي أكبر شركة نفط في العالم', keywords:['نفط','طاقة','شركة','خدمات'], brands:['Aramco'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true },
-    { name:'المتحف الوطني', nameAr:'المتحف الوطني السعودي', nameEn:'National Museum', categorySlug:'travel', categoryNameAr:'السفر والسياحة', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الملك عبدالعزيز', lat:24.7100, lng:46.6750 }, contact:{ phone:'+966112001000' }, description:'المتحف الوطني السعودي يعرض تاريخ المملكة وتراثها', keywords:['متحف','سياحة','تراث','ثقافة','تاريخ'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true },
-  ];
-
-  try {
-    const batch = db.batch();
-    for (const biz of seedBusinesses) {
-      const ref = db.collection('businesses').doc();
-      batch.set(ref, { ...biz, userId: 'seed', userName: 'System', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    }
-    await batch.commit();
-    showToast('تم تحميل البيانات التجريبية بنجاح!');
-    loadHome();
-    navigateTo('businesses');
-  } catch (e) {
-    console.error('Seed error:', e);
-    showToast('حدث خطأ أثناء التحميل', 'error');
-  }
+// ==================== PROFILE ====================
+function loadProfile() {
+  updateAuthUI();
 }
 
 // ==================== ADMIN ====================
 function loadAdmin() {
   const c = document.getElementById('admin-content');
   if (!c) return;
+
+  const allBiz = businesses;
+  const pending = allBiz.filter(b => b.status === 'pending');
+  const approved = allBiz.filter(b => b.status === 'approved');
+  const totalReviews = Object.values(reviews).flat().length;
+
   c.innerHTML = `
     <h2 class="text-2xl font-bold mb-6">لوحة التحكم</h2>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">الأعمال</div><div class="text-3xl font-bold" id="admin-biz-count">...</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">المستخدمين</div><div class="text-3xl font-bold" id="admin-users-count">...</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">قيد المراجعة</div><div class="text-3xl font-bold" id="admin-pending-count">...</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">المقالات</div><div class="text-3xl font-bold" id="admin-posts-count">...</div></div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">إجمالي الأعمال</div><div class="text-3xl font-bold">${allBiz.length}</div></div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">معتمدة</div><div class="text-3xl font-bold text-green-600">${approved.length}</div></div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">قيد المراجعة</div><div class="text-3xl font-bold text-amber-600">${pending.length}</div></div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">التقييمات</div><div class="text-3xl font-bold">${totalReviews}</div></div>
     </div>
     <div class="bg-white border border-gray-200 rounded-2xl p-6">
-      <h3 class="font-bold mb-4">آخر الأعمال</h3>
-      <div id="admin-businesses-list" class="text-center py-12"><p class="text-gray-500">جاري التحميل...</p></div>
+      <h3 class="font-bold mb-4">جميع الأعمال</h3>
+      ${allBiz.length ? `
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead><tr class="border-b border-gray-200 text-right text-sm text-gray-500">
+              <th class="py-3 font-semibold">الاسم</th><th class="py-3 font-semibold">الفئة</th><th class="py-3 font-semibold">المدينة</th><th class="py-3 font-semibold">الحالة</th><th class="py-3 font-semibold">إجراء</th>
+            </tr></thead>
+            <tbody>${allBiz.map(b => {
+              const statusClass = b.status === 'approved' ? 'text-green-600 bg-green-50' : b.status === 'pending' ? 'text-amber-600 bg-amber-50' : 'text-red-600 bg-red-50';
+              const statusText = b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
+              return `<tr class="border-b border-gray-100">
+                <td class="py-3 text-sm font-medium">${b.nameAr || b.name}</td>
+                <td class="py-3 text-sm text-gray-500">${b.categoryNameAr || ''}</td>
+                <td class="py-3 text-sm text-gray-500">${b.location?.city || ''}</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-lg text-xs font-semibold ${statusClass}">${statusText}</span></td>
+                <td class="py-3 space-x-2">
+                  ${b.status !== 'approved' ? `<button class="text-sm text-green-600 hover:underline" onclick="approveBusiness('${b.id}','approved')">اعتماد</button>` : ''}
+                  ${b.status !== 'rejected' ? `<button class="text-sm text-red-600 hover:underline" onclick="approveBusiness('${b.id}','rejected')">رفض</button>` : ''}
+                  <button class="text-sm text-gray-600 hover:underline" onclick="deleteBusiness('${b.id}')">حذف</button>
+                </td>
+              </tr>`;
+            }).join('')}</tbody>
+          </table>
+        </div>
+      ` : '<p class="text-gray-500 text-center py-8">لا توجد أعمال بعد</p>'}
     </div>
   `;
-  loadAdminData();
 }
 
-async function loadAdminData() {
-  try {
-    const [bizSnap, usersSnap, pendingSnap, postsSnap] = await Promise.all([
-      db.collection('businesses').get(),
-      db.collection('users').get(),
-      db.collection('businesses').where('status', '==', 'pending').get(),
-      db.collection('posts').get(),
-    ]);
-    document.getElementById('admin-biz-count').textContent = bizSnap.size;
-    document.getElementById('admin-users-count').textContent = usersSnap.size;
-    document.getElementById('admin-pending-count').textContent = pendingSnap.size;
-    document.getElementById('admin-posts-count').textContent = postsSnap.size;
-
-    const list = document.getElementById('admin-businesses-list');
-    if (bizSnap.empty) { list.innerHTML = '<p class="text-gray-500">لا توجد أعمال بعد</p>'; return; }
-    const rows = [];
-    bizSnap.forEach(doc => {
-      const b = doc.data();
-      const statusClass = b.status === 'approved' ? 'text-green-600 bg-green-50' : b.status === 'pending' ? 'text-amber-600 bg-amber-50' : 'text-red-600 bg-red-50';
-      const statusText = b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
-      rows.push(`<tr class="border-b border-gray-100"><td class="py-3 text-sm font-medium">${b.nameAr || b.name}</td><td class="py-3 text-sm text-gray-500">${b.categoryNameAr || ''}</td><td class="py-3 text-sm text-gray-500">${b.location?.city || ''}</td><td class="py-3"><span class="px-2 py-1 rounded-lg text-xs font-semibold ${statusClass}">${statusText}</span></td><td class="py-3 space-x-2"><button class="text-sm text-green-600 hover:underline" onclick="approveBusiness('${doc.id}','approved')">اعتماد</button><button class="text-sm text-red-600 hover:underline" onclick="approveBusiness('${doc.id}','rejected')">رفض</button></td></tr>`;
-    });
-    list.innerHTML = `<table class="w-full"><thead><tr class="border-b border-gray-200 text-right text-sm text-gray-500"><th class="py-3 font-semibold">الاسم</th><th class="py-3 font-semibold">الفئة</th><th class="py-3 font-semibold">المدينة</th><th class="py-3 font-semibold">الحالة</th><th class="py-3 font-semibold">إجراء</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
-  } catch (e) { console.error('Admin data error:', e); }
+function approveBusiness(id, status) {
+  const b = businesses.find(biz => biz.id === id);
+  if (b) { b.status = status; saveData(); showToast('تم تحديث الحالة'); loadAdmin(); }
 }
 
-async function approveBusiness(id, status) {
-  try {
-    await db.collection('businesses').doc(id).update({ status });
-    showToast('تم تحديث الحالة');
-    loadAdminData();
-  } catch (e) { showToast('خطأ', 'error'); }
+function deleteBusiness(id) {
+  if (!confirm('هل أنت متأكد من الحذف؟')) return;
+  businesses = businesses.filter(b => b.id !== id);
+  delete reviews[id];
+  saveData();
+  showToast('تم الحذف');
+  loadAdmin();
 }
 
 function showAdminTab(tab) {
@@ -903,4 +767,4 @@ window.submitReview = submitReview;
 window.toggleMobileMenu = toggleMobileMenu;
 window.requireAuth = requireAuth;
 window.approveBusiness = approveBusiness;
-window.seedData = seedData;
+window.deleteBusiness = deleteBusiness;
