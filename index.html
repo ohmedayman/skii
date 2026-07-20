@@ -238,9 +238,9 @@
         <div id="auth-buttons"><button class="w-full py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium transition-all hover:shadow-lg" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>تسجيل دخول</button></div>
         <div id="profile-menu" style="display:none">
           <div class="space-y-2 text-right">
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-store-2-line text-gray-400"></i> إعلاناتي</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-heart-line text-gray-400"></i> المفضلة</a>
-            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line text-gray-400"></i> لوحة التحكم</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('add')"><i class="ri-add-circle-line text-gray-400"></i> إضافة نشاط جديد</a>
+            <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors" onclick="navigateTo('profile')"><i class="ri-settings-3-line text-gray-400"></i> الإعدادات</a>
             <button onclick="logout()" class="flex items-center gap-3 p-3 hover:bg-red-50 rounded-xl transition-colors text-red-600 w-full"><i class="ri-logout-box-r-line"></i> تسجيل خروج</button>
           </div>
         </div>
@@ -251,6 +251,24 @@
   <!-- BUSINESS DETAIL -->
   <div id="page-business" class="page"><div id="business-detail"></div></div>
   <div id="page-post-detail" class="page"><div id="post-detail"></div></div>
+
+  <!-- CUSTOMER DASHBOARD -->
+  <div id="page-dashboard" class="page">
+    <div class="flex min-h-[calc(100vh-64px)]">
+      <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block">
+        <h3 class="font-bold text-sm mb-4 px-3">لوحة التحكم</h3>
+        <div class="space-y-1">
+          <a href="#" class="admin-nav-item active" onclick="showDashTab('overview')"><i class="ri-dashboard-line"></i> نظرة عامة</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('edit')"><i class="ri-edit-line"></i> تعديل النشاط</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('photos')"><i class="ri-image-line"></i> الصور</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('reviews')"><i class="ri-star-line"></i> التقييمات</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('offers')"><i class="ri-megaphone-line"></i> العروض والتسويق</a>
+          <a href="#" class="admin-nav-item" onclick="showDashTab('settings')"><i class="ri-settings-3-line"></i> الإعدادات</a>
+        </div>
+      </aside>
+      <main class="flex-1 p-6"><div id="dashboard-content"></div></main>
+    </div>
+  </div>
 
   <!-- ADMIN -->
   <div id="page-admin" class="page">

@@ -12,14 +12,14 @@ let currentRating = 0;
 
 // ==================== INIT DATA ====================
 const DEFAULT_BUSINESSES = [
-  { id:'b1', name:'ستاربكس', nameAr:'ستاربكس', nameEn:'Starbucks', categoryNameAr:'المقاهي', location:{ city:'الرياض', district:'حي العليا', address:'شارع التحلية 55' }, contact:{ phone:'0501234567', whatsapp:'966501234567', email:'info@starbucks.sa' }, description:'مقهى ستاربكس يقدم أفضل أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'6:00 ص - 12:00 م', friday:'2:00 م - 12:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, createdAt:'2025-01-15' },
-  { id:'b2', name:'بيتزا هت', nameAr:'بيتزا هت', nameEn:'Pizza Hut', categoryNameAr:'المطاعم', location:{ city:'جدة', district:'الروضة', address:'شارع الأمير سلطان 100' }, contact:{ phone:'0509876543', whatsapp:'966509876543' }, description:'مطعم بيتزا هت يقدم أشهى البيتزا والمعجنات الإيطالية بأسعار مناسبة للجميع.', keywords:['بيتزا','مطعم','وجبات سريعة'], brands:['Pizza Hut'], workingHours:{ saturday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, createdAt:'2025-02-10' },
-  { id:'b3', name:'مصرف الراجحي', nameAr:'مصرف الراجحي', nameEn:'Al Rajhi Bank', categoryNameAr:'البنوك', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 1000' }, contact:{ phone:'920001122' }, description:'مصرف الراجحي أكبر مصرف إسلامي في العالم يقدم خدمات مالية متنوعة.', keywords:['بنك','مصرف','خدمات مالية','قروض'], brands:['Al Rajhi'], workingHours:{ saturday:'9:30 ص - 4:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, createdAt:'2025-01-20' },
-  { id:'b4', name:'نمشي', nameAr:'نمشي', nameEn:'Namshi', categoryNameAr:'التجزئة', location:{ city:'الرياض', district:'حي النخيل', address:'مجمع الراشد' }, contact:{ phone:'0505551234', email:'support@namshi.com' }, description:'متجر نمشي للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء'], brands:['Namshi'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, createdAt:'2025-03-01' },
-  { id:'b5', name:'مستشفى الملك فيصل', nameAr:'مستشفى الملك فيصل التخصصي', nameEn:'King Faisal Hospital', categoryNameAr:'الصحة', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 2000' }, contact:{ phone:'0114646464' }, description:'مستشفى الملك فيصل التخصصي من أفضل المستشفيات في المملكة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, createdAt:'2025-01-10' },
-  { id:'b6', name:'جامعة الملك سعود', nameAr:'جامعة الملك سعود', nameEn:'King Saud University', categoryNameAr:'التعليم', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الأمير سلطان بن عبدالعزيز' }, contact:{ phone:'0114671111' }, description:'جامعة الملك سعود هي أقدم وأكبر جامعات المملكة العربية السعودية.', keywords:['جامعة','تعليم','دراسة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, createdAt:'2025-01-05' },
-  { id:'b7', name:'أرامكو', nameAr:'أرامكو السعودية', nameEn:'Saudi Aramco', categoryNameAr:'الخدمات', location:{ city:'الظهران', district:'حي الظهران', address:'مقر أرامكو' }, contact:{ phone:'0138751000', email:'info@aramco.com' }, description:'أرامكو هي أكبر شركة نفط في العالم.', keywords:['نفط','طاقة','شركة'], brands:['Aramco'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, createdAt:'2025-02-20' },
-  { id:'b8', name:'المتحف الوطني', nameAr:'المتحف الوطني السعودي', nameEn:'National Museum', categoryNameAr:'السفر والسياحة', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الملك عبدالعزيز' }, contact:{ phone:'0112001000' }, description:'المتحف الوطني السعودي يعرض تاريخ المملكة وتراثها العريق.', keywords:['متحف','سياحة','تراث','ثقافة'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, createdAt:'2025-03-10' },
+  { id:'b1', name:'ستاربكس', nameAr:'ستاربكس', nameEn:'Starbucks', categoryNameAr:'المقاهي', location:{ city:'الرياض', district:'حي العليا', address:'شارع التحلية 55' }, contact:{ phone:'0501234567', whatsapp:'966501234567', email:'info@starbucks.sa' }, description:'مقهى ستاربكس يقدم أفضل أنواع القهوة المختصة والمشروبات الباردة والساخنة في أجواء مريحة.', keywords:['قهوة','مقهى','كابتشينو','لاتيه'], brands:['Starbucks'], workingHours:{ saturday:'6:00 ص - 12:00 م', friday:'2:00 م - 12:00 م' }, rating:{ average:4.5, count:120 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], createdAt:'2025-01-15' },
+  { id:'b2', name:'بيتزا هت', nameAr:'بيتزا هت', nameEn:'Pizza Hut', categoryNameAr:'المطاعم', location:{ city:'جدة', district:'الروضة', address:'شارع الأمير سلطان 100' }, contact:{ phone:'0509876543', whatsapp:'966509876543' }, description:'مطعم بيتزا هت يقدم أشهى البيتزا والمعجنات الإيطالية بأسعار مناسبة للجميع.', keywords:['بيتزا','مطعم','وجبات سريعة'], brands:['Pizza Hut'], workingHours:{ saturday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.2, count:85 }, status:'approved', isVerified:true, ownerId:'demo', views:220, photos:[], offers:[], createdAt:'2025-02-10' },
+  { id:'b3', name:'مصرف الراجحي', nameAr:'مصرف الراجحي', nameEn:'Al Rajhi Bank', categoryNameAr:'البنوك', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 1000' }, contact:{ phone:'920001122' }, description:'مصرف الراجحي أكبر مصرف إسلامي في العالم يقدم خدمات مالية متنوعة.', keywords:['بنك','مصرف','خدمات مالية','قروض'], brands:['Al Rajhi'], workingHours:{ saturday:'9:30 ص - 4:30 م', friday:'مغلق' }, rating:{ average:4.0, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:500, photos:[], offers:[], createdAt:'2025-01-20' },
+  { id:'b4', name:'نمشي', nameAr:'نمشي', nameEn:'Namshi', categoryNameAr:'التجزئة', location:{ city:'الرياض', district:'حي النخيل', address:'مجمع الراشد' }, contact:{ phone:'0505551234', email:'support@namshi.com' }, description:'متجر نمشي للأزياء العصرية والماركات العالمية.', keywords:['تسوق','ملابس','أزياء'], brands:['Namshi'], rating:{ average:4.3, count:65 }, status:'approved', isVerified:true, ownerId:'demo', views:180, photos:[], offers:[], createdAt:'2025-03-01' },
+  { id:'b5', name:'مستشفى الملك فيصل', nameAr:'مستشفى الملك فيصل التخصصي', nameEn:'King Faisal Hospital', categoryNameAr:'الصحة', location:{ city:'الرياض', district:'حي العليا', address:'طريق الملك فهد 2000' }, contact:{ phone:'0114646464' }, description:'مستشفى الملك فيصل التخصصي من أفضل المستشفيات في المملكة.', keywords:['مستشفى','عيادة','طب','صحة'], rating:{ average:4.8, count:500 }, status:'approved', isVerified:true, ownerId:'demo', views:800, photos:[], offers:[], createdAt:'2025-01-10' },
+  { id:'b6', name:'جامعة الملك سعود', nameAr:'جامعة الملك سعود', nameEn:'King Saud University', categoryNameAr:'التعليم', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الأمير سلطان بن عبدالعزيز' }, contact:{ phone:'0114671111' }, description:'جامعة الملك سعود هي أقدم وأكبر جامعات المملكة العربية السعودية.', keywords:['جامعة','تعليم','دراسة'], rating:{ average:4.5, count:300 }, status:'approved', isVerified:true, ownerId:'demo', views:600, photos:[], offers:[], createdAt:'2025-01-05' },
+  { id:'b7', name:'أرامكو', nameAr:'أرامكو السعودية', nameEn:'Saudi Aramco', categoryNameAr:'الخدمات', location:{ city:'الظهران', district:'حي الظهران', address:'مقر أرامكو' }, contact:{ phone:'0138751000', email:'info@aramco.com' }, description:'أرامكو هي أكبر شركة نفط في العالم.', keywords:['نفط','طاقة','شركة'], brands:['Aramco'], rating:{ average:4.7, count:400 }, status:'approved', isVerified:true, ownerId:'demo', views:900, photos:[], offers:[], createdAt:'2025-02-20' },
+  { id:'b8', name:'المتحف الوطني', nameAr:'المتحف الوطني السعودي', nameEn:'National Museum', categoryNameAr:'السفر والسياحة', location:{ city:'الرياض', district:'حي البطحاء', address:'طريق الملك عبدالعزيز' }, contact:{ phone:'0112001000' }, description:'المتحف الوطني السعودي يعرض تاريخ المملكة وتراثها العريق.', keywords:['متحف','سياحة','تراث','ثقافة'], rating:{ average:4.6, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:400, photos:[], offers:[], createdAt:'2025-03-10' },
 ];
 
 const CATEGORIES = [
@@ -83,6 +83,15 @@ function loadData() {
     users = u ? JSON.parse(u) : [];
     if (!b) saveData();
 
+    // Migrate old businesses
+    let migrated = false;
+    businesses.forEach(biz => {
+      if (biz.views === undefined) { biz.views = 0; migrated = true; }
+      if (!biz.photos) { biz.photos = []; migrated = true; }
+      if (!biz.offers) { biz.offers = []; migrated = true; }
+      if (!biz.ownerId && biz.userId) { biz.ownerId = biz.userId; migrated = true; }
+    });
+
     // Ensure admin account exists
     if (!users.find(u => u.email === 'admin@sikka.com')) {
       users.push({
@@ -93,8 +102,9 @@ function loadData() {
         isAdmin: true,
         createdAt: new Date().toISOString()
       });
-      saveData();
+      migrated = true;
     }
+    if (migrated) saveData();
   } catch(e) {
     businesses = [...DEFAULT_BUSINESSES];
     reviews = {};
@@ -123,14 +133,48 @@ window.addEventListener('popstate', () => handleHash());
 
 function handleHash() {
   const hash = location.hash;
+  if (!hash || hash === '#/' || hash === '#') return;
+
   if (hash.startsWith('#/business/')) {
     const id = hash.replace('#/business/', '');
     const b = businesses.find(biz => biz.id === id);
     if (b) {
-      loadData();
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-business')?.classList.add('active');
       renderBusinessDetail(b);
+    } else {
+      show404();
     }
+  } else if (hash.startsWith('#/dashboard')) {
+    navigateTo('dashboard');
+  } else {
+    show404();
   }
+}
+
+function show404() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  let el = document.getElementById('page-404');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'page-404';
+    el.className = 'page active';
+    el.innerHTML = `
+      <div class="max-w-md mx-auto px-4 py-20 text-center">
+        <div style="font-size:6rem;margin-bottom:1rem">🔍</div>
+        <h1 class="text-6xl font-bold text-gray-900 mb-4">404</h1>
+        <h2 class="text-xl font-bold text-gray-700 mb-2">الصفحة غير موجودة</h2>
+        <p class="text-gray-500 mb-8">يبدو أن الرابط الذي زرته غير صحيح أو تم نقله</p>
+        <a href="#" onclick="navigateTo('home')" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+          <i class="ri-home-5-line"></i> العودة للرئيسية
+        </a>
+      </div>
+    `;
+    document.body.appendChild(el);
+  } else {
+    el.classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== TOAST ====================
@@ -166,6 +210,7 @@ function navigateTo(page) {
   if (page === 'profile') loadProfile();
   if (page === 'categories') loadCategoriesFull();
   if (page === 'add') renderAddForm();
+  if (page === 'dashboard') loadDashboard();
 }
 
 function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
@@ -205,7 +250,11 @@ function updateAuthUI() {
   const adminLink = document.getElementById('admin-nav-link');
 
   if (currentUser) {
-    if (btns) btns.innerHTML = `<button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span class="hidden sm:inline">${currentUser.name}</span></button>`;
+    const myBiz = businesses.find(b => b.ownerId === currentUser.id);
+    if (btns) btns.innerHTML = `
+      <button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('profile')"><i class="ri-user-3-line"></i><span class="hidden sm:inline">${currentUser.name}</span></button>
+      ${myBiz ? `<button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all" onclick="navigateTo('dashboard')"><i class="ri-dashboard-line"></i><span class="hidden sm:inline">لوحتي</span></button>` : ''}
+    `;
     if (name) name.textContent = currentUser.name;
     if (email) email.textContent = currentUser.email;
     if (authBtns) authBtns.style.display = 'none';
@@ -483,6 +532,8 @@ function renderBusinessesTo(list, container) {
 function openBusiness(id) {
   const b = businesses.find(biz => biz.id === id);
   if (!b) { showToast('النشاط غير موجود', 'error'); return; }
+  b.views = (b.views || 0) + 1;
+  saveData();
   history.pushState({ page: 'business', id }, '', '#/business/' + id);
   renderBusinessDetail(b);
 }
@@ -596,6 +647,354 @@ function shareBusiness(id) {
   } else {
     navigator.clipboard.writeText(url).then(() => showToast('تم نسخ الرابط', 'success'));
   }
+}
+
+// ==================== CUSTOMER DASHBOARD ====================
+let dashTab = 'overview';
+
+function loadDashboard() {
+  if (!currentUser) { navigateTo('home'); showAuthModal(); return; }
+  const myBiz = businesses.find(b => b.ownerId === currentUser.id);
+  if (!myBiz) {
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="max-w-md mx-auto text-center py-20">
+        <div style="font-size:4rem;margin-bottom:1rem">🏪</div>
+        <h2 class="text-xl font-bold mb-2">ليس لديك نشاط مسجل</h2>
+        <p class="text-gray-500 mb-6">أضف نشاطك التجاري ليظهر في الدليل ويظهر لك لوحة التحكم</p>
+        <button onclick="navigateTo('add')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+          <i class="ri-add-line ml-1"></i> أضف نشاطك الآن
+        </button>
+      </div>`;
+    return;
+  }
+  showDashTab('overview');
+}
+
+function showDashTab(tab) {
+  dashTab = tab;
+  const myBiz = businesses.find(b => b.ownerId === currentUser?.id);
+  if (!myBiz) { loadDashboard(); return; }
+
+  document.querySelectorAll('#page-dashboard .admin-nav-item').forEach(n => n.classList.remove('active'));
+  event?.target?.closest?.('.admin-nav-item')?.classList.add('active');
+  if (!event?.target?.closest?.('.admin-nav-item')) {
+    document.querySelectorAll('#page-dashboard .admin-nav-item').forEach(n => {
+      if (n.textContent.includes(tab === 'overview' ? 'نظرة' : tab === 'edit' ? 'تعديل' : tab === 'photos' ? 'صور' : tab === 'reviews' ? 'تقييمات' : tab === 'offers' ? 'عروض' : 'إعدادات')) n.classList.add('active');
+    });
+  }
+
+  const c = document.getElementById('dashboard-content');
+  if (!c) return;
+
+  if (tab === 'overview') renderDashOverview(c, myBiz);
+  else if (tab === 'edit') renderDashEdit(c, myBiz);
+  else if (tab === 'photos') renderDashPhotos(c, myBiz);
+  else if (tab === 'reviews') renderDashReviews(c, myBiz);
+  else if (tab === 'offers') renderDashOffers(c, myBiz);
+  else if (tab === 'settings') renderDashSettings(c, myBiz);
+}
+
+function renderDashOverview(c, b) {
+  const style = getCategoryStyle(b.categoryNameAr);
+  const bizReviews = reviews[b.id] || [];
+  const rating = b.rating?.average || 0;
+  const totalReviews = (b.rating?.count || 0) + bizReviews.length;
+  const views = b.views || 0;
+  const offers = b.offers || [];
+
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">نظرة عامة على نشاطك</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+        <div class="text-sm text-gray-500 mb-1">التقييم</div>
+        <div class="text-3xl font-bold flex items-center gap-1"><i class="ri-star-fill text-amber-400"></i> ${rating.toFixed(1)}</div>
+        <div class="text-xs text-gray-400">${totalReviews} تقييم</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+        <div class="text-sm text-gray-500 mb-1">المشاهدات</div>
+        <div class="text-3xl font-bold">${views}</div>
+        <div class="text-xs text-gray-400">مرة</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+        <div class="text-sm text-gray-500 mb-1">الحالة</div>
+        <div class="text-lg font-bold ${b.status === 'approved' ? 'text-green-600' : b.status === 'pending' ? 'text-amber-600' : 'text-red-600'}">${b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+        <div class="text-sm text-gray-500 mb-1">العروض النشطة</div>
+        <div class="text-3xl font-bold">${offers.length}</div>
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:${style.bg}">
+          <span style="font-size:2rem">${style.emoji}</span>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">${b.nameAr || b.name}</h3>
+          <div class="text-sm text-blue-600 font-medium">${b.categoryNameAr || ''}</div>
+          <div class="text-xs text-gray-400">${b.location?.city || ''} ${b.location?.district ? '- ' + b.location.district : ''}</div>
+        </div>
+      </div>
+      <p class="text-gray-500 text-sm">${b.description || 'لم تتم إضافة وصف بعد'}</p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="showDashTab('edit')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-edit-line ml-1"></i> تعديل النشاط</button>
+      <a href="#/business/${b.id}" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all text-sm"><i class="ri-eye-line ml-1"></i> عرض الصفحة</a>
+    </div>
+  `;
+}
+
+function renderDashEdit(c, b) {
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">تعديل النشاط</h2>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="form-label">اسم النشاط بالعربي</label><input class="form-input" id="de-nameAr" value="${b.nameAr || ''}"></div>
+        <div><label class="form-label">اسم النشاط بالإنجليزي</label><input class="form-input" id="de-nameEn" value="${b.nameEn || ''}"></div>
+      </div>
+      <div><label class="form-label">الوصف</label><textarea class="form-input" id="de-desc" rows="3">${b.description || ''}</textarea></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="form-label">المدينة</label><input class="form-input" id="de-city" value="${b.location?.city || ''}"></div>
+        <div><label class="form-label">الحي</label><input class="form-input" id="de-district" value="${b.location?.district || ''}"></div>
+      </div>
+      <div><label class="form-label">العنوان التفصيلي</label><input class="form-input" id="de-address" value="${b.location?.address || ''}"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="form-label">رقم الهاتف</label><input class="form-input" id="de-phone" value="${b.contact?.phone || ''}"></div>
+        <div><label class="form-label">واتساب</label><input class="form-input" id="de-whatsapp" value="${b.contact?.whatsapp || ''}"></div>
+      </div>
+      <div><label class="form-label">الإيميل</label><input class="form-input" id="de-email" value="${b.contact?.email || ''}"></div>
+      <div><label class="form-label">الكلمات المفتاحية (مفصولة بفاصلة)</label><input class="form-input" id="de-keywords" value="${(b.keywords || []).join(', ')}"></div>
+      <div><label class="form-label">البراندات (مفصولة بفاصلة)</label><input class="form-input" id="de-brands" value="${(b.brands || []).join(', ')}"></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="form-label">ساعات العمل (السبت)</label><input class="form-input" id="de-sat" value="${b.workingHours?.saturday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الأحد)</label><input class="form-input" id="de-sun" value="${b.workingHours?.sunday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الاثنين)</label><input class="form-input" id="de-mon" value="${b.workingHours?.monday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الثلاثاء)</label><input class="form-input" id="de-tue" value="${b.workingHours?.tuesday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الأربعاء)</label><input class="form-input" id="de-wed" value="${b.workingHours?.wednesday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الخميس)</label><input class="form-input" id="de-thu" value="${b.workingHours?.thursday || ''}"></div>
+        <div><label class="form-label">ساعات العمل (الجمعة)</label><input class="form-input" id="de-fri" value="${b.workingHours?.friday || ''}"></div>
+      </div>
+      <button onclick="saveDashEdit('${b.id}')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all"><i class="ri-save-line ml-1"></i> حفظ التعديلات</button>
+    </div>
+  `;
+}
+
+function saveDashEdit(id) {
+  const b = businesses.find(biz => biz.id === id);
+  if (!b) return;
+  b.nameAr = document.getElementById('de-nameAr').value;
+  b.nameEn = document.getElementById('de-nameEn').value;
+  b.description = document.getElementById('de-desc').value;
+  b.location = b.location || {};
+  b.location.city = document.getElementById('de-city').value;
+  b.location.district = document.getElementById('de-district').value;
+  b.location.address = document.getElementById('de-address').value;
+  b.contact = b.contact || {};
+  b.contact.phone = document.getElementById('de-phone').value;
+  b.contact.whatsapp = document.getElementById('de-whatsapp').value;
+  b.contact.email = document.getElementById('de-email').value;
+  b.keywords = document.getElementById('de-keywords').value.split(',').map(s => s.trim()).filter(Boolean);
+  b.brands = document.getElementById('de-brands').value.split(',').map(s => s.trim()).filter(Boolean);
+  b.workingHours = {
+    saturday: document.getElementById('de-sat').value,
+    sunday: document.getElementById('de-sun').value,
+    monday: document.getElementById('de-mon').value,
+    tuesday: document.getElementById('de-tue').value,
+    wednesday: document.getElementById('de-wed').value,
+    thursday: document.getElementById('de-thu').value,
+    friday: document.getElementById('de-fri').value,
+  };
+  saveData();
+  showToast('تم حفظ التعديلات بنجاح', 'success');
+}
+
+function renderDashPhotos(c, b) {
+  const photos = b.photos || [];
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">إدارة الصور</h2>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <p class="text-gray-500 text-sm mb-4">أضف صوراً لنشاطك التجاري لتظهر للعملاء</p>
+      <div class="mb-4">
+        <label class="form-label">رابط الصورة</label>
+        <div class="flex gap-2">
+          <input class="form-input flex-1" id="photo-url-input" placeholder="https://example.com/photo.jpg">
+          <button onclick="addBizPhoto('${b.id}')" class="px-4 py-2 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all whitespace-nowrap"><i class="ri-add-line"></i> إضافة</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="photos-grid">
+        ${photos.length ? photos.map((p, i) => `
+          <div class="relative rounded-xl overflow-hidden bg-gray-100 aspect-square">
+            <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-3xl\\'></i></div>'">
+            <button onclick="removeBizPhoto('${b.id}',${i})" class="absolute top-2 left-2 w-7 h-7 bg-red-500 text-white rounded-lg flex items-center justify-center text-xs hover:bg-red-600"><i class="ri-close-line"></i></button>
+          </div>
+        `).join('') : '<div class="col-span-full text-center py-8 text-gray-400"><i class="ri-image-line text-3xl"></i><p class="mt-2 text-sm">لا توجد صور بعد</p></div>'}
+      </div>
+    </div>
+  `;
+}
+
+function addBizPhoto(id) {
+  const url = document.getElementById('photo-url-input')?.value?.trim();
+  if (!url) { showToast('أدخل رابط الصورة', 'error'); return; }
+  const b = businesses.find(biz => biz.id === id);
+  if (!b) return;
+  if (!b.photos) b.photos = [];
+  b.photos.push(url);
+  saveData();
+  showToast('تمت إضافة الصورة', 'success');
+  renderDashPhotos(document.getElementById('dashboard-content'), b);
+}
+
+function removeBizPhoto(id, idx) {
+  const b = businesses.find(biz => biz.id === id);
+  if (!b || !b.photos) return;
+  b.photos.splice(idx, 1);
+  saveData();
+  showToast('تم حذف الصورة', 'success');
+  renderDashPhotos(document.getElementById('dashboard-content'), b);
+}
+
+function renderDashReviews(c, b) {
+  const bizReviews = reviews[b.id] || [];
+  const avg = b.rating?.average || 0;
+  const count = (b.rating?.count || 0) + bizReviews.length;
+  const stars = [0,0,0,0,0];
+  bizReviews.forEach(r => { if (r.rating >= 1 && r.rating <= 5) stars[r.rating - 1]++; });
+
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">التقييمات والمراجعات</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center">
+        <div class="text-4xl font-bold mb-1">${avg.toFixed(1)}</div>
+        <div class="flex justify-center gap-1 mb-1">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(avg) ? 'fill text-amber-400' : 'line text-gray-300'}"></i>`).join('')}</div>
+        <div class="text-xs text-gray-400">${count} تقييم</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+        <div class="text-sm font-bold mb-3">توزيع التقييمات</div>
+        ${[5,4,3,2,1].map(s => `<div class="flex items-center gap-2 mb-1"><span class="text-xs w-4">${s}</span><i class="ri-star-fill text-amber-400 text-xs"></i><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full" style="width:${count ? (stars[s-1]/count*100) : 0}%"></div></div><span class="text-xs text-gray-400 w-6">${stars[s-1]}</span></div>`).join('')}
+      </div>
+      <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center">
+        <div class="text-4xl font-bold mb-1">${bizReviews.length}</div>
+        <div class="text-sm text-gray-500">مراجعة مكتوبة</div>
+      </div>
+    </div>
+    <div class="space-y-1">
+      ${bizReviews.length ? bizReviews.map(r => `
+        <div class="bg-white border border-gray-200 rounded-2xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500">${r.userName[0]}</div>
+            <div><div class="font-bold text-sm">${r.userName}</div><div class="text-xs text-gray-400">${r.date}</div></div>
+            <div class="mr-auto flex gap-0.5">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill text-amber-400' : 'line text-gray-300'}"></i>`).join('')}</div>
+          </div>
+          ${r.title ? `<div class="font-bold text-sm mb-1">${r.title}</div>` : ''}
+          ${r.comment ? `<div class="text-gray-500 text-sm">${r.comment}</div>` : ''}
+        </div>
+      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-star-line text-3xl"></i><p class="mt-2">لا توجد تقييمات بعد</p></div>'}
+    </div>
+  `;
+}
+
+function renderDashOffers(c, b) {
+  const offers = b.offers || [];
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">العروض والتسويق</h2>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+      <h3 class="font-bold mb-3">أضف عرض جديد</h3>
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label class="form-label">عنوان العرض</label><input class="form-input" id="offer-title" placeholder="خصم 20% على كل القهوة"></div>
+          <div><label class="form-label">تاريخ الانتهاء</label><input type="date" class="form-input" id="offer-date"></div>
+        </div>
+        <div><label class="form-label">وصف العرض</label><textarea class="form-input" id="offer-desc" rows="2" placeholder="تفاصيل العرض..."></textarea></div>
+        <div><label class="form-label">كود الخصم (اختياري)</label><input class="form-input" id="offer-code" placeholder="SIKKA20"></div>
+        <button onclick="addBizOffer('${b.id}')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-add-line ml-1"></i> نشر العرض</button>
+      </div>
+    </div>
+    <div class="space-y-3">
+      ${offers.length ? offers.map((o, i) => `
+        <div class="bg-white border border-gray-200 rounded-2xl p-5">
+          <div class="flex items-start gap-3">
+            <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0"><i class="ri-megaphone-line text-amber-500 text-xl"></i></div>
+            <div class="flex-1">
+              <h4 class="font-bold">${o.title}</h4>
+              <p class="text-gray-500 text-sm mt-1">${o.description || ''}</p>
+              <div class="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                ${o.endDate ? `<span><i class="ri-calendar-line"></i> ينتهي: ${o.endDate}</span>` : ''}
+                ${o.code ? `<span class="bg-gray-100 px-2 py-0.5 rounded font-mono">${o.code}</span>` : ''}
+              </div>
+            </div>
+            <button onclick="removeBizOffer('${b.id}',${i})" class="text-red-400 hover:text-red-600 text-sm"><i class="ri-delete-bin-line"></i></button>
+          </div>
+        </div>
+      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-megaphone-line text-3xl"></i><p class="mt-2">لا توجد عروض بعد</p></div>'}
+    </div>
+  `;
+}
+
+function addBizOffer(id) {
+  const title = document.getElementById('offer-title')?.value?.trim();
+  const desc = document.getElementById('offer-desc')?.value?.trim();
+  const date = document.getElementById('offer-date')?.value;
+  const code = document.getElementById('offer-code')?.value?.trim();
+  if (!title) { showToast('أدخل عنوان العرض', 'error'); return; }
+  const b = businesses.find(biz => biz.id === id);
+  if (!b) return;
+  if (!b.offers) b.offers = [];
+  b.offers.push({ title, description: desc, endDate: date, code, createdAt: new Date().toISOString() });
+  saveData();
+  showToast('تم نشر العرض', 'success');
+  renderDashOffers(document.getElementById('dashboard-content'), b);
+}
+
+function removeBizOffer(id, idx) {
+  const b = businesses.find(biz => biz.id === id);
+  if (!b || !b.offers) return;
+  b.offers.splice(idx, 1);
+  saveData();
+  showToast('تم حذف العرض', 'success');
+  renderDashOffers(document.getElementById('dashboard-content'), b);
+}
+
+function renderDashSettings(c, b) {
+  c.innerHTML = `
+    <h2 class="text-2xl font-bold mb-6">إعدادات الحساب</h2>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+      <h3 class="font-bold mb-3">معلومات الحساب</h3>
+      <div class="space-y-3">
+        <div><label class="form-label">الاسم</label><input class="form-input" id="set-name" value="${currentUser.name}"></div>
+        <div><label class="form-label">البريد الإلكتروني</label><input class="form-input" id="set-email" value="${currentUser.email}" disabled></div>
+        <button onclick="saveDashSettings()" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-save-line ml-1"></i> حفظ</button>
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <h3 class="font-bold mb-3">حذف الحساب</h3>
+      <p class="text-gray-500 text-sm mb-4">حذف الحساب يعني حذف جميع بياناتك نهائياً</p>
+      <button onclick="deleteDashAccount('${b.id}')" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl font-medium hover:bg-red-100 transition-all text-sm"><i class="ri-delete-bin-line ml-1"></i> حذف الحساب والنشاط</button>
+    </div>
+  `;
+}
+
+function saveDashSettings() {
+  const name = document.getElementById('set-name')?.value?.trim();
+  if (!name) { showToast('أدخل الاسم', 'error'); return; }
+  currentUser.name = name;
+  localStorage.setItem('sikka_current_user', JSON.stringify(currentUser));
+  const u = users.find(u => u.id === currentUser.id);
+  if (u) u.name = name;
+  saveData();
+  updateAuthUI();
+  showToast('تم حفظ المعلومات', 'success');
+}
+
+function deleteDashAccount(bizId) {
+  if (!confirm('هل أنت متأكد من حذف حسابك ونشاطك؟')) return;
+  businesses = businesses.filter(b => b.id !== bizId);
+  users = users.filter(u => u.id !== currentUser.id);
+  reviews[bizId] = undefined;
+  delete reviews[bizId];
+  saveData();
+  logout();
+  showToast('تم الحذف بنجاح', 'success');
 }
 
 // ==================== REVIEWS ====================
@@ -720,9 +1119,13 @@ function submitBusiness() {
     },
     rating: { average: 0, count: 0 },
     status: 'approved',
+    ownerId: currentUser.id,
     userId: currentUser.id,
     userName: currentUser.name,
     isVerified: false,
+    photos: [],
+    offers: [],
+    views: 0,
     createdAt: new Date().toISOString()
   };
 
