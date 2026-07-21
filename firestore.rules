@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ==================== HELPER FUNCTIONS ====================
+    
+    // Check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+    
+    // Check if user is admin (stored in Firestore, NOT by email)
+    function isAdmin() {
+      return isAuth() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Check if user owns the document
+    function isOwner(ownerId) {
+      return isAuth() && request.auth.uid == ownerId;
+    }
+
+    // ==================== BUSINESSES ====================
+    match /businesses/{bizId} {
+      // Anyone can read approved businesses
+      allow read: if resource.data.status == 'approved';
+      
+      // Admin can read all businesses (including pending/rejected)
+      allow read: if isAdmin();
+      
+      // Authenticated users can create a new business (status must be 'pending')
+      allow create: if isAuth() && 
+                       request.resource.data.ownerId == request.auth.uid &&
+                       request.resource.data.status == 'pending';
+      
+      // Owner can update their own business (except status and ownerId fields)
+      allow update: if isOwner(resource.data.ownerId) &&
+                       request.resource.data.status == resource.data.status && // Cannot change status
+                       request.resource.data.ownerId == resource.data.ownerId; // Cannot change owner
+      
+      // Admin can update any business (including status changes)
+      allow update: if isAdmin();
+      
+      // Only admin can delete
+      allow delete: if isAdmin();
+    }
+
+    // ==================== REVIEWS ====================
+    match /reviews/{bizId} {
+      // Anyone can read reviews
+      allow read: if true;
+      
+      // Only authenticated users can write reviews
+      allow write: if isAuth();
+    }
+
+    // ==================== USERS ====================
+    match /users/{userId} {
+      // User can only read their own data
+      allow read: if isAuth() && request.auth.uid == userId;
+      
+      // Admin can read all users
+      allow read: if isAdmin();
+      
+      // User can only write their own data (but CANNOT set isAdmin = true)
+      allow create, update: if isAuth() && 
+                               request.auth.uid == userId &&
+                               request.resource.data.isAdmin == false; // CRITICAL: Block self-admin
+      
+      // Only existing admin can set isAdmin = true on other users
+      allow update: if isAdmin();
+      
+      // User can delete their own account
+      allow delete: if isAuth() && request.auth.uid == userId;
+    }
+
+    // ==================== DEFAULT: DENY ALL ====================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

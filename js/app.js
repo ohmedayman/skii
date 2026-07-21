@@ -1,5 +1,22 @@
 // ==================== SIKKA - Smart Business Directory ====================
 
+// ==================== SECURITY HELPERS ====================
+// HTML Sanitization to prevent XSS attacks
+function sanitize(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(String(str)));
+  return div.innerHTML;
+}
+
+// Sanitize object fields recursively (for business data)
+function sanitizeObj(obj, fields) {
+  if (!obj) return obj;
+  const result = { ...obj };
+  fields.forEach(f => { if (result[f]) result[f] = sanitize(result[f]); });
+  return result;
+}
+
 // ==================== FIREBASE INIT ====================
 const firebaseConfig = {
   apiKey: "AIzaSyDEYpUv2SQvwiY17o9cSxQnsHWVp2yRrW0",
@@ -107,33 +124,33 @@ function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
 
 const GOVERNORATES = {
-  'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','البساتين','التبين','النزهة'],
-  'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','العجمي','البدرشين','الحوامدية','الصف'],
-  'الإسكندرية': ['سيدي جابر','ميامي','سموحة','المنشية','الرمل','كركدان','باكوس','كفر عبده','العصافرة','برج العرب','الدخيلة','محرم بك','كينج مريوط','القباري'],
-  'القليوبية': ['بنها','شبرا الخيمة','طوخ','قليوب','العبور','الشرق','الخصوص','شبين القناطر'],
-  'المنوفية': ['شبين الكوم','منوف','سرس الليان','الباجور','أشمون','تلا','بركة السبع','الشهداء'],
-  'الغربية': ['طنطا','المحلة الكبرى','كفر الزيات','زفتى','سمنود','قطور','بسيون'],
-  'البحيرة': ['دمنهور','كفر الدوار','رشيد','إدكو','النوبارية','الرحمانية','شبراخيت','الحمادي'],
-  'الشرقية': ['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','أبو كبير','القنايات','أبو حماد','فاقوس'],
-  'الدقهلية': ['المنصورة','طلخا','ميت غمر','دكرنس','السنبلاوين','أجا','منية النصر','شربين','كفر سعد','الكردي'],
-  'الفيوم': ['الفيوم','إطسا','سنورس','طامية','الفيوم الجديدة','يوسف الصديق'],
-  'بني سويف': ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطرا','العباسية'],
-  'المنيا': ['المنيا','ملوي','أبوقرقاص','سمالوط','العدوة','مغاغة','بني مزار','مطاي'],
-  'أسيوط': ['أسيوط','البداري','الغنايم','ديروط','منفلوط','أبو تيج','صدفا'],
-  'سوهاج': ['سوهاج','طهطا','البلينا','العريش','المراغة','الساحل','طما'],
-  'قنا': ['قنا','قوص','نجع حمادي','الوقف','دشنا','فرشوط','أبو تشت','نقادة','إسنا'],
+  'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','البساتين','التبين','النزهة','الدرب الأحمر','السيدة زينب','الخليفة','عابدين','قصر النيل','بولاق','الأزبكية','الجمالية','باب الشعرية','روض الفرج','الساحل','حدائق القبة','الزاوية الحمراء','شبرا الخيمة'],
+  'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','البدرشين','الحوامدية','الصف','العياط','أطفيح','أوسيم','إمبابة'],
+  'الإسكندرية': ['سيدي جابر','ميامي','سموحة','المنشية','الرمل','باكوس','العصافرة','برج العرب','الدخيلة','محرم بك','الجمرك','العامرية','الساحل الشمالي'],
+  'القليوبية': ['بنها','شبرا الخيمة','طوخ','قليوب','العبور','الخصوص','شبين القناطر','الخانكة','القناطر الخيرية','كفر شكر','قها'],
+  'المنوفية': ['شبين الكوم','منوف','سرس الليان','الباجور','أشمون','تلا','بركة السبع','الشهداء','قويسنا','السادات'],
+  'الغربية': ['طنطا','المحلة الكبرى','كفر الزيات','زفتى','سمنود','قطور','بسيون','السنطة'],
+  'البحيرة': ['دمنهور','كفر الدوار','رشيد','إدكو','النوبارية','الرحمانية','شبراخيت','ابوالمطامير','ابوحمص','الدلنجات','المحمودية','إيتاى البارود','حوش عيسى','كوم حمادة','وادي النطرون','بدر'],
+  'الشرقية': ['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','أبو كبير','القنايات','أبو حماد','فاقوس','الحسينية','ديرب نجم','كفر صقر','ههيا','مشتول السوق','الأبراهيمية','أولاد صقر','الصالحية الجديدة','القرين'],
+  'الدقهلية': ['المنصورة','طلخا','ميت غمر','دكرنس','السنبلاوين','أجا','منية النصر','شربين','كفر سعد','المطرية','المنزلة','بلقاس','الجمالية','تمى الأمديد','محلة دمنة','نبروة','بني عبيد'],
+  'الفيوم': ['الفيوم','إطسا','سنورس','طامية','الفيوم الجديدة','يوسف الصديق','أبشواي'],
+  'بني سويف': ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطرا','الفشن'],
+  'المنيا': ['المنيا','ملوي','أبوقرقاص','سمالوط','العدوة','مغاغة','بني مزار','مطاي','دير مواس'],
+  'أسيوط': ['أسيوط','البداري','الغنايم','ديروط','منفلوط','أبو تيج','صدفا','أبنوب','ساحل سليم','القوصية','الفتح'],
+  'سوهاج': ['سوهاج','طهطا','البلينا','العريش','المراغة','الساحل','طما','أخميم','المنشاة','دار السلام','جرجا','ساقلته','جهينة الغربية','العسيرات'],
+  'قنا': ['قنا','قوص','نجع حمادي','الوقف','دشنا','فرشوط','أبو تشت','نقادة','إسنا','أرمنت','قفط','أبو طشت'],
   'الأقصر': ['الأقصر','البياضية','القرناصنة','إسنا','طيبة الجديدة'],
-  'أسوان': ['أسوان','دراو','كوم أمبو','نصر النوبة','إدفو'],
-  'البحر الأحمر': ['الغردقة','مرسى علم','الجونة','السخنة','الدهب','شرم الشيخ','رأس سدر'],
-  'الإسماعيلية': ['الإسماعيلية','التل الكبير','أبو صوير','القنطرة شرق','القنطرة غرب'],
-  'السويس': ['السويس','الجناين','عين موسى'],
-  'بورسعيد': ['بورسعيد','الضواحي'],
-  'دمياط': ['دمياط','دمياط الجديدة','الروضة','الزرقا','فارسكور','كفر سعد'],
-  'كفر الشيخ': ['كفر الشيخ','دسوق','بيلا','الحامول','سيدي سالم','قلين'],
-  'شمال سيناء': ['العريش','رفح','بئر العبد','الشيخ زويد'],
-  'جنوب سيناء': ['طور سيناء','شرم الشيخ','دهب','أبو زنيمة','أبو رديس'],
-  'مطروح': ['مرسى مطروح','الحمام','العلمين','سيدي براني','سيوة'],
-  'الوادي الجديد': ['الخارجة','الداخلة','الفرافرة'],
+  'أسوان': ['أسوان','دراو','كوم أمبو','نصر النوبة','إدفو','أبو سنبل'],
+  'البحر الأحمر': ['الغردقة','مرسى علم','الجونة','السخنة','الدهب','شرم الشيخ','رأس سدر','القصير','سفاجا','رأس غارب','شلاتين','حلايب'],
+  'الإسماعيلية': ['الإسماعيلية','التل الكبير','فايد','القنطرة شرق','القنطرة غرب'],
+  'السويس': ['السويس','الجناين','عتاقة','فيصل','الأربعين'],
+  'بورسعيد': ['بورسعيد','الضواحي','الزهور','بور فؤاد'],
+  'دمياط': ['دمياط','دمياط الجديدة','الروضة','الزرقا','فارسكور','كفر سعد','رأس البر'],
+  'كفر الشيخ': ['كفر الشيخ','دسوق','بيلا','الحامول','سيدي سالم','قلين','البرلس','فوه','مطوبس','الرياض'],
+  'شمال سيناء': ['العريش','رفح','بئر العبد','الشيخ زويد','نخل','الحسنة','رمانة','القسيمة'],
+  'جنوب سيناء': ['طور سيناء','شرم الشيخ','دهب','أبو زنيمة','أبو رديس','رأس سدر','سانت كاترين','نويبع','طابا'],
+  'مطروح': ['مرسى مطروح','الحمام','العلمين','سيدي براني','سيوة','السلوم','الضبعة'],
+  'الوادي الجديد': ['الخارجة','الداخلة','الفرافرة','باريس'],
 };
 
 const CITIES = Object.keys(GOVERNORATES);
@@ -147,19 +164,33 @@ function saveLocal() {
 }
 
 async function saveBizToFirestore(biz) {
-  try { await db.collection('businesses').doc(biz.id).set(biz); } catch(e) { console.log('Firestore write error:', e); }
+  try { await db.collection('businesses').doc(biz.id).set(biz); } catch(e) { /* Firestore write error */ }
 }
 
 async function deleteBizFromFirestore(id) {
-  try { await db.collection('businesses').doc(id).delete(); } catch(e) { console.log('Firestore delete error:', e); }
+  try { await db.collection('businesses').doc(id).delete(); } catch(e) { /* Firestore delete error */ }
 }
 
 async function saveReviewToFirestore(bizId, items) {
-  try { await db.collection('reviews').doc(bizId).set({ items }); } catch(e) { console.log('Firestore reviews error:', e); }
+  try { await db.collection('reviews').doc(bizId).set({ items }); } catch(e) { /* Firestore reviews error */ }
 }
 
 async function saveUserToFirestore(user) {
-  try { await db.collection('users').doc(user.id).set(user); } catch(e) { console.log('Firestore user error:', e); }
+  try { await db.collection('users').doc(user.id).set(user); } catch(e) { /* Firestore user error */ }
+}
+
+// ==================== ADMIN CHECK FROM FIRESTORE ====================
+// Security: check admin status from Firestore, not just from email
+async function checkAdminFromFirestore(uid) {
+  try {
+    const doc = await db.collection('users').doc(uid).get();
+    if (doc.exists) {
+      return doc.data().isAdmin === true;
+    }
+    return false;
+  } catch(e) {
+    return false;
+  }
 }
 
 function startRealtimeSync() {
@@ -173,14 +204,14 @@ function startRealtimeSync() {
       if (h === '#/home') loadHome();
       else if (h === '#/businesses') loadAllBusinesses();
     }
-  }, err => console.log('Firestore businesses listen error:', err));
+  }, err => { /* Firestore businesses listen error */ });
 
   db.collection('reviews').onSnapshot(snap => {
     const remote = {};
     snap.forEach(doc => { remote[doc.id] = doc.data().items || []; });
     reviews = remote;
     saveLocal();
-  }, err => console.log('Firestore reviews listen error:', err));
+  }, err => { /* Firestore reviews listen error */ });
 }
 
 async function saveData() {
@@ -196,11 +227,6 @@ async function loadData() {
     businesses = b ? JSON.parse(b) : [...DEFAULT_BUSINESSES];
     reviews = r ? JSON.parse(r) : {};
     users = u ? JSON.parse(u) : [];
-
-    if (!users.find(u => u.email === 'admin@sikka.com')) {
-      users.push({ id: 'admin_001', name: 'مدير سِكّة', email: 'admin@sikka.com', password: 'admin123', isAdmin: true, createdAt: new Date().toISOString() });
-      saveLocal();
-    }
 
     db.collection('businesses').get().then(snap => {
       const remote = [];
@@ -637,10 +663,12 @@ function loginWithEmail() {
     return;
   }
 
-  auth.signInWithEmailAndPassword(email, pass).then(cred => {
+  auth.signInWithEmailAndPassword(email, pass).then(async cred => {
     const uid = cred.user.uid;
-    const name = cred.user.displayName || email.split('@')[0];
-    const userObj = { id: uid, name, email, isAdmin: email === 'admin@sikka.com' };
+    const name = sanitize(cred.user.displayName || email.split('@')[0]);
+    // Security: Check admin status from Firestore, not from email string
+    const isAdmin = await checkAdminFromFirestore(uid);
+    const userObj = { id: uid, name, email, isAdmin };
     currentUser = userObj;
     localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
     db.collection('users').doc(uid).set(userObj, { merge: true });
@@ -657,22 +685,29 @@ function loginWithEmail() {
 }
 
 function signupWithEmail() {
-  const name = document.getElementById('signup-name')?.value;
-  const email = document.getElementById('signup-email')?.value;
+  const name = document.getElementById('signup-name')?.value?.trim();
+  const email = document.getElementById('signup-email')?.value?.trim();
   const pass = document.getElementById('signup-password')?.value;
   const errEl = document.getElementById('signup-error');
 
   if (!name || !email || !pass) { errEl.textContent = 'ابدأ كل الخانات'; errEl.classList.remove('hidden'); return; }
-  if (pass.length < 4) { errEl.textContent = 'كلمة السر لازم تكون 4 حروف على الأقل'; errEl.classList.remove('hidden'); return; }
+  if (pass.length < 6) { errEl.textContent = 'كلمة السر لازم تكون 6 حروف على الأقل'; errEl.classList.remove('hidden'); return; }
+  // Security: Reject registration with admin email
+  if (email.toLowerCase() === 'admin@sikka.com') {
+    errEl.textContent = 'الإيميل ده محجوز - استخدم إيميل تاني';
+    errEl.classList.remove('hidden');
+    return;
+  }
 
   auth.createUserWithEmailAndPassword(email, pass).then(cred => {
+    const safeName = sanitize(name);
     const userObj = {
-      id: cred.user.uid, name, email, isAdmin: email === 'admin@sikka.com',
+      id: cred.user.uid, name: safeName, email, isAdmin: false, // Never grant admin via signup
       governorate: document.getElementById('signup-gov')?.value || '',
       center: document.getElementById('signup-center')?.value || '',
       createdAt: new Date().toISOString()
     };
-    cred.user.updateProfile({ displayName: name });
+    cred.user.updateProfile({ displayName: safeName });
     db.collection('users').doc(cred.user.uid).set(userObj);
     currentUser = userObj;
     localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
@@ -688,16 +723,19 @@ function signupWithEmail() {
 }
 
 function loginWithGoogle() {
-  auth.signInWithPopup(provider).then(result => {
+  auth.signInWithPopup(provider).then(async result => {
     const u = result.user;
-    const userObj = { id: u.uid, name: u.displayName, email: u.email, isAdmin: u.email === 'admin@sikka.com', createdAt: new Date().toISOString() };
+    // Security: Check admin from Firestore, not email
+    const isAdmin = await checkAdminFromFirestore(u.uid);
+    const safeName = sanitize(u.displayName || u.email.split('@')[0]);
+    const userObj = { id: u.uid, name: safeName, email: u.email, isAdmin, createdAt: new Date().toISOString() };
     db.collection('users').doc(u.uid).set(userObj, { merge: true });
     currentUser = userObj;
     localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
     hideAuthModal();
     hideSignupModal();
     updateAuthUI();
-    showToast('أهلاً بيك ' + u.displayName + '!');
+    showToast('أهلاً بيك ' + safeName + '!');
   }).catch(err => {
     showToast('في مشكلة في تسجيل الدخول - حاول تاني');
   });
@@ -734,9 +772,12 @@ function hideLoginGate() {
   hideAuthModal();
 }
 
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   if (user) {
-    const userObj = { id: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email, isAdmin: user.email === 'admin@sikka.com' };
+    // Security: Check admin from Firestore, not email
+    const isAdmin = await checkAdminFromFirestore(user.uid);
+    const safeName = sanitize(user.displayName || user.email.split('@')[0]);
+    const userObj = { id: user.uid, name: safeName, email: user.email, isAdmin };
     currentUser = userObj;
     localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
     authReady = true;
@@ -1953,9 +1994,14 @@ function renderDashEdit(c, b) {
 function saveDashEdit(id) {
   const b = businesses.find(biz => biz.id === id);
   if (!b) return;
-  b.nameAr = document.getElementById('de-nameAr').value;
-  b.nameEn = document.getElementById('de-nameEn').value;
-  b.description = document.getElementById('de-desc').value;
+  // Security: Only the owner can edit their business
+  if (!currentUser || (b.ownerId !== currentUser.id && !currentUser.isAdmin)) {
+    showToast('مش مسموح لك بتعديل ده', 'error');
+    return;
+  }
+  b.nameAr = sanitize(document.getElementById('de-nameAr').value);
+  b.nameEn = sanitize(document.getElementById('de-nameEn').value);
+  b.description = sanitize(document.getElementById('de-desc').value);
   b.location = b.location || {};
   b.location.city = document.getElementById('de-city').value;
   b.location.district = document.getElementById('de-district').value;
@@ -2443,16 +2489,33 @@ function setRating(r) {
 function submitReview() {
   if (!currentUser) { showAuthModal(); return; }
   if (!currentRating) { showToast('اختار تقييم', 'error'); return; }
-  const title = document.getElementById('review-title')?.value;
-  const text = document.getElementById('review-text')?.value;
 
+  // Security: Rate limiting - prevent duplicate reviews from same user
   if (!reviews[currentReviewBizId]) reviews[currentReviewBizId] = [];
+  const alreadyReviewed = reviews[currentReviewBizId].find(r => r.userId === currentUser.id);
+  if (alreadyReviewed) {
+    showToast('قيّمت الشغل ده قبل كده', 'error');
+    closeReviewModal();
+    return;
+  }
+
+  // Security: Check user is not reviewing their own business
+  const biz = businesses.find(b => b.id === currentReviewBizId);
+  if (biz && biz.ownerId === currentUser.id) {
+    showToast('مش ممكن تقيّم شغلك نفسك', 'error');
+    closeReviewModal();
+    return;
+  }
+
+  const title = sanitize(document.getElementById('review-title')?.value || '');
+  const text = sanitize(document.getElementById('review-text')?.value || '');
+
   reviews[currentReviewBizId].push({
     userId: currentUser.id,
-    userName: currentUser.name,
+    userName: sanitize(currentUser.name),
     rating: currentRating,
-    title: title || '',
-    comment: text || '',
+    title,
+    comment: text,
     date: new Date().toLocaleDateString('ar-EG')
   });
 
@@ -2878,6 +2941,8 @@ function loadAdmin() {
 }
 
 function approveBusiness(id, status) {
+  // Security: Only admins can approve/reject businesses
+  if (!currentUser?.isAdmin) { showToast('مش مسموح', 'error'); return; }
   const b = businesses.find(biz => biz.id === id);
   if (!b) return;
   b.status = status;
@@ -2899,6 +2964,8 @@ function approveBusiness(id, status) {
 }
 
 function deleteBusiness(id) {
+  // Security: Only admins can delete any business
+  if (!currentUser?.isAdmin) { showToast('مش مسموح', 'error'); return; }
   if (!confirm('متأكد من الحذف؟')) return;
   businesses = businesses.filter(b => b.id !== id);
   delete reviews[id];
