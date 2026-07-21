@@ -78,6 +78,72 @@ const DEFAULT_BUSINESSES = [
     { id:'p18', name:'تذكرة دخول', desc:'تذكرة دخول للمتحف', price:'200', image:'', category:'تذاكر' },
     { id:'p19', name:'جولة مع مرشد', desc:'جولة مع مرشد سياحي', price:'500', image:'', category:'جولات' },
   ], createdAt:'2025-03-10' },
+
+  // ==================== فييوم — أماكن حقيقية ====================
+  { id:'fy1', name:'كافيه لافيندا', nameAr:'كافيه لافيندا', nameEn:'Lavinda Cafe', categoryNameAr:'المقاهي', location:{ city:'الفيوم', district:'الفيوم الجديدة', address:'شارع الحرفيين — الفيوم الجديدة' }, contact:{ phone:'0842315500', whatsapp:'20842315500' }, description:'كافيه لافيندا من أكتر الأماكن المفضلة في الفيوم الجديدة — بيقدم قهوة مختصة وحلويات وآيس كريم في أجواء هادية ومليانة ناس.', keywords:['قهوة','كافيه','آيس كريم','حلويات','مقهى'], workingHours:{ saturday:'9:00 ص - 1:00 م', sunday:'9:00 ص - 1:00 م', monday:'9:00 ص - 1:00 م', tuesday:'9:00 ص - 1:00 م', wednesday:'9:00 ص - 1:00 م', thursday:'9:00 ص - 1:00 م', friday:'2:00 م - 1:00 م' }, rating:{ average:4.6, count:180 }, status:'approved', isVerified:true, ownerId:'demo', views:420, photos:[], offers:[], products:[
+    { id:'fp1', name:'إسبريسو', desc:'إسبريسو مزدوج', price:'25', image:'', category:'قهوة' },
+    { id:'fp2', name:'كابتشينو', desc:'كابتشينو كلاسيكي بالفانيلا', price:'35', image:'', category:'قهوة' },
+    { id:'fp3', name:'موكا شوكولاتة', desc:'موكا بالشوكولاتة البلجيكية', price:'40', image:'', category:'قهوة' },
+    { id:'fp4', name:'آيس لاتيه', desc:'لاتيه بارد بالثلج والحليب', price:'38', image:'', category:'مشروبات باردة' },
+    { id:'fp5', name:'فاهيتا دجاج', desc:'فاهيتا دجاج مع خضار مشوية وصوص', price:'85', image:'', category:'أكل' },
+    { id:'fp6', name:'ساندويتش تشيكن رانش', desc:'دجاج مشوي مع صلصة رانش', price:'55', image:'', category:'ساندويتشات' },
+  ], createdAt:'2025-01-05' },
+
+  { id:'fy2', name:'مطعم الكشك', nameAr:'مطعم الكشك', nameEn:'El Koshk Restaurant', categoryNameAr:'المطاعم', location:{ city:'الفيوم', district:'الفيوم', address:'شارع سعد زغلول — وسط الفيوم' }, contact:{ phone:'0842234567', whatsapp:'20842234567' }, description:'مطعم الكشك من أقدم المطاعم في الفيوم — بيقدم أكل مصري أصيل: كشري فيومي وmolokhia ولحمة وفراخ مشوية بأسعار شعبية.', keywords:['مطعم','أكل مصري','كشري','لحمة','فراخ'], workingHours:{ saturday:'11:00 ص - 12:00 م', sunday:'11:00 ص - 12:00 م', monday:'11:00 ص - 12:00 م', tuesday:'11:00 ص - 12:00 م', wednesday:'11:00 ص - 12:00 م', thursday:'11:00 ص - 12:00 م', friday:'1:00 م - 12:00 م' }, rating:{ average:4.4, count:250 }, status:'approved', isVerified:true, ownerId:'demo', views:550, photos:[], offers:[], products:[
+    { id:'fp7', name:'كشري فيومي', desc:'كشري فيومي أصيل مع عدس وصلصة', price:'30', image:'', category:'أكل' },
+    { id:'fp8', name:'ملوخية بلدي', desc:'ملوخية بلدي بالثوم والليمون', price:'35', image:'', category:'أكل' },
+    { id:'fp9', name:'فراخ مشوية', desc:'فرخة كاملة مشوية على الفحم', price:'90', image:'', category:'لحوم' },
+    { id:'fp10', name:'لحمة بلدي', desc:'لحمة بلدي مشوية مع أرز وبصل مكرمل', price:'110', image:'', category:'لحوم' },
+    { id:'fp11', name:'رمضان كتافه', desc:'ساندويتش كتافه بلدي', price:'45', image:'', category:'ساندويتشات' },
+  ], createdAt:'2025-01-10' },
+
+  { id:'fy3', name:'صيدلية العزبي', nameAr:'صيدلية العزبي', nameEn:'El Azbey Pharmacy', categoryNameAr:'الصحة', location:{ city:'الفيوم', district:'الفيوم', address:'شارع الحلو — وسط البلد' }, contact:{ phone:'0842231234' }, description:'صيدلية العزبي من أقدم الصيدليات في الفيوم — بتوفر كل الأدوية والمستلزمات الطبية بأسعار مناسبة ونصح طبي متخصص.', keywords:['صيدلية','أدوية','صحة','مستلزمات طبية'], workingHours:{ saturday:'9:00 ص - 12:00 م', sunday:'9:00 ص - 12:00 م', monday:'9:00 ص - 12:00 م', tuesday:'9:00 ص - 12:00 م', wednesday:'9:00 ص - 12:00 م', thursday:'9:00 ص - 12:00 م', friday:'4:00 م - 12:00 م' }, rating:{ average:4.3, count:90 }, status:'approved', isVerified:false, ownerId:'demo', views:180, photos:[], offers:[], products:[
+    { id:'fp12', name:'مسكن ألم', desc:'مسكن ألم سريع المفعول', price:'15', image:'', category:'أدوية' },
+    { id:'fp13', name:'فيتامين سي', desc:'فيتامين سي 1000 مجم', price:'45', image:'', category:'مكملات' },
+    { id:'fp14', name:'واقي شمس', desc:'واقي شمس SPF 50', price:'80', image:'', category:'عناية' },
+  ], createdAt:'2025-02-01' },
+
+  { id:'fy4', name:'محل أبو تالة للمواد الغذائية', nameAr:'محل أبو تالة', nameEn:'Abu Talaa Grocery', categoryNameAr:'التجزئة', location:{ city:'الفيوم', district:'الفيوم', address:'شارع الجيش — الفيوم' }, contact:{ phone:'0842235678' }, description:'محل أبو تالة من أكبر محلات البقالة في الفيوم — فيه كل أنواع المواد الغذائية والمشروبات والمستلزمات اليومية.', keywords:['بقالة','مواد غذائية','تسوق','مشروبات'], workingHours:{ saturday:'8:00 ص - 11:00 م', sunday:'8:00 ص - 11:00 م', monday:'8:00 ص - 11:00 م', tuesday:'8:00 ص - 11:00 م', wednesday:'8:00 ص - 11:00 م', thursday:'8:00 ص - 11:00 م', friday:'8:00 ص - 11:00 م' }, rating:{ average:4.1, count:60 }, status:'approved', isVerified:false, ownerId:'demo', views:120, photos:[], offers:[], products:[
+    { id:'fp15', name:'زيت زيتون', desc:'زيت زيتون بكر ممتاز', price:'120', image:'', category:'مواد غذائية' },
+    { id:'fp16', name:'أرز مصري', desc:'أرز مصري طويل الحبة 5 كيلو', price:'65', image:'', category:'مواد غذائية' },
+    { id:'fp17', name:'سكر أبيض', desc:'سكر أبيض ناعم 2 كيلو', price:'30', image:'', category:'مواد غذائية' },
+  ], createdAt:'2025-02-15' },
+
+  { id:'fy5', name:'بنك مصر — الفيوم', nameAr:'بنك مصر الفيوم', nameEn:'Banque Misr Faiyum', categoryNameAr:'البنوك', location:{ city:'الفيوم', district:'الفيوم', address:'شارع سعد زغلول — وسط البلد' }, contact:{ phone:'0842234000' }, description:'فرع بنك مصر في الفيوم — بيقدم كل الخدمات البنكية: حسابات توفير ودولي وقروض شخصية وكرت ائتمان.', keywords:['بنك','حساب','قروض','خدمات مالية','بنك مصر'], brands:['Banque Misr'], workingHours:{ saturday:'8:30 ص - 2:30 م', sunday:'8:30 ص - 2:30 م', monday:'8:30 ص - 2:30 م', tuesday:'8:30 ص - 2:30 م', wednesday:'8:30 ص - 2:30 م', thursday:'8:30 ص - 2:30 م', friday:'مغلق' }, rating:{ average:3.8, count:150 }, status:'approved', isVerified:true, ownerId:'demo', views:300, photos:[], offers:[], products:[
+    { id:'fp18', name:'حساب توفير', desc:'حساب توفير بشروط ميسرة', price:'', image:'', category:'حسابات' },
+    { id:'fp19', name:'قروض شخصية', desc:'قروض بفوائد تنافسية', price:'', image:'', category:'قروض' },
+  ], createdAt:'2025-01-01' },
+
+  { id:'fy6', name:'محل الشعبي للأقمشة', nameAr:'الشعبي للأقمشة', nameEn:'El Shaaby Fabrics', categoryNameAr:'الأزياء', location:{ city:'الفيوم', district:'الفيوم', address:'سوق شارع الجيش — الفيوم' }, contact:{ phone:'0842237890' }, description:'محل الشعبي من أكبر محلات الأقمشة في الفيوم — فيه أقمشة مصري وturkish وصيني لكل الأذواق والمقاسات.', keywords:['أقمشة','خياطة','ملابس','سوق'], workingHours:{ saturday:'10:00 ص - 9:00 م', sunday:'10:00 ص - 9:00 م', monday:'10:00 ص - 9:00 م', tuesday:'10:00 ص - 9:00 م', wednesday:'10:00 ص - 9:00 م', thursday:'10:00 ص - 9:00 م', friday:'4:00 م - 9:00 م' }, rating:{ average:4.0, count:45 }, status:'approved', isVerified:false, ownerId:'demo', views:90, photos:[], offers:[], products:[
+    { id:'fp20', name:'قماش قطن مصري', desc:'متر قماش قطن مصري 100%', price:'45', image:'', category:'أقمشة' },
+    { id:'fp21', name:'قماش كريب تركي', desc:'متر قماش كريب تركي فاخر', price:'80', image:'', category:'أقمشة' },
+    { id:'fp22', name:'قماش حرير صيني', desc:'متر قماش حرير صيني ملون', price:'120', image:'', category:'أقمشة' },
+  ], createdAt:'2025-03-05' },
+
+  { id:'fy7', name:'عيادة د. أحمد فتحي', nameAr:'عيادة د. أحمد فتحي', nameEn:'Dr. Ahmed Fathy Clinic', categoryNameAr:'الصحة', location:{ city:'الفيوم', district:'الفيوم الجديدة', address:'شارع الجيش — الفيوم الجديدة' }, contact:{ phone:'0842316789', whatsapp:'20842316789' }, description:'عيادة د. أحمد فتحي للتخصصات الداخلية — كشف عام وأمراض القلب والضغط والسكري بخبرة أكتر من 15 سنة.', keywords:['عيادة','طبيب','قلب','ضغط','سكري','内部'], workingHours:{ saturday:'5:00 م - 9:00 م', sunday:'5:00 م - 9:00 م', monday:'5:00 م - 9:00 م', tuesday:'5:00 م - 9:00 م', wednesday:'5:00 م - 9:00 م', thursday:'5:00 م - 9:00 م', friday:'مغلق' }, rating:{ average:4.7, count:200 }, status:'approved', isVerified:true, ownerId:'demo', views:350, photos:[], offers:[], products:[
+    { id:'fp23', name:'كشف عام', desc:'كشف شامل مع تحاليل', price:'300', image:'', category:'خدمات' },
+    { id:'fp24', name:'استشارة قلب', desc:'استشارة أخصائي قلب', price:'400', image:'', category:'استشارات' },
+    { id:'fp25', name:'ضغط وسكري', desc:'متابعة أمراض ضغط وسكري', price:'250', image:'', category:'خدمات' },
+  ], createdAt:'2025-01-20' },
+
+  { id:'fy8', name:'محل الحلواني للموبيليات', nameAr:'الحلواني للموبيليات', nameEn:'El Halwany Furniture', categoryNameAr:'التجزئة', location:{ city:'الفيوم', district:'الفيوم', address:'شارع المحطة — الفيوم' }, contact:{ phone:'0842239012' }, description:'محل الحلواني من أكبر محلات الموبيليات في الفيوم — أنتريهات وسرير ودولاب ومطبخ بجودة عالية وأسعار مناسبة.', keywords:['موبيليات','أنتريه','سرير','دولاب','مطبخ'], workingHours:{ saturday:'10:00 ص - 9:00 م', sunday:'10:00 ص - 9:00 م', monday:'10:00 ص - 9:00 م', tuesday:'10:00 ص - 9:00 م', wednesday:'10:00 ص - 9:00 م', thursday:'10:00 ص - 9:00 م', friday:'مغلق' }, rating:{ average:4.2, count:75 }, status:'approved', isVerified:false, ownerId:'demo', views:200, photos:[], offers:[], products:[
+    { id:'fp26', name:'أنتريه 7 قطع', desc:'أنتريه 7 قطع قماش تركي', price:'8500', image:'', category:'أنتريهات' },
+    { id:'fp27', name:'سرير خشبي', desc:'سرير خشبي مزدوج مع طاولات', price:'4500', image:'', category:'أسرة' },
+    { id:'fp28', name:'دولاب ملابس', desc:'دولاب ملابس 4 باب', price:'6000', image:'', category:'دولايب' },
+  ], createdAt:'2025-02-10' },
+
+  { id:'fy9', name:'سنترال فييوم', nameAr:'سنترال فييوم', nameEn:'Central Faiyum', categoryNameAr:'الاتصالات', location:{ city:'الفيوم', district:'الفيوم', address:'شارع الحلو — وسط البلد' }, contact:{ phone:'0842233456' }, description:'سنترال فييوم — بيوفر كل خدمات المحمول والإنترنت: شحن رصيد وتفعيل باقات وتصليح موبايلات.', keywords:['موبايل','شحن','إنترنت','اتصالات','تصليح'], workingHours:{ saturday:'10:00 ص - 10:00 م', sunday:'10:00 ص - 10:00 م', monday:'10:00 ص - 10:00 م', tuesday:'10:00 ص - 10:00 م', wednesday:'10:00 ص - 10:00 م', thursday:'10:00 ص - 10:00 م', friday:'2:00 م - 10:00 م' }, rating:{ average:3.9, count:110 }, status:'approved', isVerified:false, ownerId:'demo', views:250, photos:[], offers:[], products:[
+    { id:'fp29', name:'شحن رصيد', desc:'شحن رصيد فودافون/أورانج/WE', price:'', image:'', category:'خدمات' },
+    { id:'fp30', name:'تفعيل باقة إنترنت', desc:'تفعيل باقة إنترنت شهرية', price:'', image:'', category:'خدمات' },
+  ], createdAt:'2025-03-01' },
+
+  { id:'fy10', name:'مطعم أبو شادى للمشويات', nameAr:'أبو شادى للمشويات', nameEn:'Abu Shady Grill', categoryNameAr:'المطاعم', location:{ city:'الفيوم', district:'الفيوم', address:'شارع الحرفيين — الفيوم' }, contact:{ phone:'0842238765', whatsapp:'20842238765' }, description:'مطعم أبو شادى من أشهر المطاعم في الفيوم — مشويات على الفحم و كفتة بلدي و كباب و لحمة محمرة بأسعار شعبية.', keywords:['مشويات','مطعم','كباب','كفتة','لحمة','فحم'], workingHours:{ saturday:'12:00 م - 1:00 م', sunday:'12:00 م - 1:00 م', monday:'12:00 م - 1:00 م', tuesday:'12:00 م - 1:00 م', wednesday:'12:00 م - 1:00 م', thursday:'12:00 م - 1:00 م', friday:'1:00 م - 1:00 م' }, rating:{ average:4.5, count:320 }, status:'approved', isVerified:true, ownerId:'demo', views:680, photos:[], offers:[], products:[
+    { id:'fp31', name:'طبق مشويات مشكل', desc:'كباب وكفتة وريش ولفحة', price:'130', image:'', category:'مشويات' },
+    { id:'fp32', name:'كفتة بلدي', desc:'كفتة بلدي مشوية على الفحم مع أرز', price:'60', image:'', category:'مشويات' },
+    { id:'fp33', name:'كباب', desc:'كباب لحم بلدي مع أرز وبصل', price:'70', image:'', category:'مشويات' },
+    { id:'fp34', name:'فراخ مشوية', desc:'فرخة كاملة مشوية على الفحم', price:'95', image:'', category:'مشويات' },
+    { id:'fp35', name:'رقاق باللحمة', desc:'رقاق محشي لحمة بلدي', price:'50', image:'', category:'مقبلات' },
+  ], createdAt:'2025-01-15' },
 ];
 
 const CATEGORIES = [
