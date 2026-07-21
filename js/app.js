@@ -1297,7 +1297,7 @@ function startVoiceSearch() {
   modal.classList.remove('hidden');
   micCircle.classList.add('listening');
   waves.querySelectorAll('.voice-wave').forEach(w => w.classList.add('active'));
-  status.textContent = 'اسمع.. ا疸alk دلوقتي';
+  status.textContent = 'اسمع.. اتكلّم دلوقتي';
   hint.textContent = 'قول اسم الشغل أو الفئة اللي بتدور عليها';
   result.classList.add('hidden');
 
