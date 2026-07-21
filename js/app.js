@@ -368,6 +368,7 @@ function updateNavActive(page) {
 }
 
 function handleHash() {
+  if (!authReady) return;
   const hash = location.hash || '#/home';
   const BASE = 'https://ohmedayman.github.io/skii/';
 
@@ -515,6 +516,7 @@ function showToast(msg, type = 'success') {
 
 // ==================== NAVIGATION ====================
 function navigateTo(page) {
+  if (!authReady) { showAuthModal(); return; }
   console.log('📄 Navigate to:', page);
   const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare' };
   let newHash;
@@ -712,11 +714,40 @@ function logout() {
 }
 
 // ==================== AUTH STATE LISTENER ====================
+let authReady = false;
+
+function showLoginGate() {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById('scroll-top-btn')?.classList.add('hidden');
+  document.getElementById('mobile-bottom-nav')?.classList.add('hidden');
+  const header = document.querySelector('header');
+  if (header) header.classList.add('hidden');
+  showAuthModal();
+}
+
+function hideLoginGate() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('hidden'));
+  document.getElementById('scroll-top-btn')?.classList.remove('hidden');
+  document.getElementById('mobile-bottom-nav')?.classList.remove('hidden');
+  const header = document.querySelector('header');
+  if (header) header.classList.remove('hidden');
+  hideAuthModal();
+}
+
 auth.onAuthStateChanged(user => {
   if (user) {
     const userObj = { id: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email, isAdmin: user.email === 'admin@sikka.com' };
     currentUser = userObj;
     localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
+    authReady = true;
+    hideLoginGate();
+    updateAuthUI();
+    handleHash();
+  } else {
+    currentUser = null;
+    localStorage.removeItem('sikka_current_user');
+    authReady = false;
+    showLoginGate();
     updateAuthUI();
   }
 });
