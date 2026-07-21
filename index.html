@@ -829,7 +829,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span class="text-gray-500 text-sm">&copy; 2025 سِكّة. جميع الحقوق محفوظة</span>
+        <span class="text-gray-500 text-sm">&copy; <script>document.write(new Date().getFullYear())</script> سِكّة. جميع الحقوق محفوظة</span>
         <div class="flex gap-4 text-sm text-gray-500">
           <a href="#/about" class="hover:text-white transition-colors" onclick="navigateTo('about')">عنّا</a>
           <a href="#/contact" class="hover:text-white transition-colors" onclick="navigateTo('contact')">تواصل</a>
@@ -1001,6 +1001,36 @@
   <!-- ==================== REPORT MODAL ==================== -->
   <div id="report-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeReportModal()">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn" id="report-modal-content"></div>
+  </div>
+
+  <!-- ==================== VOICE SEARCH MODAL ==================== -->
+  <div id="voice-modal" class="fixed inset-0 z-[1500] hidden" style="backdrop-filter:blur(8px);background:rgba(0,0,0,0.6)">
+    <div class="absolute inset-0" onclick="stopVoiceSearch()"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 bg-white rounded-3xl shadow-2xl p-8 text-center voice-modal-enter">
+      <button onclick="stopVoiceSearch()" class="absolute top-4 left-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all">
+        <i class="ri-close-line"></i>
+      </button>
+      <div class="voice-wave-container mb-6">
+        <div class="voice-mic-circle" id="voice-mic-circle">
+          <i class="ri-mic-fill text-3xl text-white"></i>
+        </div>
+        <div class="voice-waves" id="voice-waves">
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+        </div>
+      </div>
+      <h3 class="font-bold text-lg text-gray-900 mb-2" id="voice-status">اسمع.. اتكلم دلوقتي</h3>
+      <p class="text-sm text-gray-400 mb-6" id="voice-hint">قول اسم الشغل أو الفئة اللي بتدور عليها</p>
+      <div id="voice-result" class="hidden bg-gray-50 rounded-xl p-3 mb-4">
+        <p class="text-sm text-gray-600 font-medium" id="voice-result-text"></p>
+      </div>
+      <button onclick="stopVoiceSearch()" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-sm font-medium transition-all">
+        <i class="ri-stop-circle-line ml-1"></i> إيقاف
+      </button>
+    </div>
   </div>
 
   <!-- ==================== TOAST ==================== -->

@@ -1690,16 +1690,31 @@ textarea.form-input {
 
 .dark-mode .biz-card,
 .dark-mode .blog-card,
-.dark-mode .product-card,
-.dark-mode .bg-white {
+.dark-mode .product-card {
+  background: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode #page-businesses .bg-white,
+.dark-mode #page-categories .bg-white,
+.dark-mode #page-favorites .bg-white,
+.dark-mode #page-profile .bg-white,
+.dark-mode #page-dashboard .bg-white,
+.dark-mode #page-admin .bg-white,
+.dark-mode .dash-section .bg-white,
+.dark-mode .map-sidebar-item {
   background: #1e293b !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .dark-mode .text-gray-900,
 .dark-mode .text-gray-800,
-.dark-mode .text-gray-700,
-.dark-mode .font-bold {
+.dark-mode .text-gray-700 {
+  color: #f1f5f9 !important;
+}
+
+.dark-mode .dash-section h3,
+.dark-mode .dash-section-header h3 {
   color: #f1f5f9 !important;
 }
 
@@ -2044,4 +2059,118 @@ textarea.form-input {
 
 .animate-pulse {
   animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   28. VOICE SEARCH MODAL
+   ============================================ */
+@keyframes voiceModalEnter {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.voice-modal-enter {
+  animation: voiceModalEnter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.voice-wave-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+}
+
+.voice-mic-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+}
+
+.voice-mic-circle.listening {
+  animation: micPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35); }
+  50% { box-shadow: 0 8px 40px rgba(37, 99, 235, 0.6); }
+}
+
+.voice-waves {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
+}
+
+.voice-wave {
+  width: 4px;
+  height: 20px;
+  border-radius: 4px;
+  background: #3b82f6;
+  opacity: 0.3;
+  transition: all 0.15s ease;
+}
+
+.voice-wave.active {
+  opacity: 0.7;
+}
+
+.voice-wave:nth-child(1) { animation: voiceWave 0.8s ease-in-out infinite 0s; }
+.voice-wave:nth-child(2) { animation: voiceWave 0.8s ease-in-out infinite 0.1s; }
+.voice-wave:nth-child(3) { animation: voiceWave 0.8s ease-in-out infinite 0.2s; }
+.voice-wave:nth-child(4) { animation: voiceWave 0.8s ease-in-out infinite 0.3s; }
+.voice-wave:nth-child(5) { animation: voiceWave 0.8s ease-in-out infinite 0.4s; }
+
+@keyframes voiceWave {
+  0%, 100% { height: 8px; opacity: 0.3; }
+  50% { height: 32px; opacity: 0.7; }
+}
+
+.voice-result-enter {
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dark-mode #voice-modal .bg-white {
+  background: #1e293b !important;
+}
+
+.dark-mode #voice-modal .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+.dark-mode #voice-modal .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+.dark-mode #voice-modal .bg-gray-50 {
+  background: #0f172a !important;
+}
+
+.dark-mode #voice-modal .bg-gray-100 {
+  background: #334155 !important;
+}
+
+.dark-mode #voice-modal .text-gray-600 {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode #voice-modal button i.ri-close-line {
+  color: #94a3b8;
 }

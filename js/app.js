@@ -961,24 +961,76 @@ function clearSearchHistory() {
   hideAutocomplete();
 }
 
+let voiceRecognition = null;
+
 function startVoiceSearch() {
   if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
     showToast('البحث الصوتي مش متاح في المتصفح ده', 'error');
     return;
   }
+  const modal = document.getElementById('voice-modal');
+  const micCircle = document.getElementById('voice-mic-circle');
+  const waves = document.getElementById('voice-waves');
+  const status = document.getElementById('voice-status');
+  const hint = document.getElementById('voice-hint');
+  const result = document.getElementById('voice-result');
+  const resultText = document.getElementById('voice-result-text');
+  if (!modal) return;
+
+  modal.classList.remove('hidden');
+  micCircle.classList.add('listening');
+  waves.querySelectorAll('.voice-wave').forEach(w => w.classList.add('active'));
+  status.textContent = 'اسمع.. ا疸alk دلوقتي';
+  hint.textContent = 'قول اسم الشغل أو الفئة اللي بتدور عليها';
+  result.classList.add('hidden');
+
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'ar-EG';
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  showToast('اسمع.. اتكلم دلوقتي 🎤', 'info');
-  recognition.onresult = (event) => {
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.lang = 'ar-EG';
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;
+
+  voiceRecognition.onresult = (event) => {
     const text = event.results[0][0].transcript;
-    document.getElementById('search-input').value = text;
-    performSearch();
+    const isFinal = event.results[0].isFinal;
+    result.classList.remove('hidden');
+    resultText.textContent = text;
+    if (isFinal) {
+      status.textContent = 'تم التعرف!';
+      hint.textContent = 'جاري البحث...';
+      document.getElementById('search-input').value = text;
+      setTimeout(() => { stopVoiceSearch(); performSearch(); }, 600);
+    } else {
+      status.textContent = 'اسمعك...';
+      hint.textContent = '';
+    }
   };
-  recognition.onerror = () => showToast('مفهمتش.. جرب تاني', 'error');
-  recognition.start();
+
+  voiceRecognition.onerror = (e) => {
+    if (e.error === 'no-speech') {
+      status.textContent = 'مسمعتش حاجة';
+      hint.textContent = 'جرّب تاني وقول بصوت واضح';
+    } else {
+      status.textContent = 'حصل مشكلة';
+      hint.textContent = 'جرّب تاني';
+    }
+    micCircle.classList.remove('listening');
+    waves.querySelectorAll('.voice-wave').forEach(w => w.classList.remove('active'));
+    setTimeout(() => stopVoiceSearch(), 1500);
+  };
+
+  voiceRecognition.onend = () => {
+    micCircle.classList.remove('listening');
+    waves.querySelectorAll('.voice-wave').forEach(w => w.classList.remove('active'));
+  };
+
+  voiceRecognition.start();
+}
+
+function stopVoiceSearch() {
+  const modal = document.getElementById('voice-modal');
+  if (voiceRecognition) { try { voiceRecognition.stop(); } catch(e){} voiceRecognition = null; }
+  if (modal) modal.classList.add('hidden');
 }
 
 function renderAlphaGrid() {
@@ -3218,6 +3270,7 @@ window.copyPhone = copyPhone;
 window.handleSearchInput = handleSearchInput;
 window.hideAutocomplete = hideAutocomplete;
 window.startVoiceSearch = startVoiceSearch;
+window.stopVoiceSearch = stopVoiceSearch;
 window.clearSearchHistory = clearSearchHistory;
 window.clearSearch = clearSearch;
 window.toggleSearchLocation = toggleSearchLocation;
