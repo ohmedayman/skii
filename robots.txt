@@ -1,0 +1,9 @@
+# robots.txt - Sikka Business Directory
+User-agent: *
+Allow: /
+Disallow: /TECHNICAL_REPORT.html
+
+Sitemap: https://ohmedayman.github.io/skii/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
