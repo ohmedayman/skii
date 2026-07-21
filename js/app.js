@@ -1755,88 +1755,95 @@ function renderBusinessDetail(b) {
   const isFav = currentUser && (JSON.parse(localStorage.getItem('sikka_favorites') || '[]')).includes(b.id);
   const isOpen = checkIfOpen(b.workingHours);
   const style = getCategoryStyle(b.categoryNameAr);
-  const price = b.priceLevel || '';
+  const price = b.priceLevel || '$';
+  const logoUrl = 'assets/icons/logo.png';
 
-  // Photo gallery
   const photos = b.photos || [];
-  let galleryHtml = '';
+  let heroHtml = '';
   if (photos.length >= 4) {
-    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-main"><img src="${photos[0]}" onerror="this.parentElement.innerHTML='<div class=\\'gallery-emoji\\'>${style.emoji}</div>'"></div><div class="yelp-gallery-side">${photos.slice(1,5).map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}</div></div>`;
+    heroHtml = `<div class="yelp-hero"><div class="yelp-hero-main"><img src="${photos[0]}" onerror="this.parentElement.innerHTML='<div class=\\'yelp-hero-placeholder\\' style=\\'background:${style.bg}\\'"><span class="yelp-hero-emoji">${style.emoji}</span><div class="yelp-hero-pattern"></div></div>'"></div><div class="yelp-hero-side">${photos.slice(1,5).map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}</div></div>`;
   } else if (photos.length > 0) {
-    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-full">${photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}<div class="gallery-emoji-fallback" style="display:none">${style.emoji}</div></div></div>`;
+    heroHtml = `<div class="yelp-hero"><div class="yelp-hero-main"><img src="${photos[0]}" onerror="this.parentElement.innerHTML='<div class=\\'yelp-hero-placeholder\\' style=\\'background:${style.bg}\\'"><span class="yelp-hero-emoji">${style.emoji}</span><div class="yelp-hero-pattern"></div></div>'"></div></div>`;
   } else {
-    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-placeholder" style="background:${style.bg}"><div class="yelp-biz-banner"><span class="gallery-emoji" style="font-size:6rem;position:relative;z-index:2">${style.emoji}</span><div class="yelp-banner-pattern"></div></div></div></div>`;
+    heroHtml = `<div class="yelp-hero"><div class="yelp-hero-placeholder" style="background:${style.bg}"><span class="yelp-hero-emoji">${style.emoji}</span><div class="yelp-hero-pattern"></div></div></div>`;
   }
 
-  // Hours
-  const hours = b.workingHours || {};
-  const daysOrder = ['saturday','sunday','monday','tuesday','wednesday','thursday','friday'];
-  const hoursRows = daysOrder.filter(d => hours[d]).map(d => `<tr><td>${getDayName(d)}</td><td>${hours[d]}</td></tr>`).join('');
-
-  // Sidebar sections
-  const sidebarHtml = `
-    <div class="yelp-sidebar">
-      <div class="yelp-sidebar-actions">
-        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-action-primary"><i class="ri-phone-line"></i> اتصل</a>` : ''}
-        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="yelp-action-primary yelp-action-wa"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
-        ${b.contact?.phone ? `<button class="yelp-action-secondary" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i> نسخ النمره</button>` : ''}
-        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="yelp-action-secondary"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
-        <button class="yelp-action-secondary" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
+  heroHtml += `
+    <div class="yelp-hero-overlay">
+      <div class="yelp-hero-logo"><span class="yelp-hero-logo-emoji">${style.emoji}</span></div>
+      <div class="yelp-hero-info">
+        <h1 class="yelp-hero-name">${b.nameAr || b.name}</h1>
+        <div class="yelp-hero-meta">
+          <div class="yelp-hero-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(rating) ? 'fill' : 'line'}"></i>`).join('')}</div>
+          <span class="yelp-hero-rating">${rating > 0 ? rating.toFixed(1) : '—'}</span>
+          <span class="yelp-hero-reviews">(${totalReviews} تقييم)</span>
+          ${b.isVerified ? `<span class="yelp-hero-dot"></span><span class="yelp-hero-claimed"><i class="ri-verified-badge-fill"></i> موثق</span>` : ''}
+          <span class="yelp-hero-dot"></span>
+          <span class="yelp-hero-cat">${price} · ${b.categoryNameAr || ''}</span>
+        </div>
+        ${isOpen !== null ? `<div class="yelp-hero-status ${isOpen ? 'open' : 'closed'}"><span class="yelp-hero-status-dot"></span>${isOpen ? 'مفتوح' : 'مقفول'} ${hoursText(b.workingHours)}<span class="yelp-hero-hours-link">عرض المواعيد</span></div>` : ''}
       </div>
-
-      ${hoursRows ? `
-      <div class="yelp-info-card">
-        <div class="yelp-info-title"><i class="ri-time-line"></i> مواعيد الشغل</div>
-        <table class="yelp-hours-table"><tbody>${hoursRows}</tbody></table>
-        ${isOpen !== null ? `<div class="yelp-status ${isOpen ? 'open' : 'closed'}"><span class="yelp-status-dot"></span>${isOpen ? 'مفتوح دلوقتي' : 'مقفول'}</div>` : ''}
-      </div>
-      ` : ''}
-
-      ${b.location?.address || b.location?.city ? `
-      <div class="yelp-info-card">
-        <div class="yelp-info-title"><i class="ri-map-pin-line"></i> العنوان</div>
-        <p class="yelp-info-text">${b.location.address || ''}${b.location.district ? '، ' + b.location.district : ''}${b.location.city ? '، ' + b.location.city : ''}</p>
-        ${b.location?.lat && b.location?.lng ? `<div id="detail-map" class="yelp-map"></div>` : ''}
-      </div>
-      ` : ''}
-
-      ${b.contact?.phone ? `
-      <div class="yelp-info-card">
-        <div class="yelp-info-title"><i class="ri-phone-line"></i> رقم التليفون</div>
-        <a href="tel:${b.contact.phone}" class="yelp-info-link">${b.contact.phone}</a>
-      </div>
-      ` : ''}
-
-      ${b.contact?.website ? `
-      <div class="yelp-info-card">
-        <div class="yelp-info-title"><i class="ri-global-line"></i> الموقع الإلكتروني</div>
-        <a href="${b.contact.website}" target="_blank" class="yelp-info-link">${b.contact.website}</a>
-      </div>
-      ` : ''}
     </div>
+    ${photos.length > 4 ? `<button class="yelp-hero-photos-btn"><i class="ri-camera-line"></i> شوف كل الصور (${photos.length})</button>` : ''}
+    <button class="yelp-hero-nav prev" onclick="event.stopPropagation()"><i class="ri-arrow-right-s-line"></i></button>
+    <button class="yelp-hero-nav next" onclick="event.stopPropagation()"><i class="ri-arrow-left-s-line"></i></button>
   `;
 
-  // Products
-  const products = b.products || [];
-  const productsHtml = products.length ? `
-    <div class="yelp-section">
-      <div class="yelp-section-title">المنتجات والخدمات <span class="yelp-count">${products.length}</span></div>
-      <div class="yelp-products">
-        ${products.map(p => `
-          <div class="yelp-product">
-            <div class="yelp-product-img">${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="yelp-product-fallback" style="display:none">📦</div>` : '<div class="yelp-product-fallback">📦</div>'}</div>
-            <div class="yelp-product-info">
-              <div class="yelp-product-name">${p.name}</div>
-              ${p.desc ? `<div class="yelp-product-desc">${p.desc}</div>` : ''}
-            </div>
-            <div class="yelp-product-price">${p.price ? p.price + ' ج' : ''}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  ` : '';
+  const hours = b.workingHours || {};
+  const daysOrder = ['saturday','sunday','monday','tuesday','wednesday','thursday','friday'];
+  const hoursRows = daysOrder.filter(d => hours[d]).map(d => {
+    const isToday = getTodayKey() === d;
+    const hourText = hours[d];
+    const isOpenNow = hourText.includes('مغلق') ? false : null;
+    return `<tr><td>${getDayName(d)}</td><td>${hourText} ${isToday && isOpen !== null ? `<span class="yelp-hours-open-now">(النهارده)</span>` : ''}</td></tr>`;
+  }).join('');
 
-  // Offers
+  const products = b.products || [];
+  let productsHtml = '';
+  if (products.length) {
+    const productCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
+    const popularProducts = products.slice(0, 8);
+    productsHtml = `
+      <div class="yelp-section">
+        <div class="yelp-section-header">
+          <div class="yelp-section-title">الأكل المفضل <span class="yelp-count">${products.length} منتج</span></div>
+          ${products.length > 8 ? `<a class="yelp-section-link" onclick="event.stopPropagation()">شوف كل القائمة ›</a>` : ''}
+        </div>
+        <div class="yelp-dishes-scroll">
+          ${popularProducts.map(p => `
+            <div class="yelp-dish-card" onclick="event.stopPropagation()">
+              <div class="yelp-dish-img">
+                ${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="yelp-dish-fallback" style="display:none">${style.emoji}</div>` : `<div class="yelp-dish-fallback">${getProductEmoji(p.category)}</div>`}
+                ${p.price ? `<span class="yelp-dish-price">${p.price} ج.م</span>` : ''}
+              </div>
+              <div class="yelp-dish-name">${p.name}</div>
+              ${p.desc ? `<div class="yelp-dish-meta">${p.desc.substring(0,40)}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    if (productCategories.length > 0) {
+      productsHtml += `
+        <div class="yelp-section">
+          <div class="yelp-section-title">المنتجات والخدمات</div>
+          <div class="yelp-products">
+            ${products.map(p => `
+              <div class="yelp-product">
+                <div class="yelp-product-img">${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="yelp-product-fallback" style="display:none">📦</div>` : `<div class="yelp-product-fallback">${getProductEmoji(p.category)}</div>`}</div>
+                <div class="yelp-product-info">
+                  <div class="yelp-product-name">${p.name}</div>
+                  ${p.desc ? `<div class="yelp-product-desc">${p.desc}</div>` : ''}
+                </div>
+                <div class="yelp-product-price">${p.price ? p.price + ' ج.م' : ''}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  }
+
   const offers = b.offers || [];
   const offersHtml = offers.length ? `
     <div class="yelp-section">
@@ -1851,11 +1858,134 @@ function renderBusinessDetail(b) {
     </div>
   ` : '';
 
-  // Keywords
-  const keywordsHtml = b.keywords?.length ? `<div class="yelp-section"><div class="yelp-section-title">الكلمات المفتاحية</div><div class="yelp-tags">${b.keywords.map(k => `<span class="yelp-tag">${k}</span>`).join('')}</div></div>` : '';
-  const brandsHtml = b.brands?.length ? `<div class="yelp-section"><div class="yelp-section-title">البراندات</div><div class="yelp-tags">${b.brands.map(b => `<span class="yelp-tag">${b}</span>`).join('')}</div></div>` : '';
+  const keywordsHtml = b.keywords?.length ? `
+    <div class="yelp-section">
+      <div class="yelp-section-title">الكلمات المفتاحية</div>
+      <div class="yelp-also-tags">
+        ${b.keywords.map(k => `<a class="yelp-also-tag" onclick="event.stopPropagation();quickSearch('${k}')"><i class="ri-search-line"></i> ${k}</a>`).join('')}
+      </div>
+    </div>
+  ` : '';
+  const brandsHtml = b.brands?.length ? `<div class="yelp-section"><div class="yelp-section-title">البراندات</div><div class="yelp-tags">${b.brands.map(br => `<span class="yelp-tag">${br}</span>`).join('')}</div></div>` : '';
 
-  // Reviews
+  const featureTags = [
+    b.hasBooking ? '<span class="yelp-feature-tag"><i class="ri-calendar-check-line"></i> حجز</span>' : '',
+    b.hasDelivery ? '<span class="yelp-feature-tag"><i class="ri-road-map-line"></i> توصيل</span>' : '',
+    b.hasTakeaway ? '<span class="yelp-feature-tag"><i class="ri-takeaway-line"></i> تيك أواي</span>' : '',
+    (b.features || []).includes('wifi') ? '<span class="yelp-feature-tag"><i class="ri-wifi-line"></i> واي فاي</span>' : '',
+    (b.features || []).includes('parking') ? '<span class="yelp-feature-tag"><i class="ri-parking-box-line"></i> جراج</span>' : '',
+    (b.features || []).includes('outdoor') ? '<span class="yelp-feature-tag"><i class="ri-plant-line"></i> تراس</span>' : '',
+    (b.features || []).includes('family') ? '<span class="yelp-feature-tag"><i class="ri-parent-line"></i> مناسب للعائلات</span>' : '',
+  ].filter(Boolean).join('');
+
+  const vibeCategories = [
+    { label: 'الجو العام', emoji: style.emoji, count: photos.length || 0 },
+    { label: 'المنتجات', emoji: '🍽️', count: products.length },
+    { label: 'كل الصور', emoji: '📷', count: photos.length || 0 },
+  ];
+
+  const vibeHtml = `
+    <div class="yelp-section">
+      <div class="yelp-section-title">إيه الفيب بتاعه؟</div>
+      <div class="yelp-vibe-grid">
+        ${vibeCategories.map(v => `
+          <div class="yelp-vibe-card">
+            <div class="yelp-vibe-img"><span class="yelp-vibe-emoji">${v.emoji}</span></div>
+            <div class="yelp-vibe-label">${v.label}</div>
+            <div class="yelp-vibe-count">${v.count} صوره</div>
+          </div>
+        `).join('')}
+      </div>
+      ${featureTags ? `<div class="yelp-feature-tags">${featureTags}</div>` : ''}
+    </div>
+  `;
+
+  const alsoSearchedHtml = b.keywords?.length ? `
+    <div class="yelp-section">
+      <div class="yelp-section-title">الناس كمان بتدور على</div>
+      <div class="yelp-also-tags">
+        ${b.keywords.slice(0, 5).map(k => `<a class="yelp-also-tag" onclick="event.stopPropagation();quickSearch('${k}')"><i class="ri-search-line"></i> ${k}</a>`).join('')}
+      </div>
+    </div>
+  ` : '';
+
+  const locationHoursHtml = (b.location?.address || b.location?.city) ? `
+    <div class="yelp-section">
+      <div class="yelp-section-header">
+        <div class="yelp-section-title">المكان والمواعيد</div>
+        <a class="yelp-section-link" onclick="event.stopPropagation()"><i class="ri-edit-line" style="margin-left:4px"></i> اقترح تعديل</a>
+      </div>
+      <div class="yelp-loc-grid">
+        <div>
+          ${b.location?.lat && b.location?.lng ? `<div id="detail-map" class="yelp-loc-map"></div>` : ''}
+          ${b.location?.address ? `<div class="yelp-loc-address">${b.location.address}${b.location.district ? '، ' + b.location.district : ''}</div>` : ''}
+          ${b.location?.city ? `<div style="font-size:0.78rem;color:#666;margin-top:2px">${b.location.city}</div>` : ''}
+          ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="yelp-loc-directions"><i class="ri-directions-line"></i> التعديل</a>` : ''}
+        </div>
+        <div>
+          ${hoursRows ? `<table class="yelp-hours-table"><tbody>${hoursRows}</tbody></table>` : ''}
+        </div>
+      </div>
+      ${isOpen !== null ? `<div class="yelp-status ${isOpen ? 'open' : 'closed'}" style="margin-top:10px"><span class="yelp-status-dot"></span>${isOpen ? 'مفتوح دلوقتي' : 'مقفول'}</div>` : ''}
+    </div>
+  ` : '';
+
+  const descHtml = b.description ? `
+    <div class="yelp-section">
+      <div class="yelp-section-title">عن الشغل</div>
+      <p class="yelp-biz-desc">${b.description.length > 200 ? b.description.substring(0, 200) + '...' : b.description}</p>
+      ${b.description.length > 200 ? `<button class="yelp-read-more" onclick="this.previousElementSibling.textContent='${b.description.replace(/'/g, "\\'")}';this.remove()">شوف كمان</button>` : ''}
+    </div>
+  ` : '';
+
+  let ratingBreakdownHtml = '';
+  if (bizReviews.length >= 3) {
+    const dist = [5,4,3,2,1].map(s => ({ stars: s, count: bizReviews.filter(r => Math.round(r.rating) === s).length }));
+    const maxCount = Math.max(...dist.map(d => d.count), 1);
+    ratingBreakdownHtml = `
+      <div class="yelp-rating-breakdown">
+        <div class="yelp-rating-overall">
+          <div>
+            <div class="yelp-rating-big">${rating > 0 ? rating.toFixed(1) : '—'}</div>
+            <div class="yelp-rating-big-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(rating) ? 'fill' : 'line'}"></i>`).join('')}</div>
+            <div class="yelp-rating-big-count">${totalReviews} تقييم</div>
+          </div>
+          <div style="flex:1">
+            ${dist.map(d => `
+              <div class="yelp-rating-bar-row">
+                <span class="yelp-rating-bar-label">${d.stars} نجوم</span>
+                <div class="yelp-rating-bar-track"><div class="yelp-rating-bar-fill" style="width:${(d.count / maxCount * 100)}%"></div></div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  const trustHtml = `
+    <div class="yelp-review-trust">
+      <i class="ri-information-line"></i>
+      <div class="yelp-review-trust-text">
+        أمانك عندنا أولوية، Поэтому الشركات مش قادرة تعدل أو تمسح التقييمات.
+        <a>اعرف أكتر عن التقييمات.</a>
+      </div>
+    </div>
+  `;
+
+  const reviewFormHtml = `
+    <div class="yelp-review-form">
+      <div class="yelp-review-form-avatar"><i class="ri-user-3-line"></i></div>
+      <div class="yelp-review-form-info">
+        <div class="yelp-review-form-name">${currentUser ? currentUser.name || currentUser.email : 'ضيف'}</div>
+        <div class="yelp-review-form-stars">
+          ${Array.from({length:5}, (_, i) => `<i class="ri-star-line" onclick="openReviewModal('${b.id}')"></i>`).join('')}
+        </div>
+      </div>
+      <a class="yelp-review-form-link" onclick="openReviewModal('${b.id}')">ابدأ تقييمك لـ ${b.nameAr || b.name}</a>
+    </div>
+  `;
+
   let reviewsHtml = bizReviews.length ? bizReviews.map(r => `
     <div class="yelp-review">
       <div class="yelp-review-header">
@@ -1871,11 +2001,53 @@ function renderBusinessDetail(b) {
     </div>
   `).join('') : '<div class="yelp-empty"><i class="ri-chat-smile-3-line"></i><p>مفيش تقييمات لسه</p><span>كون أول واحد يقيّم!</span></div>';
 
+  const sidebarHtml = `
+    <div class="yelp-sidebar">
+      ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-sidebar-order"><i class="ri-phone-line"></i> اتصل</a>` : ''}
+      ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="yelp-sidebar-order" style="background:#25d366;margin-top:8px"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
+
+      <div class="yelp-sidebar-promo">
+        <div class="yelp-sidebar-promo-icon">🔥</div>
+        <div class="yelp-sidebar-promo-text">سجّل شغلك على سِكّة واوصل لآلاف الناس</div>
+        <button class="yelp-sidebar-promo-btn" onclick="navigate('add')">سجّل دلوقتي</button>
+      </div>
+
+      <div class="yelp-sidebar-links">
+        ${b.contact?.website ? `<a href="${b.contact.website}" target="_blank" class="yelp-sidebar-link"><span class="yelp-sidebar-link-text">${b.contact.website.replace(/^https?:\/\//, '')}</span><i class="ri-external-link-line"></i></a>` : ''}
+        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-sidebar-link"><span class="yelp-sidebar-link-text">${b.contact.phone}</span><i class="ri-phone-line"></i></a>` : ''}
+        ${b.location?.address || b.location?.city ? `
+          <a class="yelp-sidebar-link" ${b.location?.lat && b.location?.lng ? `href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank"` : ''}>
+            <div>
+              <div style="font-weight:600;color:#0073bb">الاتجاهات</div>
+              <div style="font-size:0.75rem;color:#666;margin-top:2px">${b.location.address || ''}${b.location.city ? ' ' + b.location.city : ''}</div>
+            </div>
+            <i class="ri-directions-line"></i>
+          </a>
+        ` : ''}
+      </div>
+
+      <button class="yelp-sidebar-edit"><i class="ri-edit-line"></i> اقترح تعديل</button>
+
+      ${bizReviews.length ? `
+      <div style="margin-top:16px;border-top:1px solid #eee;padding-top:16px">
+        <div style="font-size:0.82rem;font-weight:700;color:#1a1a1a;margin-bottom:10px">ناس كمان شافوا ${b.nameAr || b.name}</div>
+        ${bizReviews.slice(0, 2).map(r => `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div class="yelp-review-avatar" style="width:32px;height:32px;font-size:0.7rem">${r.userName[0]}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:0.78rem">${r.userName}</div>
+              <div style="display:flex;gap:1px;color:#ef4444;font-size:0.7rem">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}"></i>`).join('')}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      ` : ''}
+    </div>
+  `;
+
   c.innerHTML = `
     <div class="yelp-page">
-      ${galleryHtml}
-
-      <div class="yelp-topbar">
+      <div class="yelp-topbar" style="position:absolute;top:0;left:0;right:0;z-index:10">
         <button class="yelp-back" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
         <div class="yelp-topbar-actions">
           <button class="yelp-topbar-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
@@ -1884,37 +2056,40 @@ function renderBusinessDetail(b) {
         </div>
       </div>
 
+      ${heroHtml}
+
+      <div class="yelp-action-bar">
+        <button class="yelp-action-btn primary" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> اكتب تقييم</button>
+        <button class="yelp-action-btn" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير</button>
+        <button class="yelp-action-btn" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
+        <button class="yelp-action-btn" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
+        <button class="yelp-action-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)" style="${isFav ? 'color:#ef4444;border-color:#ef4444' : ''}"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i> حفظ</button>
+      </div>
+      <div class="yelp-action-bar" style="border-bottom:none;padding-top:0">
+        <span class="yelp-recommend-row">هل أنصح بالشغل ده؟</span>
+        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">أيوه</button>
+        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">لأ</button>
+        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">ممكن</button>
+      </div>
+
       <div class="yelp-container">
         <div class="yelp-main">
-          <div class="yelp-title-row">
-            <h1 class="yelp-biz-name">${b.nameAr || b.name}</h1>
-            ${b.isVerified ? '<span class="yelp-verified"><i class="ri-verified-badge-fill"></i> موثق</span>' : ''}
-          </div>
-          <div class="yelp-meta">
-            <div class="yelp-rating-inline">
-              <div class="yelp-stars-large">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(rating) ? 'fill' : 'line'}"></i>`).join('')}</div>
-              <span class="yelp-rating-num">${rating > 0 ? rating.toFixed(1) : '—'}</span>
-              <span class="yelp-review-count">(${totalReviews} تقييم)</span>
-            </div>
-            ${price ? `<span class="yelp-price">${price}</span>` : ''}
-            <span class="yelp-category-text">${b.categoryNameAr || ''}</span>
-          </div>
-          ${b.location?.city ? `<div class="yelp-location-line"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' · ' + b.location.district : ''}</div>` : ''}
-
-          <div class="yelp-action-row">
-            <button class="yelp-action-pill" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> كتابه تقييم</button>
-            <button class="yelp-action-pill" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير</button>
-            <button class="yelp-action-pill" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
-          </div>
-
-          ${b.description ? `<div class="yelp-section"><div class="yelp-section-title">عن الشغل</div><p class="yelp-biz-desc">${b.description}</p></div>` : ''}
           ${productsHtml}
+          ${vibeHtml}
+          ${alsoSearchedHtml}
+          ${locationHoursHtml}
+          ${descHtml}
           ${offersHtml}
           ${keywordsHtml}
           ${brandsHtml}
 
           <div class="yelp-section">
-            <div class="yelp-section-title">التقييمات <span class="yelp-count">${totalReviews}</span></div>
+            <div class="yelp-section-header">
+              <div class="yelp-section-title">التقييمات <span class="yelp-count">${totalReviews}</span></div>
+            </div>
+            ${ratingBreakdownHtml}
+            ${trustHtml}
+            ${reviewFormHtml}
             <div id="reviews-list">${reviewsHtml}</div>
           </div>
         </div>
@@ -1944,6 +2119,35 @@ function renderBusinessDetail(b) {
 function getDayName(day) {
   const days = { saturday:'السبت', sunday:'الأحد', monday:'الإثنين', tuesday:'الثلاثاء', wednesday:'الأربعاء', thursday:'الخميس', friday:'الجمعة' };
   return days[day] || day;
+}
+
+function getTodayKey() {
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  return days[new Date().getDay()];
+}
+
+function hoursText(hours) {
+  if (!hours) return '';
+  const today = getTodayKey();
+  const h = hours[today];
+  if (!h) return '';
+  return h.includes('مغلق') ? '' : h;
+}
+
+function getProductEmoji(cat) {
+  if (!cat) return '📦';
+  const map = {
+    'قهوة': '☕', 'مشروبات': '🥤', 'حلويات': '🍰', 'آيس كريم': '🍦',
+    'وجبات': '🍽️', 'لحمة': '🥩', 'فراخ': '🍗', 'مأكولات بحرية': '🐟',
+    'مشويات': '🔥', 'سناكات': '🍿', 'فواكه': '🍎', 'خضروات': '🥬',
+    'أدوية': '💊', 'مستلزمات طبية': '🩺', 'صحة': '❤️',
+    'ملابس': '👕', 'أقمشة': '🧵', 'أحذية': '👟',
+    'موبيليات': '🛋️', 'أنتريه': '🛋️', 'سرير': '🛏️', 'دولاب': '🗄️', 'مطبخ': '🍳',
+    'إلكترونيات': '📱', 'موبايل': '📱', 'تواصل': '📶',
+    'بنك': '🏦', 'حساب': '💳', 'قروض': '💰',
+    'بقالة': '🛒', 'مواد غذائية': '🛒', 'مشروبات': '🥤',
+  };
+  return map[cat] || '📦';
 }
 
 function closeDetail() {
