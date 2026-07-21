@@ -28,6 +28,8 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -79,7 +81,7 @@
 <body class="font-arabic bg-gray-50 text-gray-900 min-h-screen">
 
   <!-- ==================== HEADER ==================== -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50" id="main-header">
+  <header class="sticky top-0 z-50" id="main-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex items-center justify-between h-16">
         <a href="#/home" class="flex items-center gap-3 group" onclick="navigateTo('home')">
@@ -93,12 +95,24 @@
           <a href="#/businesses" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
           <a href="#/map" class="nav-link" data-nav="mapview" onclick="navigateTo('map')"><i class="ri-map-2-line ml-1"></i>الخريطة</a>
           <a href="#/categories" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
+          <a href="#/plans" class="nav-link" data-nav="plans" onclick="navigateTo('plans')"><i class="ri-vip-crown-line ml-1"></i>الباقات</a>
           <a href="#/blog" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
-          <a href="#/compare" class="nav-link" data-nav="compare" onclick="navigateTo('compare')"><i class="ri-scales-line ml-1"></i>مقارنة<span id="compare-badge" class="hidden w-5 h-5 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center mr-1"></span></a>
           <a href="#/admin" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
         </nav>
         <div class="flex items-center gap-2">
-          <button class="dark-mode-toggle p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="ri-moon-line text-lg"></i></button>
+          <button class="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600 relative" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="ri-moon-line text-lg" id="dark-mode-icon"></i></button>
+          <!-- Notifications Bell -->
+          <div class="relative" id="notif-btn-wrap" style="display:none">
+            <button class="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600 relative" onclick="toggleNotifications()">
+              <i class="ri-notification-3-line text-lg"></i>
+              <span id="notif-count" class="hidden notif-badge">0</span>
+            </button>
+          </div>
+          <!-- Compare Badge -->
+          <button class="relative p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600" onclick="navigateTo('compare')" title="المقارنة">
+            <i class="ri-scales-line text-lg"></i>
+            <span id="compare-badge" class="hidden notif-badge" style="background:#3b82f6">0</span>
+          </button>
           <div id="header-auth-btns">
             <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="showAuthModal()">
               <i class="ri-login-box-line"></i> دخول
@@ -131,63 +145,62 @@
   <!-- ==================== PAGE: HOME ==================== -->
   <div id="page-home" class="page active">
 
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay:1s"></div>
-        <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 1px 1px,white 1px,transparent 0);background-size:40px 40px"></div>
-      </div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/80 text-sm mb-6 animate__animated animate__fadeInDown">
-          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-          دليل الأعمال الذكي في مصر
-        </span>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 animate__animated animate__fadeInUp">
-          ابدأ رحلتك مع
-          <span class="block mt-2 bg-gradient-to-l from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent">سِكّة</span>
+    <!-- Hero Section PREMIUM -->
+    <section class="hero-section">
+      <div class="hero-particles" id="hero-particles"></div>
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
+      <div class="hero-grid"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center w-full">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          دليل الأعمال الذكي في مصر — أكثر من <span id="hero-biz-count">500</span> نشاط تجاري
+        </div>
+        <h1 class="hero-title">
+          اكتشف أفضل الأعمال
+          <span class="block mt-2 gradient-text">مع سِكّة</span>
         </h1>
-        <p class="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10 animate__animated animate__fadeInUp" style="animation-delay:.2s">اكتشف أفضل الأعمال والخدمات في مصر</p>
+        <p class="hero-subtitle mx-auto mt-5">دليل أعمال ذكي يربطك بأفضل المحلات والمطاعم والخدمات في مصر — بتقييمات حقيقية من ناس زيّك</p>
 
-        <!-- Search Bar -->
-        <div class="max-w-3xl mx-auto animate__animated animate__fadeInUp" style="animation-delay:.4s">
-          <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl">
-            <div class="flex gap-1 mb-2 px-1">
+        <!-- Search Bar PREMIUM -->
+        <div class="search-container" style="position:relative">
+          <div class="search-box">
+            <div class="search-tabs">
               <button class="search-tab active" onclick="switchSearchTab(this,'name')"><i class="ri-search-line"></i><span>بالاسم</span></button>
               <button class="search-tab" onclick="switchSearchTab(this,'keyword')"><i class="ri-keyboard-line"></i><span>بالكلمة</span></button>
               <button class="search-tab" onclick="switchSearchTab(this,'category')"><i class="ri-folder-line"></i><span>بالفئة</span></button>
               <button class="search-tab" onclick="switchSearchTab(this,'brand')"><i class="ri-bookmark-line"></i><span>بالبراند</span></button>
             </div>
-            <div class="flex gap-2 items-stretch">
+            <div class="search-input-row">
               <div class="relative hidden sm:flex">
-                <button id="search-loc-btn" class="flex items-center gap-2 px-4 bg-white rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all border-0 whitespace-nowrap" onclick="toggleSearchLocation()">
-                  <i class="ri-map-pin-2-fill text-blue-500"></i>
+                <button id="search-loc-btn" class="search-loc-btn" onclick="toggleSearchLocation()">
+                  <i class="ri-map-pin-2-fill" style="color:#3b82f6"></i>
                   <span id="search-loc-text">كل المحافظات</span>
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
+                  <i class="ri-arrow-down-s-line" style="color:#94a3b8"></i>
                 </button>
-                <div id="search-loc-dropdown" class="hidden absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 z-[60] max-h-72 overflow-y-auto">
+                <div id="search-loc-dropdown" class="hidden" style="position:absolute;top:calc(100% + 8px);right:0;min-width:260px">
                   <div class="p-2">
-                    <input type="text" id="search-loc-filter" class="w-full px-3 py-2 bg-gray-50 rounded-lg text-sm outline-none border-0" placeholder="دور على محافظة..." oninput="filterSearchLocations(this.value)">
+                    <input type="text" id="search-loc-filter" class="form-input" style="padding:8px 12px;font-size:0.875rem" placeholder="دور على محافظة..." oninput="filterSearchLocations(this.value)">
                   </div>
                   <div id="search-loc-list" class="px-1 pb-1"></div>
                 </div>
               </div>
-              <div class="flex-1 relative">
-                <input type="text" id="search-input" class="w-full px-5 py-3.5 bg-white rounded-xl text-gray-900 placeholder-gray-400 outline-none text-sm sm:text-base font-medium" placeholder="دور على أي حاجة..." oninput="handleSearchInput(this.value)" autocomplete="off">
-                <button id="search-clear-btn" class="hidden absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all" onclick="clearSearch()">
-                  <i class="ri-close-line text-sm"></i>
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-main-input" placeholder="دور على أي حاجة..." oninput="handleSearchInput(this.value)" autocomplete="off">
+                <button id="search-clear-btn" class="hidden" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:none;align-items:center;justify-content:center;border-radius:50%;background:#f1f5f9;color:#94a3b8;border:none;cursor:pointer" onclick="clearSearch()">
+                  <i class="ri-close-line" style="font-size:0.875rem"></i>
                 </button>
               </div>
-              <button onclick="startVoiceSearch()" id="voice-btn" class="self-center p-3 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-all" title="بحث صوتي">
-                <i class="ri-mic-line text-xl"></i>
+              <button onclick="startVoiceSearch()" id="voice-btn" class="btn btn-ghost" style="color:rgba(255,255,255,0.7);height:52px;padding:0 14px" title="بحث صوتي">
+                <i class="ri-mic-line" style="font-size:1.25rem"></i>
               </button>
-              <button class="px-6 sm:px-8 py-3.5 bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-medium transition-all hover:shadow-lg flex items-center gap-2" onclick="performSearch()">
-                <i class="ri-search-line"></i><span class="hidden sm:inline">بحث</span>
+              <button class="search-submit-btn" onclick="performSearch()">
+                <i class="ri-search-line"></i><span>بحث</span>
               </button>
             </div>
           </div>
           <!-- Search Autocomplete -->
-          <div id="search-autocomplete" class="hidden absolute left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 max-h-[28rem] overflow-y-auto z-50" style="top: 100%;">
+          <div id="search-autocomplete" class="hidden" style="position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:50;background:white;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.15);border:1px solid #e2e8f0;max-height:400px;overflow-y:auto">
             <div id="autocomplete-results"></div>
           </div>
           <!-- Quick Tags -->
@@ -198,6 +211,26 @@
             <span class="search-tag" onclick="quickSearch('تسوق')"><i class="ri-shopping-bag-line"></i> تسوق</span>
             <span class="search-tag" onclick="quickSearch('صحة')"><i class="ri-heart-pulse-line"></i> صحة</span>
             <span class="search-tag" onclick="quickSearch('تعليم')"><i class="ri-graduation-cap-line"></i> تعليم</span>
+          </div>
+        </div>
+
+        <!-- Hero Live Stats -->
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num" id="stat-biz-hero">0+</div>
+            <div class="hero-stat-label">نشاط تجاري</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num" id="stat-rev-hero">0+</div>
+            <div class="hero-stat-label">تقييم حقيقي</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num" id="stat-city-hero">27+</div>
+            <div class="hero-stat-label">محافظة</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">100%</div>
+            <div class="hero-stat-label">مجاني للزباين</div>
           </div>
         </div>
       </div>
@@ -300,18 +333,102 @@
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" data-aos="fade-up">
-      <div class="absolute inset-0">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+    <!-- Features Section (SaaS) -->
+    <section class="py-20 bg-white" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+          <div class="section-tag" style="display:inline-flex;margin-bottom:12px"><i class="ri-sparkling-line"></i> مزايا المنصة</div>
+          <h2 class="section-title">كل اللي محتاجه في مكان واحد</h2>
+          <p class="section-subtitle">سِكّة مش بس دليل — هي منصة متكاملة لأصحاب الأعمال والزباين</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card" style="--feature-color:rgba(59,130,246,0.2)">
+            <div class="feature-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6"><i class="ri-search-eye-line"></i></div>
+            <h3 class="feature-title">بحث ذكي</h3>
+            <p class="feature-desc">ابحث بالاسم أو الفئة أو الموقع أو حتى بصوتك — نتائج فورية ودقيقة</p>
+          </div>
+          <div class="feature-card" style="--feature-color:rgba(16,185,129,0.2)">
+            <div class="feature-icon" style="background:rgba(16,185,129,0.1);color:#10b981"><i class="ri-star-smile-line"></i></div>
+            <h3 class="feature-title">تقييمات حقيقية</h3>
+            <p class="feature-desc">تقييمات من عملاء حقيقيين — مفيش تلاعب، مفيش دفع مقابل تقييم</p>
+          </div>
+          <div class="feature-card" style="--feature-color:rgba(139,92,246,0.2)">
+            <div class="feature-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="ri-map-pin-2-line"></i></div>
+            <h3 class="feature-title">خريطة تفاعلية</h3>
+            <p class="feature-desc">شوف الأعمال على خريطة مباشرة، اعرف المكان الأقرب ليك</p>
+          </div>
+          <div class="feature-card" style="--feature-color:rgba(245,158,11,0.2)">
+            <div class="feature-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b"><i class="ri-calendar-check-line"></i></div>
+            <h3 class="feature-title">حجز مواعيد</h3>
+            <p class="feature-desc">احجز موعدك أونلاين في ثواني — للباقة البرو وما فوق</p>
+          </div>
+          <div class="feature-card" style="--feature-color:rgba(236,72,153,0.2)">
+            <div class="feature-icon" style="background:rgba(236,72,153,0.1);color:#ec4899"><i class="ri-line-chart-line"></i></div>
+            <h3 class="feature-title">إحصائيات متقدمة</h3>
+            <p class="feature-desc">لوحة تحكم بـ Charts تفاعلية — اعرف مين بيشوف شغلك وإمتى</p>
+          </div>
+          <div class="feature-card" style="--feature-color:rgba(6,182,212,0.2)">
+            <div class="feature-icon" style="background:rgba(6,182,212,0.1);color:#06b6d4"><i class="ri-qr-code-line"></i></div>
+            <h3 class="feature-title">QR Code ومشاركة</h3>
+            <p class="feature-desc">شارك شغلك بـ QR Code أو على واتساب بضغطة واحدة</p>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20" style="background:#f8fafc" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+          <div class="section-tag" style="display:inline-flex;margin-bottom:12px"><i class="ri-user-smile-line"></i> آراء المستخدمين</div>
+          <h2 class="section-title">بيقولوا إيه عن سِكّة؟</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="testimonial-card">
+            <div class="testimonial-stars mb-3">★★★★★</div>
+            <p style="font-size:0.9rem;color:#475569;margin-bottom:16px;line-height:1.7">"سِكّة ساعدني ألاقي مطعم قريب مني بسرعة وقرأت تقييمات حقيقية قبل ما أروح. تجربة ممتازة!"</p>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="review-avatar" style="width:36px;height:36px;font-size:0.875rem">أ</div>
+              <div><div style="font-weight:700;font-size:0.875rem">أحمد محمود</div><div style="font-size:0.75rem;color:#94a3b8">الفيوم</div></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars mb-3">★★★★★</div>
+            <p style="font-size:0.9rem;color:#475569;margin-bottom:16px;line-height:1.7">"سجّلت مقهايا على سِكّة وبدأت أستقبل زباين جدد في أسبوع. لوحة التحكم سهلة جداً!"</p>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="review-avatar" style="width:36px;height:36px;font-size:0.875rem;background:linear-gradient(135deg,#10b981,#059669)">م</div>
+              <div><div style="font-weight:700;font-size:0.875rem">محمد علي</div><div style="font-size:0.75rem;color:#94a3b8">صاحب مقهى — الفيوم</div></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars mb-3">★★★★★</div>
+            <p style="font-size:0.9rem;color:#475569;margin-bottom:16px;line-height:1.7">"الخريطة حاجة تجنن! شفت كل الأعمال قريبة مني بسهولة. أحسن تطبيق دليل في مصر."</p>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="review-avatar" style="width:36px;height:36px;font-size:0.875rem;background:linear-gradient(135deg,#8b5cf6,#7c3aed)">س</div>
+              <div><div style="font-weight:700;font-size:0.875rem">سارة يوسف</div><div style="font-size:0.75rem;color:#94a3b8">القاهرة</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" data-aos="fade-up">
+      <div class="cta-glow" style="background:radial-gradient(circle,rgba(59,130,246,0.3),transparent);top:-100px;right:-100px"></div>
+      <div class="cta-glow" style="background:radial-gradient(circle,rgba(139,92,246,0.2),transparent);bottom:-100px;left:-100px"></div>
       <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">عندك شغل أو محل؟</h2>
-        <p class="text-lg text-white/70 mb-8">سجّل شغلك مجاناً وهيتراجع من الإدارة ويظهر في الدليل</p>
-        <button class="cta-keep-white px-8 py-4 bg-white text-gray-900 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all hover:shadow-2xl hover:-translate-y-1" onclick="requireAuth('add')">
-          <i class="ri-add-circle-line ml-2"></i>سجّل شغلك دلوقتي
-        </button>
+        <div class="section-tag" style="display:inline-flex;margin-bottom:16px;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"><i class="ri-rocket-line"></i> ابدأ دلوقتي</div>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4" style="line-height:1.2">عندك شغل أو محل؟</h2>
+        <p class="text-xl mb-10" style="color:rgba(255,255,255,0.65)">سجّل شغلك مجاناً وابدأ توصل لآلاف الزباين في منطقتك</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-xl cta-keep-white" onclick="requireAuth('add')">
+            <i class="ri-add-circle-line"></i> سجّل شغلك مجاناً
+          </button>
+          <button class="btn btn-xl" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2)" onclick="navigateTo('plans')">
+            <i class="ri-vip-crown-line"></i> شوف الباقات
+          </button>
+        </div>
+        <p style="margin-top:16px;font-size:0.875rem;color:rgba(255,255,255,0.4)">✓ بدون بطاقة ائتمان &nbsp; ✓ مجاني للأبد &nbsp; ✓ يظهر فوراً</p>
       </div>
     </section>
 
@@ -383,6 +500,11 @@
         <p class="text-gray-400 text-sm">لسه مفيش مقالات. المقالات هتنشر قريب إن شاء الله.</p>
       </div>
     </div>
+  </div>
+
+  <!-- ==================== PAGE: PLANS ==================== -->
+  <div id="page-plans" class="page">
+    <div id="plans-content"></div>
   </div>
 
   <!-- ==================== PAGE: ADD BUSINESS ==================== -->
@@ -692,13 +814,22 @@
       <!-- Dashboard Sidebar -->
       <aside class="w-64 bg-white border-l border-gray-100 p-4 hidden md:flex flex-col" id="dash-sidebar">
         <div class="mb-6 px-3">
-          <h3 class="font-bold text-sm text-gray-800">لوحة التحكم</h3>
-          <p class="text-xs text-gray-400 mt-1" id="dash-biz-status"></p>
+          <h3 class="font-bold text-sm" style="color:#0f172a">لوحة التحكم</h3>
+          <p class="text-xs mt-1" style="color:#94a3b8" id="dash-biz-status"></p>
+          <div id="dash-plan-badge" class="mt-2"></div>
         </div>
         <div class="space-y-1 flex-1" id="dash-nav-list">
           <a href="#" class="dash-nav-item" data-tab="overview" onclick="showDashTab('overview')">
             <div class="dash-nav-icon bg-blue-50 text-blue-500"><i class="ri-dashboard-line"></i></div>
             <span>نظرة عامة</span>
+          </a>
+          <a href="#" class="dash-nav-item" data-tab="analytics" onclick="showDashTab('analytics')">
+            <div class="dash-nav-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="ri-line-chart-line"></i></div>
+            <span>الإحصائيات</span>
+          </a>
+          <a href="#" class="dash-nav-item" data-tab="bookings" onclick="showDashTab('bookings')">
+            <div class="dash-nav-icon" style="background:rgba(6,182,212,0.1);color:#06b6d4"><i class="ri-calendar-check-line"></i></div>
+            <span>الحجوزات</span>
           </a>
           <a href="#" class="dash-nav-item" data-tab="edit" onclick="showDashTab('edit')">
             <div class="dash-nav-icon bg-purple-50 text-purple-500"><i class="ri-edit-2-line"></i></div>
@@ -745,15 +876,26 @@
   <div id="page-admin" class="page">
     <div class="flex min-h-[calc(100vh-64px)]">
       <!-- Admin Sidebar -->
-      <aside class="w-56 bg-white border-l border-gray-200 p-4 hidden md:block">
-        <h3 class="font-bold text-sm mb-4 px-3">لوحة الإدارة</h3>
-        <div class="space-y-1">
-          <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard')"><i class="ri-dashboard-line"></i> الرئيسية</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')"><i class="ri-store-2-line"></i> الأعمال</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('users')"><i class="ri-user-3-line"></i> المستخدمين</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')"><i class="ri-article-line"></i> المقالات</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('categories')"><i class="ri-apps-line"></i> الفئات</a>
-          <a href="#" class="admin-nav-item" onclick="showAdminTab('settings')"><i class="ri-settings-3-line"></i> الإعدادات</a>
+      <aside class="w-64 p-4 hidden md:flex flex-col" style="background:#0f172a;color:white;min-height:100%">
+        <div class="mb-8 px-2">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <div style="width:8px;height:8px;background:#10b981;border-radius:50%;animation:pulse 2s infinite"></div>
+            <span style="font-size:0.75rem;color:rgba(255,255,255,0.5)">لوحة الإدارة</span>
+          </div>
+          <h3 style="font-size:1rem;font-weight:800;color:white">سِكّة Admin</h3>
+        </div>
+        <div class="space-y-1 flex-1">
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('dashboard')" style="color:rgba(255,255,255,0.7)"><i class="ri-dashboard-3-line"></i> الرئيسية</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('businesses')" style="color:rgba(255,255,255,0.7)"><i class="ri-store-2-line"></i> الأعمال</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('users')" style="color:rgba(255,255,255,0.7)"><i class="ri-user-3-line"></i> المستخدمين</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('categories')" style="color:rgba(255,255,255,0.7)"><i class="ri-apps-line"></i> الفئات</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('posts')" style="color:rgba(255,255,255,0.7)"><i class="ri-article-line"></i> المدونة</a>
+          <a href="#" class="admin-nav-item" onclick="showAdminTab('settings')" style="color:rgba(255,255,255,0.7)"><i class="ri-settings-3-line"></i> الإعدادات</a>
+        </div>
+        <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.08)">
+          <button onclick="navigateTo('home')" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-size:0.875rem;font-family:inherit;cursor:pointer;width:100%;border:none;transition:all 0.2s">
+            <i class="ri-arrow-right-line"></i> رجوع للدليل
+          </button>
         </div>
       </aside>
       <main class="flex-1 p-6">
@@ -840,28 +982,24 @@
   </footer>
 
   <!-- ==================== MOBILE BOTTOM NAV ==================== -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-100 z-50 md:hidden" id="mobile-bottom-nav">
-    <div class="flex items-center justify-around h-16 px-2 pb-safe">
+  <nav class="fixed bottom-0 left-0 right-0 backdrop-blur-xl border-t z-50 md:hidden" style="background:rgba(255,255,255,0.95);border-color:rgba(226,232,240,0.8)" id="mobile-bottom-nav">
+    <div class="flex items-center justify-around h-16 px-2">
       <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')">
-        <i class="ri-home-5-line"></i>
-        <span>الرئيسية</span>
+        <i class="ri-home-5-line"></i><span>الرئيسية</span>
       </button>
       <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')">
-        <i class="ri-apps-line"></i>
-        <span>الفئات</span>
+        <i class="ri-apps-line"></i><span>الفئات</span>
       </button>
-      <div class="relative -mt-6">
-        <button class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center text-white shadow-lg shadow-gray-900/30 hover:scale-110 active:scale-95 transition-all" onclick="requireAuth('add')">
-          <i class="ri-add-line text-2xl"></i>
+      <div style="position:relative;margin-top:-24px">
+        <button style="width:56px;height:56px;background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 8px 24px rgba(15,23,42,0.4);border:none;cursor:pointer;transition:all 0.3s" onclick="requireAuth('add')" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
+          <i class="ri-add-line" style="font-size:1.5rem"></i>
         </button>
       </div>
       <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')">
-        <i class="ri-store-2-line"></i>
-        <span>الأعمال</span>
+        <i class="ri-store-2-line"></i><span>الأعمال</span>
       </button>
       <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')">
-        <i class="ri-user-3-line"></i>
-        <span>حسابي</span>
+        <i class="ri-user-3-line"></i><span>حسابي</span>
       </button>
     </div>
   </nav>
@@ -1068,5 +1206,55 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
   <script src="js/app.js"></script>
+  <script src="js/plans.js"></script>
+  <script src="js/booking.js"></script>
+
+  <!-- Initialize hero particles -->
+  <script>
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('main-header');
+      if (header) header.classList.toggle('header-scrolled', window.scrollY > 20);
+    });
+
+    // Hero particles
+    function initParticles() {
+      const container = document.getElementById('hero-particles');
+      if (!container) return;
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'hero-particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = (Math.random() * 8) + 's';
+        p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+        p.style.opacity = (0.3 + Math.random() * 0.5);
+        container.appendChild(p);
+      }
+    }
+    initParticles();
+
+    // Animate hero stats counter
+    function animateCounter(el, target, suffix) {
+      if (!el) return;
+      let current = 0;
+      const step = Math.ceil(target / 40);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current + (suffix || '+');
+        if (current >= target) clearInterval(timer);
+      }, 50);
+    }
+
+    // Dark mode icon sync
+    function syncDarkModeIcon() {
+      const icon = document.getElementById('dark-mode-icon');
+      if (icon) {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', syncDarkModeIcon);
+  </script>
 </body>
 </html>

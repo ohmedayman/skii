@@ -455,7 +455,7 @@ function handleHash() {
     '#/contact': 'contact',
     '#/terms': 'terms',
     '#/map': 'mapview',
-    '#/compare': 'compare',
+    '#/compare': 'compare', '#/plans': 'plans', '#/plans': 'plans',
   };
 
   const page = pageMap[hash];
@@ -480,7 +480,7 @@ function handleHash() {
     contact: 'تواصل معنا | سِكّة',
     terms: 'الشروط والأحكام | سِكّة',
     mapview: 'الخريطة | سِكّة',
-    compare: 'مقارنة الأعمال | سِكّة',
+    compare: 'مقارنة الأعمال | سِكّة', plans: 'باقات سِكّة',
   };
   generateSEO(
     seoTitles[page] || 'سِكّة',
@@ -562,6 +562,29 @@ function navigateTo(page) {
 }
 
 function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
+
+
+function toggleDarkMode() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('sikka_theme', isDark ? 'light' : 'dark');
+  
+  const icon = document.getElementById('dark-mode-icon');
+  if (icon) {
+    icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+  }
+}
+
+function toggleNotifications() {
+  if (currentUser) {
+    const notifs = JSON.parse(localStorage.getItem('sikka_notifications_' + currentUser.id) || '[]');
+    notifs.forEach(n => n.read = true);
+    localStorage.setItem('sikka_notifications_' + currentUser.id, JSON.stringify(notifs));
+    const count = document.getElementById('notif-count');
+    if (count) count.style.display = 'none';
+    showToast('تم قراءة الإشعارات', 'info');
+  }
+}
 
 // ==================== AUTH ====================
 function requireAuth(action) {
