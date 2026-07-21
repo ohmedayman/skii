@@ -1524,288 +1524,299 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 .cal-day.empty { cursor: default; }
 .cal-day.header { font-size: var(--font-xs); font-weight: 700; color: var(--text-muted); cursor: default; }
 
-/* --- 21B. BUSINESS DETAIL PAGE (Complete Redesign) --- */
+/* =============================================
+   YELP-STYLE BUSINESS DETAIL PAGE
+   ============================================= */
 
-/* Hero */
-.detail-hero {
-  position: relative;
-  height: 220px;
+/* Page wrapper */
+.yelp-page { background: #fff; min-height: 100vh; }
+
+/* Top bar */
+.yelp-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #f0f0f0;
+}
+.yelp-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin: 0;
-  border-radius: 0 0 24px 24px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #333;
+  transition: background 0.15s;
 }
-.detail-hero-emoji {
+.yelp-back:hover { background: #e8e8e8; }
+.yelp-topbar-actions { display: flex; gap: 6px; }
+.yelp-topbar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.05rem;
+  color: #666;
+  transition: all 0.15s;
+}
+.yelp-topbar-btn:hover { background: #f5f5f5; color: #333; }
+.yelp-topbar-btn.active { color: #ef4444; background: #fef2f2; }
+
+/* Photo Gallery */
+.yelp-gallery { display: flex; gap: 4px; height: 280px; overflow: hidden; }
+.yelp-gallery-main {
+  flex: 2;
+  border-radius: 0 0 12px 0;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.yelp-gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+.yelp-gallery-side {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+}
+.yelp-gallery-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 0 0 12px;
+}
+.yelp-gallery-side img:last-child { border-radius: 0; }
+.yelp-gallery-full {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  height: 100%;
+  padding: 0 0 0 4px;
+}
+.yelp-gallery-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.yelp-gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-emoji {
   font-size: 5rem;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-  animation: heroEmojiIn 0.6s ease-out;
 }
-@keyframes heroEmojiIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.detail-back-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(10px);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
-  z-index: 5;
-  color: #334155;
-  font-size: 1.1rem;
-}
-.detail-back-btn:hover {
-  background: white;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  transform: scale(1.05);
-}
-.detail-fav-btn {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(10px);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
-  z-index: 5;
-  color: #94a3b8;
-  font-size: 1.1rem;
-}
-.detail-fav-btn:hover { background: white; transform: scale(1.05); }
-.detail-fav-btn.active {
-  background: #fef2f2;
-  color: #ef4444;
-  border: 1px solid rgba(239,68,68,0.2);
+.gallery-emoji-fallback {
+  font-size: 5rem;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
 }
 
-/* Body */
-.detail-body {
-  max-width: 680px;
+/* Container (two-column) */
+.yelp-container {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 20px 16px 60px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
   direction: rtl;
 }
+.yelp-main { min-width: 0; }
+.yelp-aside { position: relative; }
 
-/* Header card */
-.detail-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  background: var(--bg-surface, #fff);
-  border-radius: 18px;
-  padding: 18px;
-  margin-top: -32px;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  border: 1px solid var(--border-color, #f1f5f9);
+/* Title */
+.yelp-biz-name {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+  line-height: 1.3;
 }
-.detail-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+.yelp-title-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 1.6rem;
-}
-.detail-header-info { flex: 1; min-width: 0; }
-.detail-name {
-  font-size: 1.15rem;
-  font-weight: 900;
-  color: var(--text-primary, #0f172a);
-  line-height: 1.4;
-  margin: 0 0 2px;
-}
-.detail-category {
-  font-size: 0.78rem;
-  color: var(--text-muted, #64748b);
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-.detail-stats {
-  display: flex;
+  gap: 10px;
   flex-wrap: wrap;
-  gap: 6px;
 }
-.detail-stat {
+.yelp-verified {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--text-secondary, #475569);
-  background: #f8fafc;
-  padding: 3px 9px;
+  font-weight: 600;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 3px 10px;
   border-radius: 20px;
 }
-.detail-stat i { font-size: 0.8rem; }
-.detail-stat-status { gap: 5px; }
-.detail-stat-status .status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.detail-stat-status.open { color: #16a34a; background: #f0fdf4; }
-.detail-stat-status.open .status-dot { background: #16a34a; }
-.detail-stat-status.closed { color: #dc2626; background: #fef2f2; }
-.detail-stat-status.closed .status-dot { background: #dc2626; }
 
-/* Action buttons */
-.detail-actions {
+/* Rating inline */
+.yelp-meta {
   display: flex;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 14px 0;
+  margin-bottom: 6px;
 }
-.action-btn {
+.yelp-rating-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.yelp-stars-large {
+  display: flex;
+  gap: 1px;
+  color: #ef4444;
+  font-size: 1rem;
+}
+.yelp-rating-num {
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #1a1a1a;
+}
+.yelp-review-count {
+  font-size: 0.82rem;
+  color: #888;
+}
+.yelp-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  padding: 2px 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+.yelp-category-text {
+  font-size: 0.82rem;
+  color: #666;
+}
+.yelp-location-line {
+  font-size: 0.82rem;
+  color: #666;
+  margin-bottom: 14px;
+}
+.yelp-location-line i { color: #ef4444; }
+
+/* Action row */
+.yelp-action-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.yelp-action-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 9px 14px;
-  border-radius: 12px;
+  padding: 8px 16px;
+  border-radius: 20px;
   font-size: 0.78rem;
   font-weight: 600;
-  border: none;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #333;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  white-space: nowrap;
+  transition: all 0.15s;
 }
-.action-btn i { font-size: 0.95rem; }
-.act-call { background: #dcfce7; color: #16a34a; }
-.act-call:hover { background: #bbf7d0; }
-.act-wa { background: #dcfce7; color: #25d366; }
-.act-wa:hover { background: #bbf7d0; }
-.act-copy { background: #eff6ff; color: #2563eb; }
-.act-copy:hover { background: #dbeafe; }
-.act-map { background: #eff6ff; color: #2563eb; }
-.act-map:hover { background: #dbeafe; }
-.act-share { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
-.act-share:hover { background: #f1f5f9; }
-.act-review { background: #fefce8; color: #ca8a04; }
-.act-review:hover { background: #fef9c3; }
-.act-qr { background: #f5f3ff; color: #7c3aed; }
-.act-qr:hover { background: #ede9fe; }
-.act-report { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-.act-report:hover { background: #fee2e2; }
+.yelp-action-pill:hover { background: #f5f5f5; border-color: #ccc; }
 
 /* Sections */
-.detail-section {
-  background: var(--bg-surface, #fff);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 10px;
-  border: 1px solid var(--border-color, #f1f5f9);
+.yelp-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
 }
-.detail-section-title {
+.yelp-section:last-child { border-bottom: none; }
+.yelp-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-primary, #0f172a);
-  margin-bottom: 12px;
 }
-.detail-section-title i {
-  color: var(--text-muted, #94a3b8);
-  font-size: 1rem;
-}
-.detail-section-count {
+.yelp-section-title i { color: #888; font-size: 1.1rem; }
+.yelp-count {
   font-size: 0.7rem;
-  background: #f1f5f9;
-  color: #64748b;
+  background: #f5f5f5;
+  color: #888;
   padding: 2px 8px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-weight: 600;
 }
-.detail-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary, #475569);
+
+/* Business description */
+.yelp-biz-desc {
+  font-size: 0.88rem;
+  color: #444;
   line-height: 1.7;
   margin: 0;
 }
 
 /* Products */
-.products-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-}
-.product-item {
+.yelp-products { display: flex; flex-direction: column; gap: 6px; }
+.yelp-product {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px;
-  background: #f8fafc;
-  border-radius: 12px;
-  transition: background 0.15s ease;
-}
-.product-item:hover { background: #f1f5f9; }
-.product-img {
-  width: 48px;
-  height: 48px;
+  padding: 10px 12px;
+  background: #fafafa;
   border-radius: 10px;
+  transition: background 0.15s;
+}
+.yelp-product:hover { background: #f0f0f0; }
+.yelp-product-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   overflow: hidden;
   background: #fff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #eee;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
-.product-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.product-img-fallback {
-  font-size: 1.3rem;
-}
-.product-info { flex: 1; min-width: 0; }
-.product-name {
+.yelp-product-img img { width: 100%; height: 100%; object-fit: cover; }
+.yelp-product-fallback { font-size: 1.2rem; }
+.yelp-product-info { flex: 1; min-width: 0; }
+.yelp-product-name {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--text-primary, #0f172a);
+  color: #1a1a1a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.product-desc {
+.yelp-product-desc {
   font-size: 0.72rem;
-  color: var(--text-muted, #94a3b8);
+  color: #999;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.product-cat {
-  font-size: 0.7rem;
-  color: #2563eb;
-  font-weight: 500;
-}
-.product-price {
+.yelp-product-price {
   font-size: 0.82rem;
   font-weight: 800;
   color: #16a34a;
@@ -1813,116 +1824,62 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 }
 
 /* Offers */
-.offers-list { display: flex; flex-direction: column; gap: 8px; }
-.offer-item {
+.yelp-offer {
   background: #fffbeb;
   border: 1px solid #fde68a;
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
 }
-.offer-header {
+.yelp-offer-head {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
-.offer-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #b45309;
-}
-.offer-code {
+.yelp-offer-title { font-weight: 700; font-size: 0.85rem; color: #92400e; }
+.yelp-offer-code {
   background: white;
   border: 1px solid #fbbf24;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 0.72rem;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
   font-family: monospace;
   color: #92400e;
-  font-weight: 600;
 }
-.offer-desc {
-  font-size: 0.78rem;
-  color: #78350f;
-  line-height: 1.5;
-}
-.offer-date {
-  font-size: 0.7rem;
-  color: #92400e;
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.yelp-offer-desc { font-size: 0.78rem; color: #78350f; line-height: 1.5; }
+.yelp-offer-date { font-size: 0.7rem; color: #92400e; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
 
-/* Photos */
-.photos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-.photo-item {
-  border-radius: 10px;
-  overflow: hidden;
-  aspect-ratio: 1;
-  background: #f1f5f9;
-}
-.photo-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.2s ease;
-}
-.photo-item:hover img { transform: scale(1.05); }
-
-/* Hours */
-.hours-list { display: flex; flex-direction: column; }
-.hours-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  font-size: 0.82rem;
-  color: var(--text-secondary, #475569);
-  border-bottom: 1px solid #f1f5f9;
-}
-.hours-row:last-child { border-bottom: none; }
-.hours-row span:first-child { font-weight: 600; color: var(--text-primary, #0f172a); }
-
-/* Keywords/Brands */
-.keywords-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.keyword-tag {
-  padding: 5px 12px;
-  background: #f1f5f9;
+/* Tags */
+.yelp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.yelp-tag {
+  padding: 5px 14px;
+  background: #f5f5f5;
   border-radius: 20px;
-  font-size: 0.75rem;
-  color: #475569;
+  font-size: 0.78rem;
+  color: #444;
   font-weight: 500;
-  border: 1px solid #e2e8f0;
-  transition: all 0.2s ease;
+  transition: background 0.15s;
 }
-.keyword-tag:hover { background: #e2e8f0; }
+.yelp-tag:hover { background: #e8e8e8; }
 
 /* Reviews */
-.review-card {
-  padding: 14px 0;
-  border-bottom: 1px solid #f1f5f9;
+.yelp-review {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
-.review-card:last-child { border-bottom: none; }
-.review-header {
+.yelp-review:last-child { border-bottom: none; }
+.yelp-review-header {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 8px;
 }
-.review-avatar {
-  width: 36px;
-  height: 36px;
+.yelp-review-avatar {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--grad-blue, linear-gradient(135deg, #3b82f6, #8b5cf6));
+  background: linear-gradient(135deg, #ef4444, #f97316);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1931,55 +1888,142 @@ textarea.form-input { resize: vertical; min-height: 100px; }
   font-size: 0.82rem;
   flex-shrink: 0;
 }
-.review-meta { flex: 1; }
-.review-name {
-  font-weight: 700;
-  font-size: 0.82rem;
-  color: var(--text-primary, #0f172a);
-}
-.review-date {
-  font-size: 0.68rem;
-  color: var(--text-muted, #94a3b8);
-}
-.review-stars {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 6px;
-  font-size: 0.85rem;
-  color: #f59e0b;
-}
-.review-title {
-  font-weight: 700;
-  font-size: 0.82rem;
-  color: var(--text-primary, #0f172a);
-  margin-bottom: 3px;
-}
-.review-text {
-  font-size: 0.82rem;
-  color: var(--text-secondary, #475569);
-  line-height: 1.6;
-}
+.yelp-review-meta { flex: 1; }
+.yelp-review-name { font-weight: 700; font-size: 0.85rem; color: #1a1a1a; }
+.yelp-review-date { font-size: 0.7rem; color: #999; }
+.yelp-review-stars { display: flex; gap: 1px; color: #ef4444; font-size: 0.85rem; }
+.yelp-review-title { font-weight: 700; font-size: 0.85rem; color: #1a1a1a; margin-bottom: 3px; }
+.yelp-review-text { font-size: 0.85rem; color: #444; line-height: 1.6; }
 
-/* Empty reviews */
-.empty-reviews {
+.yelp-empty {
   text-align: center;
-  padding: 24px 16px;
-  color: #94a3b8;
+  padding: 30px 16px;
+  color: #999;
 }
-.empty-reviews i {
-  font-size: 2rem;
-  margin-bottom: 8px;
-  display: block;
+.yelp-empty i { font-size: 2rem; margin-bottom: 8px; display: block; color: #ccc; }
+.yelp-empty p { font-weight: 700; font-size: 0.88rem; color: #666; margin: 0 0 4px; }
+.yelp-empty span { font-size: 0.78rem; color: #999; }
+
+/* ============ SIDEBAR ============ */
+.yelp-sidebar { position: sticky; top: 60px; }
+
+.yelp-sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
 }
-.empty-reviews p {
-  font-weight: 700;
+.yelp-action-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
   font-size: 0.88rem;
-  color: #64748b;
-  margin: 0 0 4px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.15s;
+  background: #d32323;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
-.empty-reviews span {
+.yelp-action-primary:hover { background: #b51c1c; }
+.yelp-action-wa { background: #25d366; }
+.yelp-action-wa:hover { background: #1ebe57; }
+.yelp-action-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: #fff;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.yelp-action-secondary:hover { background: #f5f5f5; }
+
+.yelp-info-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.yelp-info-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.yelp-info-title i { color: #888; }
+.yelp-info-text {
+  font-size: 0.82rem;
+  color: #444;
+  line-height: 1.6;
+  margin: 0;
+}
+.yelp-info-link {
+  font-size: 0.82rem;
+  color: #0073bb;
+  text-decoration: none;
+  font-weight: 500;
+  word-break: break-all;
+}
+.yelp-info-link:hover { text-decoration: underline; }
+
+.yelp-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.78rem;
-  color: #94a3b8;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.yelp-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.yelp-status.open { color: #16a34a; }
+.yelp-status.open .yelp-status-dot { background: #16a34a; }
+.yelp-status.closed { color: #dc2626; }
+.yelp-status.closed .yelp-status-dot { background: #dc2626; }
+
+.yelp-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.yelp-hours-table td {
+  padding: 5px 0;
+  color: #444;
+}
+.yelp-hours-table td:first-child {
+  font-weight: 600;
+  color: #1a1a1a;
+  width: 40%;
+}
+.yelp-hours-table td:last-child { text-align: left; }
+
+.yelp-map {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  margin-top: 10px;
+  overflow: hidden;
+  background: #f5f5f5;
 }
 
 .review-avatar {
@@ -2225,6 +2269,54 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 [data-theme="dark"] .review-card .review-name { color: #f1f5f9; }
 [data-theme="dark"] .empty-reviews p { color: #94a3b8; }
 
+/* ===== YELP DARK MODE ===== */
+[data-theme="dark"] .yelp-page { background: #0f0f0f; }
+[data-theme="dark"] .yelp-topbar { background: rgba(15,15,15,0.95); border-color: #222; }
+[data-theme="dark"] .yelp-back { background: #1a1a1a; color: #ccc; }
+[data-theme="dark"] .yelp-back:hover { background: #2a2a2a; }
+[data-theme="dark"] .yelp-topbar-btn { color: #888; }
+[data-theme="dark"] .yelp-topbar-btn:hover { background: #1a1a1a; color: #fff; }
+[data-theme="dark"] .yelp-topbar-btn.active { background: #2d1215; color: #ef4444; }
+[data-theme="dark"] .yelp-biz-name { color: #f0f0f0; }
+[data-theme="dark"] .yelp-rating-num { color: #f0f0f0; }
+[data-theme="dark"] .yelp-price { background: #1a1a1a; color: #ddd; }
+[data-theme="dark"] .yelp-category-text { color: #888; }
+[data-theme="dark"] .yelp-location-line { color: #888; }
+[data-theme="dark"] .yelp-action-pill { background: #1a1a1a; border-color: #333; color: #ddd; }
+[data-theme="dark"] .yelp-action-pill:hover { background: #222; }
+[data-theme="dark"] .yelp-section { border-color: #222; }
+[data-theme="dark"] .yelp-section-title { color: #f0f0f0; }
+[data-theme="dark"] .yelp-count { background: #1a1a1a; color: #888; }
+[data-theme="dark"] .yelp-biz-desc { color: #aaa; }
+[data-theme="dark"] .yelp-info-card { background: #1a1a1a; border-color: #222; }
+[data-theme="dark"] .yelp-info-title { color: #f0f0f0; }
+[data-theme="dark"] .yelp-info-text { color: #aaa; }
+[data-theme="dark"] .yelp-product { background: #1a1a1a; }
+[data-theme="dark"] .yelp-product:hover { background: #222; }
+[data-theme="dark"] .yelp-product-img { background: #0f0f0f; border-color: #333; }
+[data-theme="dark"] .yelp-product-name { color: #f0f0f0; }
+[data-theme="dark"] .yelp-product-desc { color: #666; }
+[data-theme="dark"] .yelp-offer { background: #1a1508; border-color: #3a2a10; }
+[data-theme="dark"] .yelp-offer-title { color: #fbbf24; }
+[data-theme="dark"] .yelp-offer-code { background: #0f0d06; border-color: #3a2a10; color: #fbbf24; }
+[data-theme="dark"] .yelp-offer-desc { color: #c49a6c; }
+[data-theme="dark"] .yelp-tag { background: #1a1a1a; color: #bbb; }
+[data-theme="dark"] .yelp-tag:hover { background: #222; }
+[data-theme="dark"] .yelp-review { border-color: #222; }
+[data-theme="dark"] .yelp-review-name { color: #f0f0f0; }
+[data-theme="dark"] .yelp-review-text { color: #aaa; }
+[data-theme="dark"] .yelp-action-secondary { background: #1a1a1a; border-color: #333; color: #ddd; }
+[data-theme="dark"] .yelp-action-secondary:hover { background: #222; }
+[data-theme="dark"] .yelp-action-primary { background: #d32323; }
+[data-theme="dark"] .yelp-action-primary:hover { background: #b51c1c; }
+[data-theme="dark"] .yelp-status.open { color: #4ade80; }
+[data-theme="dark"] .yelp-status.open .yelp-status-dot { background: #4ade80; }
+[data-theme="dark"] .yelp-status.closed { color: #f87171; }
+[data-theme="dark"] .yelp-status.closed .yelp-status-dot { background: #f87171; }
+[data-theme="dark"] .yelp-hours-table td { color: #aaa; }
+[data-theme="dark"] .yelp-hours-table td:first-child { color: #ddd; }
+[data-theme="dark"] .yelp-map { background: #1a1a1a; }
+
 [data-theme="dark"] #search-autocomplete {
   background: #111827;
   border-color: #1e293b;
@@ -2411,27 +2503,35 @@ textarea.form-input { resize: vertical; min-height: 100px; }
   body { padding-bottom: 80px; }
   .modal-card { padding: 24px 20px; border-radius: var(--radius-2xl); }
   .plan-card.popular { transform: scale(1); }
-  .detail-hero { height: 180px; }
-  .detail-hero-emoji { font-size: 3.5rem; }
-  .detail-body { padding: 0 12px 32px; }
-  .detail-header { padding: 14px; gap: 12px; }
-  .detail-logo { width: 48px; height: 48px; font-size: 1.3rem; }
-  .detail-name { font-size: 1rem; }
-  .action-btn { padding: 8px 11px; font-size: 0.72rem; }
-  .action-btn span { display: none; }
-  .action-btn i { font-size: 1.1rem; }
-  .detail-section { padding: 14px; }
-  .photos-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+
+  /* Yelp detail mobile */
+  .yelp-gallery { height: 200px; }
+  .yelp-gallery-side { display: none; }
+  .yelp-gallery-full { grid-template-columns: 1fr 1fr; }
+  .yelp-container {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 16px 14px 40px;
+  }
+  .yelp-aside { order: -1; }
+  .yelp-sidebar { position: static; }
+  .yelp-sidebar-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .yelp-sidebar-actions > * { flex: 1; min-width: 0; }
+  .yelp-biz-name { font-size: 1.3rem; }
+  .yelp-topbar { display: flex; }
 }
 
 @media (max-width: 480px) {
   .hero-title { font-size: 2rem; }
   .search-loc-btn { display: none; }
-  .detail-hero { height: 160px; border-radius: 0 0 18px 18px; }
-  .detail-hero-emoji { font-size: 3rem; }
-  .detail-actions { gap: 6px; }
-  .act-call, .act-wa { padding: 10px 14px; }
-  .act-call span, .act-wa span { display: inline; }
+  .yelp-gallery { height: 170px; }
+  .yelp-gallery-main { flex: 1; }
+  .yelp-action-row { gap: 6px; }
+  .yelp-action-pill { padding: 7px 12px; font-size: 0.72rem; }
 }
 
 /* --- 33. NOTIFICATION BADGE --- */

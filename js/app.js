@@ -1438,135 +1438,173 @@ function renderBusinessDetail(b) {
   const isFav = currentUser && (JSON.parse(localStorage.getItem('sikka_favorites') || '[]')).includes(b.id);
   const isOpen = checkIfOpen(b.workingHours);
   const style = getCategoryStyle(b.categoryNameAr);
+  const price = b.priceLevel || '';
 
-  const hours = b.workingHours || {};
-  const hoursHtml = hours.saturday ? `
-    <div class="detail-section">
-      <div class="detail-section-title"><i class="ri-time-line"></i> مواعيد الشغل</div>
-      <div class="hours-list">
-        ${Object.entries(hours).filter(([_, v]) => v).map(([day, time]) => `<div class="hours-row"><span>${getDayName(day)}</span><span>${time}</span></div>`).join('')}
-      </div>
-    </div>
-  ` : '';
-
-  const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-hashtag"></i> الكلمات المفتاحية</div><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
-  const brandsHtml = b.brands?.length ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-bookmark-line"></i> البراندات</div><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
-
-  const products = b.products || [];
-  const productsHtml = products.length ? `
-    <div class="detail-section">
-      <div class="detail-section-title"><i class="ri-shopping-bag-line"></i> المنتجات والخدمات <span class="detail-section-count">${products.length}</span></div>
-      <div class="products-grid">
-        ${products.map(p => `
-          <div class="product-item">
-            <div class="product-img">${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="product-img-fallback" style="display:none">📦</div>` : '<div class="product-img-fallback">📦</div>'}</div>
-            <div class="product-info">
-              <div class="product-name">${p.name}</div>
-              ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
-              ${p.category ? `<div class="product-cat">${p.category}</div>` : ''}
-            </div>
-            <div class="product-price">${p.price ? p.price + ' ج' : 'السعر عند الاتصال'}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  ` : '';
-
-  const offers = b.offers || [];
-  const offersHtml = offers.length ? `
-    <div class="detail-section">
-      <div class="detail-section-title"><i class="ri-megaphone-line"></i> العروض <span class="detail-section-count">${offers.length}</span></div>
-      <div class="offers-list">
-        ${offers.map(o => `
-          <div class="offer-item">
-            <div class="offer-header">
-              <span class="offer-title">${o.title}</span>
-              ${o.code ? `<span class="offer-code">${o.code}</span>` : ''}
-            </div>
-            ${o.description ? `<div class="offer-desc">${o.description}</div>` : ''}
-            ${o.endDate ? `<div class="offer-date"><i class="ri-calendar-line"></i> بينتهي: ${o.endDate}</div>` : ''}
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  ` : '';
-
+  // Photo gallery
   const photos = b.photos || [];
-  const photosHtml = photos.length ? `
-    <div class="detail-section">
-      <div class="detail-section-title"><i class="ri-image-line"></i> الصور <span class="detail-section-count">${photos.length}</span></div>
-      <div class="photos-grid">
-        ${photos.map(p => `<div class="photo-item"><img src="${p}" onerror="this.parentElement.style.display='none'"></div>`).join('')}
-      </div>
-    </div>
-  ` : '';
-
-  let reviewsHtml = '';
-  if (bizReviews.length) {
-    reviewsHtml = bizReviews.map(r => `
-      <div class="review-card">
-        <div class="review-header">
-          <div class="review-avatar">${r.userName[0]}</div>
-          <div class="review-meta">
-            <div class="review-name">${r.userName}</div>
-            <div class="review-date">${r.date}</div>
-          </div>
-        </div>
-        <div class="review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}"></i>`).join('')}</div>
-        ${r.title ? `<div class="review-title">${r.title}</div>` : ''}
-        ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
-      </div>
-    `).join('');
+  let galleryHtml = '';
+  if (photos.length >= 4) {
+    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-main"><img src="${photos[0]}" onerror="this.parentElement.innerHTML='<div class=\\'gallery-emoji\\'>${style.emoji}</div>'"></div><div class="yelp-gallery-side">${photos.slice(1,5).map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}</div></div>`;
+  } else if (photos.length > 0) {
+    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-full">${photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}<div class="gallery-emoji-fallback" style="display:none">${style.emoji}</div></div></div>`;
   } else {
-    reviewsHtml = '<div class="empty-reviews"><i class="ri-chat-smile-3-line"></i><p>مفيش تقييمات لسه</p><span>كون أول واحد يقيّم!</span></div>';
+    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-placeholder" style="background:${style.bg}"><span class="gallery-emoji">${style.emoji}</span></div></div>`;
   }
 
-  c.innerHTML = `
-    <div class="detail-hero" style="background:${style.bg}">
-      <button class="detail-back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
-      <button class="detail-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
-      <div class="detail-hero-emoji">${style.emoji}</div>
-    </div>
+  // Hours
+  const hours = b.workingHours || {};
+  const daysOrder = ['saturday','sunday','monday','tuesday','wednesday','thursday','friday'];
+  const hoursRows = daysOrder.filter(d => hours[d]).map(d => `<tr><td>${getDayName(d)}</td><td>${hours[d]}</td></tr>`).join('');
 
-    <div class="detail-body">
-      <div class="detail-header">
-        <div class="detail-logo" style="background:${style.bg}"><span>${style.emoji}</span></div>
-        <div class="detail-header-info">
-          <h1 class="detail-name">${b.nameAr || b.name}</h1>
-          <div class="detail-category">${b.categoryNameAr || ''}</div>
-          <div class="detail-stats">
-            <span class="detail-stat"><i class="ri-star-fill" style="color:#f59e0b"></i> ${rating > 0 ? rating.toFixed(1) : '—'} (${totalReviews})</span>
-            ${b.location?.city ? `<span class="detail-stat"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' · ' + b.location.district : ''}</span>` : ''}
-            ${b.views ? `<span class="detail-stat"><i class="ri-eye-line"></i> ${b.views}</span>` : ''}
-            <span class="detail-stat detail-stat-status ${isOpen ? 'open' : 'closed'}"><span class="status-dot"></span>${isOpen ? 'مفتوح' : 'مقفول'}</span>
+  // Sidebar sections
+  const sidebarHtml = `
+    <div class="yelp-sidebar">
+      <div class="yelp-sidebar-actions">
+        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-action-primary"><i class="ri-phone-line"></i> اتصل</a>` : ''}
+        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="yelp-action-primary yelp-action-wa"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
+        ${b.contact?.phone ? `<button class="yelp-action-secondary" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i> نسخ النمره</button>` : ''}
+        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="yelp-action-secondary"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
+        <button class="yelp-action-secondary" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
+      </div>
+
+      ${hoursRows ? `
+      <div class="yelp-info-card">
+        <div class="yelp-info-title"><i class="ri-time-line"></i> مواعيد الشغل</div>
+        <table class="yelp-hours-table"><tbody>${hoursRows}</tbody></table>
+        ${isOpen !== null ? `<div class="yelp-status ${isOpen ? 'open' : 'closed'}"><span class="yelp-status-dot"></span>${isOpen ? 'مفتوح دلوقتي' : 'مقفول'}</div>` : ''}
+      </div>
+      ` : ''}
+
+      ${b.location?.address || b.location?.city ? `
+      <div class="yelp-info-card">
+        <div class="yelp-info-title"><i class="ri-map-pin-line"></i> العنوان</div>
+        <p class="yelp-info-text">${b.location.address || ''}${b.location.district ? '، ' + b.location.district : ''}${b.location.city ? '، ' + b.location.city : ''}</p>
+        ${b.location?.lat && b.location?.lng ? `<div id="detail-map" class="yelp-map"></div>` : ''}
+      </div>
+      ` : ''}
+
+      ${b.contact?.phone ? `
+      <div class="yelp-info-card">
+        <div class="yelp-info-title"><i class="ri-phone-line"></i> رقم التليفون</div>
+        <a href="tel:${b.contact.phone}" class="yelp-info-link">${b.contact.phone}</a>
+      </div>
+      ` : ''}
+
+      ${b.contact?.website ? `
+      <div class="yelp-info-card">
+        <div class="yelp-info-title"><i class="ri-global-line"></i> الموقع الإلكتروني</div>
+        <a href="${b.contact.website}" target="_blank" class="yelp-info-link">${b.contact.website}</a>
+      </div>
+      ` : ''}
+    </div>
+  `;
+
+  // Products
+  const products = b.products || [];
+  const productsHtml = products.length ? `
+    <div class="yelp-section">
+      <div class="yelp-section-title">المنتجات والخدمات <span class="yelp-count">${products.length}</span></div>
+      <div class="yelp-products">
+        ${products.map(p => `
+          <div class="yelp-product">
+            <div class="yelp-product-img">${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="yelp-product-fallback" style="display:none">📦</div>` : '<div class="yelp-product-fallback">📦</div>'}</div>
+            <div class="yelp-product-info">
+              <div class="yelp-product-name">${p.name}</div>
+              ${p.desc ? `<div class="yelp-product-desc">${p.desc}</div>` : ''}
+            </div>
+            <div class="yelp-product-price">${p.price ? p.price + ' ج' : ''}</div>
           </div>
+        `).join('')}
+      </div>
+    </div>
+  ` : '';
+
+  // Offers
+  const offers = b.offers || [];
+  const offersHtml = offers.length ? `
+    <div class="yelp-section">
+      <div class="yelp-section-title">العروض <span class="yelp-count">${offers.length}</span></div>
+      ${offers.map(o => `
+        <div class="yelp-offer">
+          <div class="yelp-offer-head"><span class="yelp-offer-title">${o.title}</span>${o.code ? `<span class="yelp-offer-code">${o.code}</span>` : ''}</div>
+          ${o.description ? `<div class="yelp-offer-desc">${o.description}</div>` : ''}
+          ${o.endDate ? `<div class="yelp-offer-date"><i class="ri-calendar-line"></i> بينتهي: ${o.endDate}</div>` : ''}
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
+
+  // Keywords
+  const keywordsHtml = b.keywords?.length ? `<div class="yelp-section"><div class="yelp-section-title">الكلمات المفتاحية</div><div class="yelp-tags">${b.keywords.map(k => `<span class="yelp-tag">${k}</span>`).join('')}</div></div>` : '';
+  const brandsHtml = b.brands?.length ? `<div class="yelp-section"><div class="yelp-section-title">البراندات</div><div class="yelp-tags">${b.brands.map(b => `<span class="yelp-tag">${b}</span>`).join('')}</div></div>` : '';
+
+  // Reviews
+  let reviewsHtml = bizReviews.length ? bizReviews.map(r => `
+    <div class="yelp-review">
+      <div class="yelp-review-header">
+        <div class="yelp-review-avatar">${r.userName[0]}</div>
+        <div class="yelp-review-meta">
+          <div class="yelp-review-name">${r.userName}</div>
+          <div class="yelp-review-date">${r.date}</div>
+        </div>
+        <div class="yelp-review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}"></i>`).join('')}</div>
+      </div>
+      ${r.title ? `<div class="yelp-review-title">${r.title}</div>` : ''}
+      ${r.comment ? `<div class="yelp-review-text">${r.comment}</div>` : ''}
+    </div>
+  `).join('') : '<div class="yelp-empty"><i class="ri-chat-smile-3-line"></i><p>مفيش تقييمات لسه</p><span>كون أول واحد يقيّم!</span></div>';
+
+  c.innerHTML = `
+    <div class="yelp-page">
+      ${galleryHtml}
+
+      <div class="yelp-topbar">
+        <button class="yelp-back" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
+        <div class="yelp-topbar-actions">
+          <button class="yelp-topbar-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
+          <button class="yelp-topbar-btn" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i></button>
+          <button class="yelp-topbar-btn" onclick="openReportModal('${b.id}')"><i class="ri-flag-line"></i></button>
         </div>
       </div>
 
-      <div class="detail-actions">
-        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="action-btn act-call"><i class="ri-phone-line"></i><span>اتصل</span></a>` : ''}
-        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn act-wa"><i class="ri-whatsapp-line"></i><span>واتساب</span></a>` : ''}
-        ${b.contact?.phone ? `<button class="action-btn act-copy" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i><span>نسخ النمره</span></button>` : ''}
-        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn act-map"><i class="ri-map-pin-line"></i><span>الخريطة</span></a>` : ''}
-        <button class="action-btn act-share" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i><span>شير</span></button>
-        <button class="action-btn act-share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i><span>مشاركة</span></button>
-        <button class="action-btn act-review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i><span>تقييم</span></button>
-        <button class="action-btn act-qr" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i><span>QR</span></button>
-        <button class="action-btn act-report" onclick="openReportModal('${b.id}')"><i class="ri-flag-line"></i><span>إبلاغ</span></button>
-      </div>
+      <div class="yelp-container">
+        <div class="yelp-main">
+          <div class="yelp-title-row">
+            <h1 class="yelp-biz-name">${b.nameAr || b.name}</h1>
+            ${b.isVerified ? '<span class="yelp-verified"><i class="ri-verified-badge-fill"></i> موثق</span>' : ''}
+          </div>
+          <div class="yelp-meta">
+            <div class="yelp-rating-inline">
+              <div class="yelp-stars-large">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(rating) ? 'fill' : 'line'}"></i>`).join('')}</div>
+              <span class="yelp-rating-num">${rating > 0 ? rating.toFixed(1) : '—'}</span>
+              <span class="yelp-review-count">(${totalReviews} تقييم)</span>
+            </div>
+            ${price ? `<span class="yelp-price">${price}</span>` : ''}
+            <span class="yelp-category-text">${b.categoryNameAr || ''}</span>
+          </div>
+          ${b.location?.city ? `<div class="yelp-location-line"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' · ' + b.location.district : ''}</div>` : ''}
 
-      ${b.description ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-information-line"></i> عن الشغل</div><p class="detail-desc">${b.description}</p></div>` : ''}
-      ${b.location?.address ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-map-pin-line"></i> العنوان</div><p class="detail-desc">${b.location.address}${b.location.district ? '، ' + b.location.district : ''}${b.location.city ? '، ' + b.location.city : ''}</p></div>` : ''}
-      ${productsHtml}
-      ${offersHtml}
-      ${photosHtml}
-      ${hoursHtml}
-      ${keywordsHtml}
-      ${brandsHtml}
+          <div class="yelp-action-row">
+            <button class="yelp-action-pill" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> كتابه تقييم</button>
+            <button class="yelp-action-pill" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير</button>
+            <button class="yelp-action-pill" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
+          </div>
 
-      <div class="detail-section">
-        <div class="detail-section-title"><i class="ri-star-line"></i> التقييمات <span class="detail-section-count">${totalReviews}</span></div>
-        <div id="reviews-list">${reviewsHtml}</div>
+          ${b.description ? `<div class="yelp-section"><div class="yelp-section-title">عن الشغل</div><p class="yelp-biz-desc">${b.description}</p></div>` : ''}
+          ${productsHtml}
+          ${offersHtml}
+          ${keywordsHtml}
+          ${brandsHtml}
+
+          <div class="yelp-section">
+            <div class="yelp-section-title">التقييمات <span class="yelp-count">${totalReviews}</span></div>
+            <div id="reviews-list">${reviewsHtml}</div>
+          </div>
+        </div>
+
+        <div class="yelp-aside">
+          ${sidebarHtml}
+        </div>
       </div>
     </div>
   `;
