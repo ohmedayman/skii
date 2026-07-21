@@ -92,31 +92,33 @@ function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
 const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
 
 const GOVERNORATES = {
-  'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','ال Sayeda Zeinab','البساتين','التبين'],
-  'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','أكتوبر','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','ال观音','العℛين','البدرشين'],
-  'الإسكندرية': ['سيدي جابر','ميامي','سموحة','المنشية','الرمل','كركدان','باكوس','كفر عبده','العصافرة','برج العرب','الدخيلة','محرم بك'],
-  'القليوبية': ['بنها','القليوبية','شبرا الخيمة','طوخ','قليوب','العبور','الشرق'],
-  'المنوفية': ['شبين الكوم','منوف','سرس الليان','الباجور','أشمون','تلا','بركة السبع'],
+  'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','البساتين','التبين','النزهة','مساكن شيراتون'],
+  'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','أكتوبر','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','العجمي','البدرشين','الحوامدية','الصف'],
+  'الإسكندرية': ['سيدي جابر','ميامي','سموحة','المنشية','الرمل','كركدان','باكوس','كفر عبده','العصافرة','برج العرب','الدخيلة','محرم بك','كينج مريوط','القباري'],
+  'القليوبية': ['بنها','القليوبية','شبرا الخيمة','طوخ','قليوب','العبور','الشرق','الخصوص','شبين القناطر'],
+  'المنوفية': ['شبين الكوم','منوف','سرس الليان','الباجور','أشمون','تلا','بركة السبع','الشهداء'],
   'الغربية': ['طنطا','المحلة الكبرى','كفر الزيات','زفتى','سمنود','قطور','بسيون'],
-  'الدقهلية': ['المنصورة','طلخا','ميت غمر','دكرنس','السنبلاوين','أجا','منية النصر','شربين'],
-  'الفيوم': ['الفيوم','سانت مريم','إطسا','سنورس','طامية','الفيوم الجديدة'],
-  'بني سويف': ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطرا'],
-  'المنيا': ['المنيا','ملوي','أبوقرقاص','سمالوط','العدوة','مغاغة'],
+  'البحيرة': ['دمنهور','كفر الدوار','رشيد','إدكو','النوبارية','الرحمانية','شبراخيت','الحمادي'],
+  'الشرقية': ['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','ال أبوكبير','القنايات','أبو حماد','فاقوس'],
+  'الدقهلية': ['المنصورة','طلخا','ميت غمر','دكرنس','السنبلاوين','أجا','منية النصر','شربين','كفر سعد','الكردي'],
+  'الفيوم': ['الفيوم','سانت مريم','إطسا','سنورس','طامية','الفيوم الجديدة','يوسف الصديق'],
+  'بني سويف': ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطرا','العباسية'],
+  'المنيا': ['المنيا','ملوي','أبوقرقاص','سمالوط','العدوة','مغاغة','بني مزار','مطاي'],
   'أسيوط': ['أسيوط','البداري','الغنايم','ديروط','منفلوط','أبو تيج','صدفا'],
-  'سوهاج': ['سوهاج','طهطا','جراجة','البلينا','العريش','المراغة','الساحل'],
-  'قنا': ['قنا','قوص','نجع حمادي','الأقصر','الوقف','دشنا','ال colour'],
-  'الأقصر': ['الأقصر','الزينية','البع淋','ال colour','الفرنا','إسنا','طيبة الجديدة'],
+  'سوهاج': ['سوهاج','طهطا','جراجة','البلينا','العريش','المراغة','الساحل','طما'],
+  'قنا': ['قنا','قوص','نجع حمادي','الوقف','دشنا','فرشوط','أبو تشت','نقادة','إسنا'],
+  'الأقصر': ['الأقصر','الزينية','البياضية','القرناصنة','إسنا','طيبة الجديدة'],
   'أسوان': ['أسوان','دراو','كوم أمبو','نصر النوبة','إدفو','البللدي'],
-  'البحر الأحمر': ['الغردقة','مرسى علم','الجونة','السخنة','الدهب','شرم الشيخ'],
-  'الإسماعيلية': ['الإسماعيلية','التل الكبير','الewis','أبو صوير','القنطرة شرق','القنطرة غرب'],
-  'السويس': ['السويس','عتاقا','الجناين'],
-  'بورسعيد': ['بورسعيد','العرب'],
+  'البحر الأحمر': ['الغردقة','مرسى علم','الجونة','السخنة','الدهب','شرم الشيخ','رأس سدر'],
+  'الإسماعيلية': ['الإسماعيلية','التل الكبير','أبو صوير','القنطرة شرق','القنطرة غرب'],
+  'السويس': ['السويس','عتاقا','الجناين','عين موسى'],
+  'بورسعيد': ['بورسعيد','العرب','الضواحي'],
   'دمياط': ['دمياط','دمياط الجديدة','الروضة','الزرقا','فارسكور','كفر سعد'],
   'كفر الشيخ': ['كفر الشيخ','دسوق','بيلا','الحامول','سيدي سالم','قلين','الرياض'],
-  'شمال سيناء': ['العريش','رفح','بئر العبد','الشيخ زويد','ن��ل'],
-  'جنوب سيناء': ['طور سيناء','شرم الشيخ','دهب','كينج','أبو رديس',' saint katrin'],
+  'شمال سيناء': ['العريش','رفح','بئر العبد','الشيخ زويد','نخل'],
+  'جنوب سيناء': ['طور سيناء','شرم الشيخ','دهب','أبو زنيمة','أبو رديس','السباعي'],
   'مطروح': ['مرسى مطروح','الحمام','العلمين','سيدي براني','النجيلة','سيوة'],
-  'الوادي الجديد': ['الخارجة','الداخلة','الفرافرة','بلاط'],
+  'الوادي الجديد': ['الخارجة','الداخلة','الفرافرة','بلاط','الريف'],
 };
 
 const CITIES = Object.keys(GOVERNORATES);
@@ -182,6 +184,98 @@ function loadData() {
 
 // ==================== INIT ====================
 let isNavigating = false;
+let currentPage = 1;
+const ITEMS_PER_PAGE = 12;
+let leafletMap = null;
+let compareList = JSON.parse(localStorage.getItem('sikka_compare') || '[]');
+let reports = JSON.parse(localStorage.getItem('sikka_reports') || '[]');
+
+// ==================== DARK MODE ====================
+(function() {
+  const saved = localStorage.getItem('sikka_dark_mode');
+  if (saved === 'true') document.body.classList.add('dark-mode');
+})();
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('sikka_dark_mode', document.body.classList.contains('dark-mode'));
+  updateDarkModeIcons();
+}
+
+function updateDarkModeIcons() {
+  const isDark = document.body.classList.contains('dark-mode');
+  document.querySelectorAll('.dark-mode-toggle').forEach(b => {
+    b.innerHTML = isDark ? '<i class="ri-sun-line"></i>' : '<i class="ri-moon-line"></i>';
+  });
+}
+
+function handleSearchInput(value) {
+  const container = document.getElementById('search-autocomplete');
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (!container) return;
+  if (clearBtn) clearBtn.classList.toggle('hidden', !value);
+  if (value.length >= 1) {
+    renderSearchAutocomplete(value);
+  } else {
+    renderSearchSuggestions();
+  }
+}
+
+const BASE_URL = 'https://ohmedayman.github.io/skii/';
+
+function generateSEO(title, description, image, url) {
+  document.title = title;
+  const ogTitle = document.getElementById('og-title');
+  const ogDesc = document.getElementById('og-desc');
+  const ogUrl = document.getElementById('og-url');
+  const ogType = document.getElementById('og-type');
+  const ogImage = document.getElementById('og-image');
+  const twTitle = document.getElementById('tw-title');
+  const twDesc = document.getElementById('tw-desc');
+  const twImage = document.getElementById('tw-image');
+  const canonical = document.getElementById('canonical-url');
+
+  if (ogTitle) ogTitle.content = title;
+  if (ogDesc) ogDesc.content = description;
+  if (ogUrl) ogUrl.content = url || BASE_URL;
+  if (ogType) ogType.content = url && url !== BASE_URL ? 'business.business' : 'website';
+  if (ogImage) ogImage.content = image || BASE_URL + 'assets/icons/favicon.svg';
+  if (twTitle) twTitle.content = title;
+  if (twDesc) twDesc.content = description;
+  if (twImage) twImage.content = image || BASE_URL + 'assets/icons/favicon.svg';
+  if (canonical) canonical.href = url || BASE_URL;
+}
+
+function generateBusinessSchema(b) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": b.nameAr || b.name,
+    "description": b.description || '',
+    "url": BASE_URL + '#/business/' + b.id,
+    "telephone": b.contact?.phone || '',
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": b.location?.address || '',
+      "addressLocality": b.location?.city || '',
+      "addressRegion": b.location?.district || '',
+      "addressCountry": "EG"
+    },
+    "geo": b.location?.lat && b.location?.lng ? {
+      "@type": "GeoCoordinates",
+      "latitude": b.location.lat,
+      "longitude": b.location.lng
+    } : undefined,
+    "image": b.images?.[0] || '',
+    "priceRange": b.priceRange || '',
+    "aggregateRating": b.rating?.average ? {
+      "@type": "AggregateRating",
+      "ratingValue": b.rating.average,
+      "reviewCount": b.rating.count || 0
+    } : undefined,
+    "openingHours": b.workingHours?.saturday ? [b.workingHours.saturday] : undefined
+  };
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Sikka starting...');
@@ -230,6 +324,7 @@ function updateNavActive(page) {
 
 function handleHash() {
   const hash = location.hash || '#/home';
+  const BASE = 'https://ohmedayman.github.io/skii/';
 
   if (hash.startsWith('#/business/')) {
     const id = hash.replace('#/business/', '');
@@ -237,9 +332,40 @@ function handleHash() {
     if (b) {
       showPage('business');
       renderBusinessDetail(b);
+      const bizUrl = BASE + '#/business/' + b.id;
+      generateSEO(
+        (b.nameAr || b.name) + ' | سِكّة',
+        b.description || (b.nameAr || b.name) + ' - ' + (b.categoryNameAr || '') + ' في ' + (b.location?.city || 'مصر'),
+        b.images?.[0] || BASE + 'assets/icons/favicon.svg',
+        bizUrl
+      );
+      // Add JSON-LD
+      const existingSchema = document.getElementById('biz-schema');
+      if (existingSchema) existingSchema.remove();
+      const schemaEl = document.createElement('script');
+      schemaEl.type = 'application/ld+json';
+      schemaEl.id = 'biz-schema';
+      schemaEl.textContent = JSON.stringify(generateBusinessSchema(b));
+      document.head.appendChild(schemaEl);
     } else {
       show404();
     }
+    return;
+  }
+
+  if (hash.startsWith('#/blog/') && hash !== '#/blog') {
+    const postId = hash.replace('#/blog/', '');
+    const post = BLOG_POSTS.find(p => p.id === postId);
+    if (post) {
+      showPage('post-detail');
+      renderBlogPost(post);
+      generateSEO(
+        post.title + ' | مدونة سِكّة',
+        post.excerpt || post.title,
+        BASE + 'assets/icons/favicon.svg',
+        BASE + '#/blog/' + post.id
+      );
+    } else show404();
     return;
   }
 
@@ -256,6 +382,8 @@ function handleHash() {
     '#/about': 'about',
     '#/contact': 'contact',
     '#/terms': 'terms',
+    '#/map': 'mapview',
+    '#/compare': 'compare',
   };
 
   const page = pageMap[hash];
@@ -264,6 +392,30 @@ function handleHash() {
   showPage(page);
   updateNavActive(page);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // SEO per page
+  const seoTitles = {
+    home: 'سِكّة | دليل الأعمال الذكي في مصر',
+    businesses: 'كل الأعمال | سِكّة',
+    categories: 'الفئات | سِكّة',
+    blog: 'المدونة | سِكّة',
+    add: 'سجّل شغلك | سِكّة',
+    profile: 'الملف الشخصي | سِكّة',
+    dashboard: 'لوحة التحكم | سِكّة',
+    favorites: 'المفضلة | سِكّة',
+    admin: 'لوحة الإدارة | سِكّة',
+    about: 'عن سِكّة | دليل الأعمال الذكي',
+    contact: 'تواصل معنا | سِكّة',
+    terms: 'الشروط والأحكام | سِكّة',
+    mapview: 'الخريطة | سِكّة',
+    compare: 'مقارنة الأعمال | سِكّة',
+  };
+  generateSEO(
+    seoTitles[page] || 'سِكّة',
+    'اكتشف أفضل المحلات والخدمات في مصر',
+    BASE + 'assets/icons/favicon.svg',
+    BASE + hash
+  );
 
   if (page === 'home') loadHome();
   if (page === 'businesses') loadAllBusinesses();
@@ -274,6 +426,8 @@ function handleHash() {
   if (page === 'add') renderAddForm();
   if (page === 'dashboard') loadDashboard();
   if (page === 'favorites') loadFavorites();
+  if (page === 'mapview') setTimeout(() => initMapPage(), 100);
+  if (page === 'compare') renderCompare();
 }
 
 function show404() {
@@ -305,9 +459,10 @@ function show404() {
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   if (!t) return;
-  const icon = type === 'success' ? 'ri-check-line' : type === 'error' ? 'ri-error-warning-line' : 'ri-information-line';
-  t.innerHTML = `<i class="${icon}"></i> ${msg}`;
-  t.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#0f172a';
+  const icon = type === 'success' ? 'ri-check-double-line' : type === 'error' ? 'ri-error-warning-line' : 'ri-information-line';
+  const bg = type === 'success' ? 'linear-gradient(135deg,#059669,#047857)' : type === 'error' ? 'linear-gradient(135deg,#dc2626,#b91c1c)' : 'linear-gradient(135deg,#1e293b,#0f172a)';
+  t.innerHTML = `<div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.2)"><i class="${icon} text-sm"></i></div><span class="text-sm font-medium">${msg}</span></div>`;
+  t.style.background = bg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
@@ -315,8 +470,13 @@ function showToast(msg, type = 'success') {
 // ==================== NAVIGATION ====================
 function navigateTo(page) {
   console.log('📄 Navigate to:', page);
-  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms' };
-  const newHash = hashMap[page] || '#/home';
+  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare' };
+  let newHash;
+  if (page.startsWith('blog/')) {
+    newHash = '#/' + page;
+  } else {
+    newHash = hashMap[page] || '#/home';
+  }
   if (location.hash === newHash) {
     handleHash();
     return;
@@ -515,7 +675,72 @@ function logout() {
   navigateTo('home');
 }
 
-// ==================== SEARCH ====================
+// ==================== SEARCH ENGINE ====================
+let searchHistory = JSON.parse(localStorage.getItem('sikka_search_history') || '[]');
+const POPULAR_SEARCHES = ['مقاهي','مطاعم','بنوك','صيدلية','كافيه','فندق','صالون','جيم','سوبر ماركت','مستشفى'];
+let searchLocation = '';
+
+function highlightText(text, query) {
+  if (!query || !text) return text || '';
+  const q = query.toLowerCase();
+  const t = text;
+  const idx = t.toLowerCase().indexOf(q);
+  if (idx === -1) return t;
+  return t.substring(0, idx) + '<span class="highlight-match">' + t.substring(idx, idx + q.length) + '</span>' + t.substring(idx + q.length);
+}
+
+function toggleSearchLocation() {
+  const dd = document.getElementById('search-loc-dropdown');
+  if (!dd) return;
+  dd.classList.toggle('hidden');
+  if (!dd.classList.contains('hidden')) {
+    renderSearchLocations();
+    setTimeout(() => document.getElementById('search-loc-filter')?.focus(), 100);
+  }
+}
+
+function filterSearchLocations(val) {
+  renderSearchLocations(val);
+}
+
+function renderSearchLocations(filter) {
+  const list = document.getElementById('search-loc-list');
+  if (!list) return;
+  const approved = businesses.filter(b => b.status === 'approved');
+  const f = (filter || '').toLowerCase();
+  const cities = Object.keys(GOVERNORATES).filter(c => !f || c.toLowerCase().includes(f));
+  let html = '<div class="search-loc-item' + (!searchLocation ? ' active' : '') + '" onclick="selectSearchLocation(\'\')"><i class="ri-earth-line text-gray-400"></i><span>كل المحافظات</span></div>';
+  cities.forEach(c => {
+    const count = approved.filter(b => b.location?.city === c).length;
+    html += '<div class="search-loc-item' + (searchLocation === c ? ' active' : '') + '" onclick="selectSearchLocation(\'' + c + '\')"><i class="ri-map-pin-2-fill text-blue-500"></i><span>' + c + '</span><span class="loc-count">' + count + '</span></div>';
+  });
+  if (!cities.length) html = '<div class="search-empty-state"><i class="ri-search-line"></i><p>مفيش محافظة باسم ده</p></div>';
+  list.innerHTML = html;
+}
+
+function selectSearchLocation(city) {
+  searchLocation = city;
+  const textEl = document.getElementById('search-loc-text');
+  if (textEl) textEl.textContent = city || 'كل المحافظات';
+  document.getElementById('search-loc-dropdown')?.classList.add('hidden');
+  handleSearchInput(document.getElementById('search-input')?.value || '');
+}
+
+function clearSearch() {
+  const input = document.getElementById('search-input');
+  if (input) { input.value = ''; input.focus(); }
+  hideAutocomplete();
+  document.getElementById('search-clear-btn')?.classList.add('hidden');
+}
+
+document.addEventListener('click', (e) => {
+  const locBtn = document.getElementById('search-loc-btn');
+  const locDd = document.getElementById('search-loc-dropdown');
+  if (locBtn && locDd && !locBtn.contains(e.target) && !locDd.contains(e.target)) {
+    locDd.classList.add('hidden');
+  }
+});
+
 function switchSearchTab(btn, type) {
   searchType = type;
   document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
@@ -524,23 +749,251 @@ function switchSearchTab(btn, type) {
   document.getElementById('search-input').placeholder = placeholders[type] || placeholders.name;
 }
 
+function fuzzyMatch(text, query) {
+  text = text.toLowerCase();
+  query = query.toLowerCase();
+  if (text.includes(query)) return true;
+  let qi = 0;
+  for (let ti = 0; ti < text.length && qi < query.length; ti++) {
+    if (text[ti] === query[qi]) qi++;
+  }
+  return qi === query.length;
+}
+
+function searchScore(b, q) {
+  const qLow = q.toLowerCase();
+  const words = qLow.split(/\s+/).filter(Boolean);
+  let score = 0;
+  const nameAr = (b.nameAr || '').toLowerCase();
+  const nameEn = (b.nameEn || '').toLowerCase();
+  const cat = (b.categoryNameAr || '').toLowerCase();
+  const city = (b.location?.city || '').toLowerCase();
+  const district = (b.location?.district || '').toLowerCase();
+  const addr = (b.location?.address || '').toLowerCase();
+  const desc = (b.description || '').toLowerCase();
+  const kw = (b.keywords || []).join(' ').toLowerCase();
+  const br = (b.brands || []).join(' ').toLowerCase();
+
+  // Exact name match = highest score
+  if (nameAr === qLow || nameEn.toLowerCase() === qLow) score += 1000;
+  // Name starts with query
+  if (nameAr.startsWith(qLow) || nameEn.toLowerCase().startsWith(qLow)) score += 500;
+  // Name contains query
+  if (nameAr.includes(qLow)) score += 300;
+  if (nameEn.toLowerCase().includes(qLow)) score += 250;
+  // Category match
+  if (cat.includes(qLow)) score += 200;
+  // City match
+  if (city.includes(qLow)) score += 150;
+  // District match
+  if (district.includes(qLow)) score += 120;
+  // Address match
+  if (addr.includes(qLow)) score += 100;
+  // Keywords match
+  if (kw.includes(qLow)) score += 80;
+  // Brands match
+  if (br.includes(qLow)) score += 80;
+  // Description match
+  if (desc.includes(qLow)) score += 40;
+
+  // Multi-word matching: each word must match somewhere
+  const allText = [nameAr, nameEn, cat, city, district, addr, desc, kw, br].join(' ');
+  const allWordsMatch = words.every(w => allText.includes(w));
+  if (allWordsMatch) score += 100;
+
+  // Fuzzy matching for typos
+  if (score === 0) {
+    if (fuzzyMatch(nameAr, qLow) || fuzzyMatch(nameEn.toLowerCase(), qLow)) score += 50;
+    else if (fuzzyMatch(cat, qLow)) score += 30;
+    else if (fuzzyMatch(kw, qLow)) score += 20;
+    else if (fuzzyMatch(allText, qLow)) score += 10;
+  }
+
+  // Rating bonus
+  score += (b.rating?.average || 0) * 2;
+  // Views bonus
+  score += Math.min((b.views || 0) / 100, 10);
+
+  return score;
+}
+
 function performSearch() {
   const q = document.getElementById('search-input')?.value?.trim();
   if (!q) { loadHome(); return; }
 
-  const approved = businesses.filter(b => b.status === 'approved');
-  const filtered = approved.filter(b => {
-    const searchIn = [b.name || '', b.nameAr || '', b.nameEn || '', b.categoryNameAr || '', b.location?.city || '', b.location?.district || '', ...(b.keywords || []), ...(b.brands || [])].join(' ').toLowerCase();
-    return searchIn.includes(q.toLowerCase());
-  });
+  saveSearchHistory(q);
+  hideAutocomplete();
+  currentPage = 1;
+  let approved = businesses.filter(b => b.status === 'approved');
+  if (searchLocation) approved = approved.filter(b => b.location?.city === searchLocation);
 
-  renderBusinesses(filtered);
+  let filtered;
+  if (searchType === 'category') {
+    filtered = approved.filter(b => {
+      const cat = (b.categoryNameAr || '').toLowerCase();
+      return cat.includes(q.toLowerCase()) || fuzzyMatch(cat, q);
+    });
+  } else if (searchType === 'brand') {
+    filtered = approved.filter(b => {
+      const br = (b.brands || []).join(' ').toLowerCase();
+      return br.includes(q.toLowerCase()) || fuzzyMatch(br, q);
+    });
+  } else if (searchType === 'keyword') {
+    filtered = approved.filter(b => {
+      const kw = (b.keywords || []).join(' ').toLowerCase();
+      const desc = (b.description || '').toLowerCase();
+      return kw.includes(q.toLowerCase()) || desc.includes(q.toLowerCase()) || fuzzyMatch(kw, q);
+    });
+  } else {
+    filtered = approved.map(b => ({ biz: b, score: searchScore(b, q) })).filter(r => r.score > 0).sort((a, b) => b.score - a.score).map(r => r.biz);
+  }
+
+  showPage('businesses');
+  updateNavActive('businesses');
+  if (filtered.length) {
+    renderBusinessesTo(filtered, document.getElementById('all-businesses-grid'));
+  } else {
+    document.getElementById('all-businesses-grid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-search-line"></i></div><h3>مفيش نتائج لـ "' + q + '"' + (searchLocation ? ' في ' + searchLocation : '') + '</h3><p>جرّب كلمات تانية أو شوف الفئات</p><button onclick="navigateTo(\'categories\')" class="mt-4 px-5 py-2 bg-gray-900 text-white rounded-xl text-sm font-medium hover:shadow-lg transition-all"><i class="ri-apps-line ml-1"></i> شوف الفئات</button></div>';
+  }
+  document.title = 'نتائج بحث: ' + q + (searchLocation ? ' في ' + searchLocation : '') + ' | سِكّة';
 }
 
 function quickSearch(term) {
   document.getElementById('search-input').value = term;
   navigateTo('businesses');
   setTimeout(() => performSearch(), 100);
+}
+
+function renderSearchAutocomplete(query) {
+  const container = document.getElementById('search-autocomplete');
+  if (!container) return;
+  if (!query || query.length < 1) { renderSearchSuggestions(); return; }
+
+  let approved = businesses.filter(b => b.status === 'approved');
+  if (searchLocation) approved = approved.filter(b => b.location?.city === searchLocation);
+  const q = query.toLowerCase();
+
+  const bizResults = approved.map(b => ({ biz: b, score: searchScore(b, q) })).filter(r => r.score > 0).sort((a, b) => b.score - a.score).slice(0, 6).map(r => r.biz);
+  const catResults = CATEGORIES.filter(c => c.name.toLowerCase().includes(q) || fuzzyMatch(c.name, q)).slice(0, 3);
+  const cityResults = CITIES.filter(c => c.toLowerCase().includes(q)).slice(0, 3);
+
+  let html = '';
+
+  if (bizResults.length) {
+    html += '<div class="search-section-label">الأعمال</div>';
+    html += bizResults.map(b => {
+      const style = getCategoryStyle(b.categoryNameAr);
+      const isOpen = checkIfOpen(b.workingHours);
+      return '<div class="autocomplete-item" onclick="openBusiness(\'' + b.id + '\');hideAutocomplete()">' +
+        '<div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:' + style.bg + '"><span style="font-size:1.15rem">' + style.emoji + '</span></div>' +
+        '<div class="flex-1 min-w-0">' +
+          '<div class="font-bold text-sm truncate">' + highlightText(b.nameAr || b.name, query) + '</div>' +
+          '<div class="text-xs text-gray-500 flex items-center gap-1">' + highlightText(b.categoryNameAr || '', query) + ' <span class="text-gray-300">·</span> ' + (b.location?.city || '') +
+          (isOpen !== null ? ' <span class="' + (isOpen ? 'text-emerald-500' : 'text-red-400') + '">' + (isOpen ? '● مفتوح' : '● مقفل') + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="text-xs text-amber-500 flex items-center gap-0.5 flex-shrink-0"><i class="ri-star-fill"></i> ' + (b.rating?.average || 0).toFixed(1) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (catResults.length) {
+    html += '<div class="search-section-label">الفئات</div>';
+    html += catResults.map(c => {
+      const style = getCategoryStyle(c.name);
+      return '<div class="autocomplete-item" onclick="quickSearch(\'' + c.name + '\');hideAutocomplete()">' +
+        '<div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:' + style.bg + '"><span style="font-size:1.15rem">' + style.emoji + '</span></div>' +
+        '<div class="flex-1 min-w-0"><div class="font-bold text-sm">' + highlightText(c.name, query) + '</div><div class="text-xs text-gray-500">' + c.desc + '</div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (cityResults.length) {
+    html += '<div class="search-section-label">المحافظات</div>';
+    html += cityResults.map(c => {
+      const count = approved.filter(b => b.location?.city === c).length;
+      return '<div class="autocomplete-item" onclick="quickSearch(\'' + c + '\');hideAutocomplete()">' +
+        '<div class="w-11 h-11 rounded-xl flex items-center justify-center bg-blue-50 flex-shrink-0"><i class="ri-map-pin-2-fill text-blue-500"></i></div>' +
+        '<div class="flex-1 min-w-0"><div class="font-bold text-sm">' + highlightText(c, query) + '</div><div class="text-xs text-gray-500">' + count + ' عمل متاح</div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (!bizResults.length && !catResults.length && !cityResults.length) {
+    html = '<div class="search-empty-state"><i class="ri-emotion-sad-line"></i><p class="text-sm">مفيش نتائج لـ "' + query + '"</p><p class="text-xs mt-1">جرّب كلمات تانية</p></div>';
+  }
+
+  const recent = searchHistory.slice(0, 3);
+  if (recent.length && bizResults.length) {
+    html += '<div class="search-section-label" style="border-top:1px solid #f1f5f9;padding-top:8px;margin-top:4px">آخر عمليات البحث</div>';
+    html += recent.map(s => '<div class="autocomplete-item" onclick="document.getElementById(\'search-input\').value=\'' + s + '\';performSearch();hideAutocomplete()"><div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0"><i class="ri-history-line text-gray-400 text-sm"></i></div><span class="text-gray-500 text-sm">' + s + '</span></div>').join('');
+  }
+
+  container.innerHTML = html;
+  container.classList.remove('hidden');
+}
+
+function renderSearchSuggestions() {
+  const container = document.getElementById('search-autocomplete');
+  if (!container) return;
+
+  let html = '';
+
+  if (searchLocation) {
+    html += '<div class="search-section-label" style="display:flex;align-items:center;gap:6px"><i class="ri-map-pin-2-fill text-blue-500"></i> بحث في: ' + searchLocation + ' <button class="text-xs text-red-400 hover:text-red-600 mr-auto" onclick="selectSearchLocation(\'\')">إلغاء</button></div>';
+  }
+
+  const recent = searchHistory.slice(0, 5);
+  if (recent.length) {
+    html += '<div class="search-section-label"><i class="ri-history-line"></i> آخر عمليات البحث</div>';
+    html += recent.map(s => '<div class="autocomplete-item" onclick="document.getElementById(\'search-input\').value=\'' + s + '\';performSearch();hideAutocomplete()"><div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0"><i class="ri-history-line text-gray-400 text-sm"></i></div><span class="text-gray-600 text-sm">' + s + '</span></div>').join('');
+  }
+
+  html += '<div class="search-section-label"><i class="ri-fire-line"></i> الأكثر بحثاً</div>';
+  html += '<div class="p-3 flex flex-wrap gap-2">';
+  html += POPULAR_SEARCHES.map(s => '<span class="px-3 py-1.5 bg-gray-100 hover:bg-blue-50 hover:text-blue-600 rounded-full text-xs font-medium text-gray-600 cursor-pointer transition-all" onclick="document.getElementById(\'search-input\').value=\'' + s + '\';performSearch();hideAutocomplete()">' + s + '</span>').join('');
+  html += '</div>';
+
+  container.innerHTML = html;
+  container.classList.remove('hidden');
+}
+
+function hideAutocomplete() {
+  document.getElementById('search-autocomplete')?.classList.add('hidden');
+}
+
+function saveSearchHistory(query) {
+  if (!query) return;
+  searchHistory = searchHistory.filter(r => r !== query);
+  searchHistory.unshift(query);
+  searchHistory = searchHistory.slice(0, 10);
+  localStorage.setItem('sikka_search_history', JSON.stringify(searchHistory));
+}
+
+function clearSearchHistory() {
+  searchHistory = [];
+  localStorage.removeItem('sikka_search_history');
+  hideAutocomplete();
+}
+
+function startVoiceSearch() {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    showToast('البحث الصوتي مش متاح في المتصفح ده', 'error');
+    return;
+  }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'ar-EG';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  showToast('اسمع.. اتكلم دلوقتي 🎤', 'info');
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    document.getElementById('search-input').value = text;
+    performSearch();
+  };
+  recognition.onerror = () => showToast('مفهمتش.. جرب تاني', 'error');
+  recognition.start();
 }
 
 function renderAlphaGrid() {
@@ -569,6 +1022,7 @@ function loadHome() {
   const cities = [...new Set(approved.map(b => b.location?.city).filter(Boolean))];
   animateCounter('stat-cities', cities.length || CITIES.length);
   renderNearby(approved);
+  renderLastVisited(approved);
 }
 
 function renderCategories(cats) {
@@ -605,13 +1059,17 @@ function renderBusinessCard(b, i = 0) {
   const reviewList = reviews[b.id] || [];
   const totalReviews = reviewCount + reviewList.length;
   const style = getCategoryStyle(b.categoryNameAr);
-  const initial = (b.nameAr || b.name || '')[0] || '🏢';
+  const isOpen = checkIfOpen(b.workingHours);
 
   return `
     <div class="biz-card group" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
       <div class="biz-card-img" style="background:${style.bg}">
         <div style="font-size:2.5rem;opacity:0.9;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))">${style.emoji}</div>
         ${b.isVerified ? '<span class="biz-badge verified">موثق</span>' : ''}
+        <span class="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-xs font-medium ${isOpen ? 'text-emerald-600' : 'text-red-500'}">
+          <span class="w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-500' : 'bg-red-500'}"></span>
+          ${isOpen ? 'مفتوح' : 'مقفول'}
+        </span>
       </div>
       <div class="biz-card-body">
         <div class="biz-card-name">${b.nameAr || b.name}</div>
@@ -623,6 +1081,7 @@ function renderBusinessCard(b, i = 0) {
       </div>
       <div class="biz-card-footer">
         <div class="biz-rating"><i class="ri-star-fill"></i> ${rating.toFixed(1)} <span>(${totalReviews})</span></div>
+        ${b.products?.length ? `<span class="text-xs text-gray-400"><i class="ri-shopping-bag-3-line ml-1"></i>${b.products.length} منتج</span>` : ''}
       </div>
     </div>
   `;
@@ -670,24 +1129,71 @@ function renderNearby(approved) {
   }
 }
 
+function renderLastVisited(approved) {
+  const section = document.getElementById('last-visited-section');
+  const grid = document.getElementById('last-visited-grid');
+  if (!section || !grid) return;
+  const lastVisited = getLastVisited();
+  if (!lastVisited.length) { section.style.display = 'none'; return; }
+  const lastBiz = lastVisited.map(id => approved.find(b => b.id === id)).filter(Boolean).slice(0, 5);
+  if (!lastBiz.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  grid.innerHTML = lastBiz.map((b, i) => {
+    const style = getCategoryStyle(b.categoryNameAr);
+    return `
+      <div class="bg-white border border-gray-100 rounded-2xl p-4 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${style.bg}">
+            <span style="font-size:1.2rem">${style.emoji}</span>
+          </div>
+          <div class="min-w-0">
+            <div class="font-bold text-sm truncate">${b.nameAr || b.name}</div>
+            <div class="text-xs text-gray-400">${b.categoryNameAr || ''}</div>
+            <div class="flex items-center gap-1 mt-0.5"><i class="ri-star-fill text-amber-400 text-xs"></i><span class="text-xs text-gray-500">${(b.rating?.average || 0).toFixed(1)}</span></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 // ==================== BUSINESSES PAGE ====================
 function loadAllBusinesses() {
   const approved = businesses.filter(b => b.status === 'approved');
   populateFilters(approved);
   renderBusinessesTo(approved, document.getElementById('all-businesses-grid'));
+  const countEl = document.getElementById('businesses-count');
+  if (countEl) countEl.textContent = approved.length + ' عمل متاح';
 }
 
 function populateFilters(list) {
-  const cats = [...new Set(list.map(b => b.categoryNameAr).filter(Boolean))];
-  const cities = [...new Set(list.map(b => b.location?.city).filter(Boolean))];
-  const areas = [...new Set(list.map(b => b.location?.district).filter(Boolean))];
-
   const catSelect = document.getElementById('filter-category');
   const citySelect = document.getElementById('filter-city');
   const areaSelect = document.getElementById('filter-area');
-  if (catSelect) catSelect.innerHTML = '<option value="">كل الفئات</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-  if (citySelect) citySelect.innerHTML = '<option value="">كل المحافظات</option>' + cities.map(c => `<option value="${c}">${c}</option>`).join('');
-  if (areaSelect) areaSelect.innerHTML = '<option value="">كل المناطق</option>' + areas.map(a => `<option value="${a}">${a}</option>`).join('');
+
+  const allCats = [...new Set([...list.map(b => b.categoryNameAr), ...CATEGORIES.map(c => c.name)].filter(Boolean))];
+  const allCities = Object.keys(GOVERNORATES);
+
+  if (catSelect) catSelect.innerHTML = '<option value="">كل الفئات</option>' + allCats.sort().map(c => `<option value="${c}">${c}</option>`).join('');
+  if (citySelect) {
+    citySelect.innerHTML = '<option value="">كل المحافظات</option>' + allCities.map(c => `<option value="${c}">${c}</option>`).join('');
+    const newCityHandler = () => {
+      const city = citySelect.value;
+      if (areaSelect) {
+        if (city && GOVERNORATES[city]) {
+          const bizDistricts = list.filter(b => b.location?.city === city).map(b => b.location?.district).filter(Boolean);
+          const allDistricts = [...new Set([...bizDistricts, ...GOVERNORATES[city]])].sort();
+          areaSelect.innerHTML = '<option value="">كل المناطق</option>' + allDistricts.map(a => `<option value="${a}">${a}</option>`).join('');
+          areaSelect.disabled = false;
+        } else {
+          areaSelect.innerHTML = '<option value="">اختار المحافظة الأول</option>';
+          areaSelect.disabled = true;
+        }
+      }
+    };
+    citySelect.replaceWith(citySelect.cloneNode(true));
+    document.getElementById('filter-city').addEventListener('change', newCityHandler);
+  }
 }
 
 function applyFilters() {
@@ -703,15 +1209,27 @@ function applyFilters() {
   if (sort === 'rating') filtered.sort((a, b) => (b.rating?.average || 0) - (a.rating?.average || 0));
   else if (sort === 'reviews') filtered.sort((a, b) => (b.rating?.count || 0) - (a.rating?.count || 0));
   else if (sort === 'alpha') filtered.sort((a, b) => (a.nameAr || '').localeCompare(b.nameAr || '', 'ar'));
+  else if (sort === 'views') filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
 
   renderBusinessesTo(filtered, document.getElementById('all-businesses-grid'));
+  const countEl = document.getElementById('businesses-count');
+  if (countEl) countEl.textContent = filtered.length + ' نتيجة';
 }
 
 function renderBusinessesTo(list, container) {
   if (!container) return;
-  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش نتائج</h3><p>جرّب تغيير الفلتر أو كلمات البحث</p></div>'; return; }
-  const countHtml = `<div class="col-span-full mb-2 text-sm text-gray-500">${list.length} نتيجة</div>`;
-  container.innerHTML = countHtml + list.map((b, i) => renderBusinessCard(b, i)).join('');
+  if (!list.length) {
+    container.innerHTML = `
+      <div class="col-span-full text-center py-16 bg-white border border-gray-100 rounded-2xl">
+        <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i class="ri-search-line text-3xl text-gray-300"></i>
+        </div>
+        <h3 class="font-bold text-gray-700 mb-2">مفيش نتائج</h3>
+        <p class="text-gray-400 text-sm">جرّب تغيير الفلتر أو كلمات البحث</p>
+      </div>`;
+    return;
+  }
+  renderBusinessesPaginated(list, container);
 }
 
 // ==================== BUSINESS DETAIL ====================
@@ -847,10 +1365,13 @@ function renderBusinessDetail(b) {
       <div class="detail-actions">
         ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="action-btn call"><i class="ri-phone-line"></i> اتصل</a>` : ''}
         ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
-        ${b.contact?.email ? `<a href="mailto:${b.contact.email}" class="action-btn email"><i class="ri-mail-line"></i> إيميل</a>` : ''}
+        ${b.contact?.phone ? `<button class="action-btn map" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i> نسخ النمره</button>` : ''}
         ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
+        <button class="action-btn share" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير واتساب</button>
         <button class="action-btn share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
         <button class="action-btn review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> تقييم</button>
+        <button class="action-btn map" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
+        <button class="action-btn share" onclick="openReportModal('${b.id}')" style="color:#ef4444"><i class="ri-flag-line"></i> إبلاغ</button>
       </div>
       ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن الشغل</h3><p>${b.description}</p></div>` : ''}
       ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
@@ -943,9 +1464,11 @@ function loadDashboard() {
   if (!myBiz) {
     document.getElementById('dashboard-content').innerHTML = `
       <div class="max-w-md mx-auto text-center py-20">
-        <div style="font-size:4rem;margin-bottom:1rem">🏪</div>
+        <div class="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-5">
+          <i class="ri-store-2-line text-4xl text-gray-300"></i>
+        </div>
         <h2 class="text-xl font-bold mb-2">م عندك شغل متسجل</h2>
-        <p class="text-gray-500 mb-6">سجّل شغلك عشان يظهر في الدليل ويظهر لك لوحة التحكم</p>
+        <p class="text-gray-500 mb-6 text-sm">سجّل شغلك عشان يظهر في الدليل ويظهر لك لوحة التحكم</p>
         <button onclick="navigateTo('add')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
           <i class="ri-add-line ml-1"></i> سجّل شغلك دلوقتي
         </button>
@@ -960,12 +1483,24 @@ function showDashTab(tab) {
   const myBiz = businesses.find(b => b.ownerId === currentUser?.id);
   if (!myBiz) { loadDashboard(); return; }
 
-  document.querySelectorAll('#page-dashboard .admin-nav-item').forEach(n => n.classList.remove('active'));
-  event?.target?.closest?.('.admin-nav-item')?.classList.add('active');
-  if (!event?.target?.closest?.('.admin-nav-item')) {
-    document.querySelectorAll('#page-dashboard .admin-nav-item').forEach(n => {
-      if (n.textContent.includes(tab === 'overview' ? 'نظرة' : tab === 'edit' ? 'تعديل' : tab === 'products' ? 'المنتجات' : tab === 'photos' ? 'صور' : tab === 'reviews' ? 'تقييمات' : tab === 'offers' ? 'عروض' : 'إعدادات')) n.classList.add('active');
-    });
+  // Update sidebar active state
+  document.querySelectorAll('#page-dashboard .dash-nav-item').forEach(n => {
+    n.classList.toggle('active', n.getAttribute('data-tab') === tab);
+  });
+
+  // Update status in sidebar
+  const statusEl = document.getElementById('dash-biz-status');
+  if (statusEl) {
+    const statusMap = { approved: '✅ شغلك معتمد', pending: '⏳ في انتظار الموافقة', rejected: '❌ مرفوض' };
+    statusEl.textContent = statusMap[myBiz.status] || '';
+  }
+
+  // Notification badge
+  const notifBadge = document.getElementById('dash-nav-notif-badge');
+  const notifs = JSON.parse(localStorage.getItem('sikka_notifications_' + currentUser.id) || '[]');
+  const unread = notifs.filter(n => !n.read).length;
+  if (notifBadge) {
+    notifBadge.innerHTML = unread ? `<span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span> ${unread} إشعار جديد` : '';
   }
 
   const c = document.getElementById('dashboard-content');
@@ -987,80 +1522,312 @@ function renderDashOverview(c, b) {
   const totalReviews = (b.rating?.count || 0) + bizReviews.length;
   const views = b.views || 0;
   const offers = b.offers || [];
+  const products = b.products || [];
+  const photos = b.photos || [];
+  const favorites = JSON.parse(localStorage.getItem('sikka_favorites') || '[]');
+  const bizFavs = favorites.filter(f => f === b.id).length;
+
+  const statusColor = b.status === 'approved' ? 'emerald' : b.status === 'pending' ? 'amber' : 'red';
+  const statusText = b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
+  const statusIcon = b.status === 'approved' ? 'check-double-line' : b.status === 'pending' ? 'time-line' : 'close-circle-line';
+
+  // Last review date
+  const lastReview = bizReviews.length ? bizReviews[bizReviews.length - 1] : null;
 
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">نظرة عامة على شغلك</h2>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">مرحباً بيك في لوحة التحكم</h2>
+      <p class="text-gray-500 text-sm">تتابع من هنا كل حاجة عن شغلك</p>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="dash-status-banner ${statusColor} rounded-2xl p-5 mb-6 flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:${style.bg}">
+        <span style="font-size:1.8rem">${style.emoji}</span>
+      </div>
+      <div class="flex-1">
+        <h3 class="font-bold text-lg">${b.nameAr || b.name}</h3>
+        <div class="flex items-center gap-2 mt-1">
+          <span class="dash-status-badge ${statusColor}"><i class="ri-${statusIcon}"></i> ${statusText}</span>
+          <span class="text-sm text-gray-500">${b.categoryNameAr || ''} · ${b.location?.city || ''}</span>
+        </div>
+      </div>
+      <a href="#/business/${b.id}" class="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl text-sm font-medium transition-all backdrop-blur-sm">
+        <i class="ri-eye-line"></i> شوف الصفحة
+      </a>
+    </div>
+
+    <!-- Stats Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white border border-gray-200 rounded-2xl p-5">
-        <div class="text-sm text-gray-500 mb-1">التقييم</div>
-        <div class="text-3xl font-bold flex items-center gap-1"><i class="ri-star-fill text-amber-400"></i> ${rating.toFixed(1)}</div>
-        <div class="text-xs text-gray-400">${totalReviews} تقييم</div>
-      </div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5">
-        <div class="text-sm text-gray-500 mb-1">المشاهدات</div>
-        <div class="text-3xl font-bold">${views}</div>
-        <div class="text-xs text-gray-400">مرة</div>
-      </div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5">
-        <div class="text-sm text-gray-500 mb-1">الحالة</div>
-        <div class="text-lg font-bold ${b.status === 'approved' ? 'text-green-600' : b.status === 'pending' ? 'text-amber-600' : 'text-red-600'}">${b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}</div>
-      </div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5">
-        <div class="text-sm text-gray-500 mb-1">العروض النشطة</div>
-        <div class="text-3xl font-bold">${offers.length}</div>
-      </div>
-    </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-      <div class="flex items-center gap-4 mb-4">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:${style.bg}">
-          <span style="font-size:2rem">${style.emoji}</span>
-        </div>
+      <div class="dash-stat-card dash-stat-blue">
+        <div class="dash-stat-icon bg-blue-100 text-blue-600"><i class="ri-star-smile-line"></i></div>
         <div>
-          <h3 class="font-bold text-lg">${b.nameAr || b.name}</h3>
-          <div class="text-sm text-blue-600 font-medium">${b.categoryNameAr || ''}</div>
-          <div class="text-xs text-gray-400">${b.location?.city || ''} ${b.location?.district ? '- ' + b.location.district : ''}</div>
+          <div class="text-2xl font-bold text-blue-700">${rating.toFixed(1)}</div>
+          <div class="text-xs text-blue-500/80">${totalReviews} تقييم</div>
         </div>
       </div>
-      <p class="text-gray-500 text-sm">${b.description || 'م اتضاف وصف لسه'}</p>
+      <div class="dash-stat-card dash-stat-purple">
+        <div class="dash-stat-icon bg-purple-100 text-purple-600"><i class="ri-eye-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-purple-700">${views}</div>
+          <div class="text-xs text-purple-500/80">مشاهدة</div>
+        </div>
+      </div>
+      <div class="dash-stat-card dash-stat-amber">
+        <div class="dash-stat-icon bg-amber-100 text-amber-600"><i class="ri-heart-3-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-amber-700">${bizFavs}</div>
+          <div class="text-xs text-amber-500/80">مفضلة</div>
+        </div>
+      </div>
+      <div class="dash-stat-card dash-stat-green">
+        <div class="dash-stat-icon bg-green-100 text-green-600"><i class="ri-megaphone-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-green-700">${offers.length}</div>
+          <div class="text-xs text-green-500/80">عرض نشط</div>
+        </div>
+      </div>
     </div>
-    <div class="flex gap-3">
-      <button onclick="showDashTab('edit')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-edit-line ml-1"></i> تعديل الشغل</button>
-      <a href="#/business/${b.id}" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all text-sm"><i class="ri-eye-line ml-1"></i> شوف الصفحة</a>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+      <button onclick="showDashTab('edit')" class="dash-quick-action">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-2"><i class="ri-edit-2-line"></i></div>
+        <span class="text-xs font-medium text-gray-700">تعديل الشغل</span>
+      </button>
+      <button onclick="showDashTab('products')" class="dash-quick-action">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500 mb-2"><i class="ri-add-circle-line"></i></div>
+        <span class="text-xs font-medium text-gray-700">إضافة منتج</span>
+      </button>
+      <button onclick="showDashTab('photos')" class="dash-quick-action">
+        <div class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 mb-2"><i class="ri-image-add-line"></i></div>
+        <span class="text-xs font-medium text-gray-700">إضافة صور</span>
+      </button>
+      <button onclick="showDashTab('offers')" class="dash-quick-action">
+        <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-500 mb-2"><i class="ri-megaphone-line"></i></div>
+        <span class="text-xs font-medium text-gray-700">نشر عرض</span>
+      </button>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Business Info Card -->
+      <div class="lg:col-span-2 bg-white border border-gray-100 rounded-2xl p-6">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2">
+          <i class="ri-information-line text-gray-400"></i> معلومات الشغل
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+            <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400"><i class="ri-map-pin-line text-sm"></i></div>
+            <div>
+              <div class="text-xs text-gray-400">الموقع</div>
+              <div class="text-sm font-medium">${b.location?.city || ''} ${b.location?.district ? '· ' + b.location.district : ''}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+            <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400"><i class="ri-phone-line text-sm"></i></div>
+            <div>
+              <div class="text-xs text-gray-400">التليفون</div>
+              <div class="text-sm font-medium">${b.contact?.phone || 'م اتضاف'}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+            <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400"><i class="ri-time-line text-sm"></i></div>
+            <div>
+              <div class="text-xs text-gray-400">المواعيد</div>
+              <div class="text-sm font-medium">${b.workingHours?.saturday || 'م اتضافت المواعيد'}</div>
+            </div>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-xl">
+            <div class="text-xs text-gray-400 mb-1">الوصف</div>
+            <p class="text-sm text-gray-600 leading-relaxed">${b.description || 'م اتضاف وصف لسه'}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Card -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6">
+        <h3 class="font-bold text-sm mb-4 flex items-center gap-2">
+          <i class="ri-line-chart-line text-gray-400"></i> النشاط
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">المنتجات</span>
+            <span class="font-bold text-sm">${products.length}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">الصور</span>
+            <span class="font-bold text-sm">${photos.length}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">العروض</span>
+            <span class="font-bold text-sm">${offers.length}</span>
+          </div>
+          <div class="h-px bg-gray-100"></div>
+          ${lastReview ? `
+          <div>
+            <div class="text-xs text-gray-400 mb-2">آخر تقييم</div>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500">${lastReview.userName[0]}</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-medium truncate">${lastReview.userName}</div>
+                <div class="flex gap-0.5">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < lastReview.rating ? 'fill text-amber-400' : 'line text-gray-200'} text-xs"></i>`).join('')}</div>
+              </div>
+            </div>
+          </div>
+          ` : '<div class="text-center text-gray-400 text-xs py-2">مفيش تقييمات لسه</div>'}
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    ${renderDashNotifications(b.ownerId)}
+  `;
+}
+
+function renderDashNotifications(ownerId) {
+  const notifKey = 'sikka_notifications_' + ownerId;
+  const notifs = JSON.parse(localStorage.getItem(notifKey) || '[]');
+  const unread = notifs.filter(n => !n.read);
+  if (!notifs.length) return '';
+  return `
+    <div class="bg-white border border-gray-100 rounded-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold flex items-center gap-2">
+          <i class="ri-notification-3-line text-blue-500"></i> الإشعارات
+          ${unread.length ? `<span class="px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-bold">${unread.length}</span>` : ''}
+        </h3>
+        <button onclick="clearNotifications('${ownerId}')" class="text-xs text-gray-400 hover:text-red-500 transition-colors">مسح الكل</button>
+      </div>
+      <div class="space-y-2">
+        ${notifs.slice(0, 5).map(n => `
+          <div class="flex items-start gap-3 p-3 rounded-xl ${n.read ? 'bg-gray-50' : 'bg-blue-50/50 border border-blue-100'}">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${n.type === 'success' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-500'}">
+              <i class="ri-${n.type === 'success' ? 'check-line' : 'close-line'} text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <div class="text-sm font-bold">${n.title}</div>
+              <div class="text-xs text-gray-500 mt-0.5">${n.message}</div>
+              <div class="text-xs text-gray-400 mt-1">${new Date(n.date).toLocaleDateString('ar-EG')}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   `;
 }
 
+function clearNotifications(ownerId) {
+  localStorage.removeItem('sikka_notifications_' + ownerId);
+  loadDashboard();
+}
+
 function renderDashEdit(c, b) {
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">تعديل الشغل</h2>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">اسم الشغل بالعربي</label><input class="form-input" id="de-nameAr" value="${b.nameAr || ''}"></div>
-        <div><label class="form-label">اسم الشغل بالإنجليزي</label><input class="form-input" id="de-nameEn" value="${b.nameEn || ''}"></div>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">تعديل الشغل</h2>
+      <p class="text-gray-500 text-sm">عدّل معلومات شغلك وابقى محدّث للزباين</p>
+    </div>
+    <div class="space-y-6">
+      <!-- Basic Info -->
+      <div class="dash-section">
+        <div class="dash-section-header">
+          <div class="dash-section-icon bg-blue-50 text-blue-500"><i class="ri-store-2-line"></i></div>
+          <div>
+            <h3 class="font-bold text-sm">المعلومات الأساسية</h3>
+            <p class="text-xs text-gray-400">اسم الشغل والوصف</p>
+          </div>
+        </div>
+        <div class="dash-section-body">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><label class="form-label">اسم الشغل بالعربي</label><input class="form-input" id="de-nameAr" value="${b.nameAr || ''}"></div>
+            <div><label class="form-label">اسم الشغل بالإنجليزي</label><input class="form-input" id="de-nameEn" value="${b.nameEn || ''}"></div>
+          </div>
+          <div><label class="form-label">الوصف</label><textarea class="form-input" id="de-desc" rows="3" placeholder="اكتب وصف مختصر عن شغلك...">${b.description || ''}</textarea></div>
+        </div>
       </div>
-      <div><label class="form-label">الوصف</label><textarea class="form-input" id="de-desc" rows="3">${b.description || ''}</textarea></div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">المدينة</label><input class="form-input" id="de-city" value="${b.location?.city || ''}"></div>
-        <div><label class="form-label">الحي</label><input class="form-input" id="de-district" value="${b.location?.district || ''}"></div>
+
+      <!-- Location -->
+      <div class="dash-section">
+        <div class="dash-section-header">
+          <div class="dash-section-icon bg-green-50 text-green-500"><i class="ri-map-pin-line"></i></div>
+          <div>
+            <h3 class="font-bold text-sm">الموقع</h3>
+            <p class="text-xs text-gray-400">المدينة والعنوان بالتفصيل</p>
+          </div>
+        </div>
+        <div class="dash-section-body">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><label class="form-label">المدينة</label><input class="form-input" id="de-city" value="${b.location?.city || ''}"></div>
+            <div><label class="form-label">الحي</label><input class="form-input" id="de-district" value="${b.location?.district || ''}"></div>
+          </div>
+          <div><label class="form-label">العنوان بالتفصيل</label><input class="form-input" id="de-address" value="${b.location?.address || ''}"></div>
+        </div>
       </div>
-      <div><label class="form-label">العنوان بالتفصيل</label><input class="form-input" id="de-address" value="${b.location?.address || ''}"></div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">رقم التليفون</label><input class="form-input" id="de-phone" value="${b.contact?.phone || ''}"></div>
-        <div><label class="form-label">واتساب</label><input class="form-input" id="de-whatsapp" value="${b.contact?.whatsapp || ''}"></div>
+
+      <!-- Contact -->
+      <div class="dash-section">
+        <div class="dash-section-header">
+          <div class="dash-section-icon bg-purple-50 text-purple-500"><i class="ri-phone-line"></i></div>
+          <div>
+            <h3 class="font-bold text-sm">التواصل</h3>
+            <p class="text-xs text-gray-400">رقم التليفون والواتساب</p>
+          </div>
+        </div>
+        <div class="dash-section-body">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><label class="form-label">رقم التليفون</label><input class="form-input" id="de-phone" value="${b.contact?.phone || ''}"></div>
+            <div><label class="form-label">واتساب</label><input class="form-input" id="de-whatsapp" value="${b.contact?.whatsapp || ''}"></div>
+          </div>
+          <div><label class="form-label">الإيميل</label><input class="form-input" id="de-email" value="${b.contact?.email || ''}"></div>
+        </div>
       </div>
-      <div><label class="form-label">الإيميل</label><input class="form-input" id="de-email" value="${b.contact?.email || ''}"></div>
-      <div><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input class="form-input" id="de-keywords" value="${(b.keywords || []).join(', ')}"></div>
-      <div><label class="form-label">البراندات (افصل بفاصلة)</label><input class="form-input" id="de-brands" value="${(b.brands || []).join(', ')}"></div>
-      <div class="grid grid-cols-2 gap-4">
-        <div><label class="form-label">مواعيد الشغل (السبت)</label><input class="form-input" id="de-sat" value="${b.workingHours?.saturday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الأحد)</label><input class="form-input" id="de-sun" value="${b.workingHours?.sunday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الاثنين)</label><input class="form-input" id="de-mon" value="${b.workingHours?.monday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الثلاثاء)</label><input class="form-input" id="de-tue" value="${b.workingHours?.tuesday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الأربعاء)</label><input class="form-input" id="de-wed" value="${b.workingHours?.wednesday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الخميس)</label><input class="form-input" id="de-thu" value="${b.workingHours?.thursday || ''}"></div>
-        <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input class="form-input" id="de-fri" value="${b.workingHours?.friday || ''}"></div>
+
+      <!-- SEO & Keywords -->
+      <div class="dash-section">
+        <div class="dash-section-header">
+          <div class="dash-section-icon bg-amber-50 text-amber-500"><i class="ri-search-eye-line"></i></div>
+          <div>
+            <h3 class="font-bold text-sm">الكلمات المفتاحية والبراندات</h3>
+            <p class="text-xs text-gray-400">يساعدك تظهر في نتائج البحث</p>
+          </div>
+        </div>
+        <div class="dash-section-body">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input class="form-input" id="de-keywords" value="${(b.keywords || []).join(', ')}" placeholder="قهوة, اسبريسو, كابتشينو"></div>
+            <div><label class="form-label">البراندات (افصل بفاصلة)</label><input class="form-input" id="de-brands" value="${(b.brands || []).join(', ')}" placeholder="Lavazza, Illy"></div>
+          </div>
+        </div>
       </div>
-      <button onclick="saveDashEdit('${b.id}')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all"><i class="ri-save-line ml-1"></i> حفظ التعديلات</button>
+
+      <!-- Working Hours -->
+      <div class="dash-section">
+        <div class="dash-section-header">
+          <div class="dash-section-icon bg-orange-50 text-orange-500"><i class="ri-calendar-schedule-line"></i></div>
+          <div>
+            <h3 class="font-bold text-sm">مواعيد الشغل</h3>
+            <p class="text-xs text-gray-400">متى شغلك مفتوح</p>
+          </div>
+        </div>
+        <div class="dash-section-body">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div><label class="form-label">السبت</label><input class="form-input" id="de-sat" value="${b.workingHours?.saturday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الأحد</label><input class="form-input" id="de-sun" value="${b.workingHours?.sunday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الاثنين</label><input class="form-input" id="de-mon" value="${b.workingHours?.monday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الثلاثاء</label><input class="form-input" id="de-tue" value="${b.workingHours?.tuesday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الأربعاء</label><input class="form-input" id="de-wed" value="${b.workingHours?.wednesday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الخميس</label><input class="form-input" id="de-thu" value="${b.workingHours?.thursday || ''}" placeholder="9 ص - 10 م"></div>
+            <div><label class="form-label">الجمعة</label><input class="form-input" id="de-fri" value="${b.workingHours?.friday || ''}" placeholder="مغلق"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="flex justify-end">
+        <button onclick="saveDashEdit('${b.id}')" class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+          <i class="ri-save-line ml-1"></i> حفظ التعديلات
+        </button>
+      </div>
     </div>
   `;
 }
@@ -1099,33 +1866,53 @@ function renderDashProducts(c, b) {
   const products = b.products || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
   c.innerHTML = `
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold">المنتجات والخدمات</h2>
-      <span class="text-sm text-gray-500">${products.length} منتج</span>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">المنتجات والخدمات</h2>
+      <p class="text-gray-500 text-sm">أضف وعّد منتجاتك وخدماتك للزباين</p>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-      <h3 class="font-bold mb-4"><i class="ri-add-circle-line text-green-500 ml-1"></i> إضافة منتج جديد</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label class="form-label">اسم المنتج *</label><input class="form-input" id="prod-name" placeholder="مثال: لاتيه"></div>
-        <div><label class="form-label">السعر (جنيه)</label><input class="form-input" id="prod-price" placeholder="45"></div>
-        <div><label class="form-label">التصنيف</label><input class="form-input" id="prod-category" placeholder="مثال: قهوة، وجبات، خدمات"></div>
-        <div><label class="form-label">رابط الصورة</label><input class="form-input" id="prod-image" placeholder="https://..."></div>
-        <div class="sm:col-span-2"><label class="form-label">الوصف</label><input class="form-input" id="prod-desc" placeholder="وصف المنتج"></div>
+
+    <!-- Add Product Form -->
+    <div class="dash-section mb-6">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-green-50 text-green-500"><i class="ri-add-circle-line"></i></div>
+        <div>
+          <h3 class="font-bold text-sm">إضافة منتج جديد</h3>
+          <p class="text-xs text-gray-400">${products.length} منتج مضاف</p>
+        </div>
       </div>
-      <button onclick="addBizProduct('${b.id}')" class="mt-4 px-6 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-add-line ml-1"></i> إضافة المنتج</button>
+      <div class="dash-section-body">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="form-label">اسم المنتج *</label><input class="form-input" id="prod-name" placeholder="مثال: لاتيه، كابتشينو..."></div>
+          <div><label class="form-label">السعر (جنيه)</label><input class="form-input" id="prod-price" type="number" placeholder="45"></div>
+          <div><label class="form-label">التصنيف</label><input class="form-input" id="prod-category" placeholder="مثال: قهوة، وجبات، خدمات"></div>
+          <div><label class="form-label">رابط الصورة</label><input class="form-input" id="prod-image" placeholder="https://..."></div>
+          <div class="sm:col-span-2"><label class="form-label">الوصف</label><input class="form-input" id="prod-desc" placeholder="وصف المنتج"></div>
+        </div>
+        <div class="mt-4">
+          <button onclick="addBizProduct('${b.id}')" class="px-6 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm">
+            <i class="ri-add-line ml-1"></i> إضافة المنتج
+          </button>
+        </div>
+      </div>
     </div>
+
+    <!-- Category Filters -->
     ${cats.length ? `
     <div class="flex flex-wrap gap-2 mb-4">
-      <button class="px-3 py-1.5 text-xs font-medium bg-gray-900 text-white rounded-lg" onclick="filterDashProducts('${b.id}','')">الكل (${products.length})</button>
-      ${cats.map(cat => `<button class="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200" onclick="filterDashProducts('${b.id}','${cat}')">${cat} (${products.filter(p => p.category === cat).length})</button>`).join('')}
+      <button class="dash-filter-btn active" onclick="filterDashProducts('${b.id}','')">الكل (${products.length})</button>
+      ${cats.map(cat => `<button class="dash-filter-btn" onclick="filterDashProducts('${b.id}','${cat}')">${cat} (${products.filter(p => p.category === cat).length})</button>`).join('')}
     </div>
     ` : ''}
+
+    <!-- Products Grid -->
     <div id="dash-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       ${products.length ? products.map((p, i) => renderProductCard(p, i, b.id, true)).join('') : `
-        <div class="col-span-full text-center py-12 bg-white border border-gray-200 rounded-2xl">
-          <div class="text-5xl mb-4">📦</div>
+        <div class="col-span-full text-center py-16 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i class="ri-shopping-bag-3-line text-3xl text-gray-300"></i>
+          </div>
           <h3 class="font-bold text-gray-700 mb-2">مفيش منتجات لسه</h3>
-          <p class="text-gray-500 text-sm">أضف منتجاتك أو خدماتك عشان الزباين يعرفوا يشوفوا الأسعار والتفاصيل</p>
+          <p class="text-gray-400 text-sm">أضف منتجاتك أو خدماتك عشان الزباين يعرفوا يشوفوا الأسعار والتفاصيل</p>
         </div>
       `}
     </div>
@@ -1134,17 +1921,17 @@ function renderDashProducts(c, b) {
 
 function renderProductCard(p, i, bizId, editable = false) {
   return `
-    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all group" data-aos="fade-up" data-aos-delay="${i * 30}">
-      <div class="h-40 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
-        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-full h-full items-center justify-center text-4xl" style="display:none">📦</div>` : '<span class="text-4xl">📦</span>'}
-        ${p.category ? `<span class="absolute top-2 right-2 px-2 py-0.5 bg-black/60 text-white text-xs rounded-lg backdrop-blur-sm">${p.category}</span>` : ''}
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all group" data-aos="fade-up" data-aos-delay="${i * 30}">
+      <div class="h-40 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
+        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-full h-full items-center justify-center text-4xl" style="display:none"><i class="ri-shopping-bag-3-line text-4xl text-gray-300"></i></div>` : '<i class="ri-shopping-bag-3-line text-4xl text-gray-300"></i>'}
+        ${p.category ? `<span class="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-600 text-xs rounded-lg font-medium shadow-sm">${p.category}</span>` : ''}
       </div>
       <div class="p-4">
-        <h4 class="font-bold text-sm mb-1">${p.name}</h4>
-        ${p.desc ? `<p class="text-gray-500 text-xs mb-2 line-clamp-2">${p.desc}</p>` : ''}
+        <h4 class="font-bold text-sm mb-1 truncate">${p.name}</h4>
+        ${p.desc ? `<p class="text-gray-500 text-xs mb-3 line-clamp-2">${p.desc}</p>` : '<div class="mb-3"></div>'}
         <div class="flex items-center justify-between">
-          ${p.price ? `<span class="text-lg font-bold text-green-600">${p.price} <span class="text-xs font-normal">جنيه</span></span>` : '<span class="text-sm text-gray-400">السعر عند الاتصال</span>'}
-          ${editable ? `<button onclick="removeBizProduct('${bizId}','${p.id}')" class="w-8 h-8 bg-red-50 text-red-400 rounded-lg flex items-center justify-center hover:bg-red-100 hover:text-red-600 transition-all"><i class="ri-delete-bin-line text-sm"></i></button>` : ''}
+          ${p.price ? `<span class="text-lg font-bold text-green-600">${p.price} <span class="text-xs font-normal text-gray-400">جنيه</span></span>` : '<span class="text-xs text-gray-400">السعر عند الاتصال</span>'}
+          ${editable ? `<button onclick="removeBizProduct('${bizId}','${p.id}')" class="w-9 h-9 bg-red-50 text-red-400 rounded-xl flex items-center justify-center hover:bg-red-100 hover:text-red-600 transition-all"><i class="ri-delete-bin-line text-sm"></i></button>` : ''}
         </div>
       </div>
     </div>
@@ -1192,24 +1979,51 @@ function filterDashProducts(bizId, cat) {
 function renderDashPhotos(c, b) {
   const photos = b.photos || [];
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">إدارة الصور</h2>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
-      <p class="text-gray-500 text-sm mb-4">أضف صور لشغلك عشان يظهر للزباين</p>
-      <div class="mb-4">
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">إدارة الصور</h2>
+      <p class="text-gray-500 text-sm">أضف صور شغلك عشان يظهر للزباين</p>
+    </div>
+
+    <!-- Add Photo Form -->
+    <div class="dash-section mb-6">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-pink-50 text-pink-500"><i class="ri-image-add-line"></i></div>
+        <div>
+          <h3 class="font-bold text-sm">إضافة صورة جديدة</h3>
+          <p class="text-xs text-gray-400">${photos.length} صورة مضاف</p>
+        </div>
+      </div>
+      <div class="dash-section-body">
         <label class="form-label">رابط الصورة</label>
         <div class="flex gap-2">
           <input class="form-input flex-1" id="photo-url-input" placeholder="https://example.com/photo.jpg">
-          <button onclick="addBizPhoto('${b.id}')" class="px-4 py-2 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all whitespace-nowrap"><i class="ri-add-line"></i> إضافة</button>
+          <button onclick="addBizPhoto('${b.id}')" class="px-5 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all whitespace-nowrap text-sm">
+            <i class="ri-add-line ml-1"></i> إضافة
+          </button>
         </div>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="photos-grid">
-        ${photos.length ? photos.map((p, i) => `
-          <div class="relative rounded-xl overflow-hidden bg-gray-100 aspect-square">
-            <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-3xl\\'></i></div>'">
-            <button onclick="removeBizPhoto('${b.id}',${i})" class="absolute top-2 left-2 w-7 h-7 bg-red-500 text-white rounded-lg flex items-center justify-center text-xs hover:bg-red-600"><i class="ri-close-line"></i></button>
+    </div>
+
+    <!-- Photos Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="photos-grid">
+      ${photos.length ? photos.map((p, i) => `
+        <div class="relative rounded-2xl overflow-hidden bg-gray-100 aspect-square group">
+          <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-3xl\\'></i></div>'">
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+            <button onclick="removeBizPhoto('${b.id}',${i})" class="w-10 h-10 bg-red-500 text-white rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-red-600 shadow-lg">
+              <i class="ri-delete-bin-line"></i>
+            </button>
           </div>
-        `).join('') : '<div class="col-span-full text-center py-8 text-gray-400"><i class="ri-image-line text-3xl"></i><p class="mt-2 text-sm">مفيش صور لسه</p></div>'}
-      </div>
+        </div>
+      `).join('') : `
+        <div class="col-span-full text-center py-16 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i class="ri-gallery-line text-3xl text-gray-300"></i>
+          </div>
+          <h3 class="font-bold text-gray-700 mb-2">مفيش صور لسه</h3>
+          <p class="text-gray-400 text-sm">أضف صور شغلك عشان يظهر للزباين</p>
+        </div>
+      `}
     </div>
   `;
 }
@@ -1243,34 +2057,53 @@ function renderDashReviews(c, b) {
   bizReviews.forEach(r => { if (r.rating >= 1 && r.rating <= 5) stars[r.rating - 1]++; });
 
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">التقييمات والمراجعات</h2>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">التقييمات والمراجعات</h2>
+      <p class="text-gray-500 text-sm">شوف الزباين بيقولوا إيه عن شغلك</p>
+    </div>
+
+    <!-- Stats -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-      <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center">
-        <div class="text-4xl font-bold mb-1">${avg.toFixed(1)}</div>
-        <div class="flex justify-center gap-1 mb-1">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(avg) ? 'fill text-amber-400' : 'line text-gray-300'}"></i>`).join('')}</div>
+      <div class="dash-section text-center p-6">
+        <div class="text-5xl font-bold text-gray-800 mb-2">${avg.toFixed(1)}</div>
+        <div class="flex justify-center gap-1 mb-2">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < Math.round(avg) ? 'fill text-amber-400 text-lg' : 'line text-gray-200 text-lg'}"></i>`).join('')}</div>
         <div class="text-xs text-gray-400">${count} تقييم</div>
       </div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5">
+      <div class="dash-section p-6">
         <div class="text-sm font-bold mb-3">توزيع التقييمات</div>
-        ${[5,4,3,2,1].map(s => `<div class="flex items-center gap-2 mb-1"><span class="text-xs w-4">${s}</span><i class="ri-star-fill text-amber-400 text-xs"></i><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full" style="width:${count ? (stars[s-1]/count*100) : 0}%"></div></div><span class="text-xs text-gray-400 w-6">${stars[s-1]}</span></div>`).join('')}
+        ${[5,4,3,2,1].map(s => `<div class="flex items-center gap-2 mb-1.5"><span class="text-xs w-4 text-gray-400">${s}</span><i class="ri-star-fill text-amber-400 text-xs"></i><div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full transition-all" style="width:${count ? (stars[s-1]/count*100) : 0}%"></div></div><span class="text-xs text-gray-400 w-6">${stars[s-1]}</span></div>`).join('')}
       </div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center">
-        <div class="text-4xl font-bold mb-1">${bizReviews.length}</div>
-        <div class="text-sm text-gray-500">مراجعة مكتوبة</div>
+      <div class="dash-section text-center p-6 flex flex-col items-center justify-center">
+        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-3"><i class="ri-chat-smile-2-line text-2xl text-orange-500"></i></div>
+        <div class="text-3xl font-bold">${bizReviews.length}</div>
+        <div class="text-xs text-gray-400">مراجعة مكتوبة</div>
       </div>
     </div>
-    <div class="space-y-1">
-      ${bizReviews.length ? bizReviews.map(r => `
-        <div class="bg-white border border-gray-200 rounded-2xl p-5">
+
+    <!-- Reviews List -->
+    <div class="space-y-3">
+      ${bizReviews.length ? bizReviews.reverse().map(r => `
+        <div class="bg-white border border-gray-100 rounded-2xl p-5 hover:shadow-sm transition-all">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500">${r.userName[0]}</div>
-            <div><div class="font-bold text-sm">${r.userName}</div><div class="text-xs text-gray-400">${r.date}</div></div>
-            <div class="mr-auto flex gap-0.5">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill text-amber-400' : 'line text-gray-300'}"></i>`).join('')}</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">${r.userName[0]}</div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">${r.userName}</div>
+              <div class="text-xs text-gray-400">${r.date}</div>
+            </div>
+            <div class="flex gap-0.5">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill text-amber-400' : 'line text-gray-200'}"></i>`).join('')}</div>
           </div>
           ${r.title ? `<div class="font-bold text-sm mb-1">${r.title}</div>` : ''}
-          ${r.comment ? `<div class="text-gray-500 text-sm">${r.comment}</div>` : ''}
+          ${r.comment ? `<div class="text-gray-500 text-sm leading-relaxed">${r.comment}</div>` : ''}
         </div>
-      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-star-line text-3xl"></i><p class="mt-2">مفيش تقييمات لسه</p></div>'}
+      `).join('') : `
+        <div class="text-center py-16 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i class="ri-star-smile-line text-3xl text-gray-300"></i>
+          </div>
+          <h3 class="font-bold text-gray-700 mb-2">مفيش تقييمات لسه</h3>
+          <p class="text-gray-400 text-sm">التقييمات هتظهر هنا لما الزباين يكتبوا رأيهم</p>
+        </div>
+      `}
     </div>
   `;
 }
@@ -1278,36 +2111,65 @@ function renderDashReviews(c, b) {
 function renderDashOffers(c, b) {
   const offers = b.offers || [];
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">العروض والتسويق</h2>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-      <h3 class="font-bold mb-3">أضف عرض جديد</h3>
-      <div class="space-y-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div><label class="form-label">عنوان العرض</label><input class="form-input" id="offer-title" placeholder="خصم 20% على كل القهوة"></div>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">العروض والتسويق</h2>
+      <p class="text-gray-500 text-sm">اعمل عروض تجذب الزباين وتزود المبيعات</p>
+    </div>
+
+    <!-- Add Offer Form -->
+    <div class="dash-section mb-6">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-green-50 text-green-500"><i class="ri-megaphone-line"></i></div>
+        <div>
+          <h3 class="font-bold text-sm">نشر عرض جديد</h3>
+          <p class="text-xs text-gray-400">${offers.length} عرض نشط</p>
+        </div>
+      </div>
+      <div class="dash-section-body">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="form-label">عنوان العرض *</label><input class="form-input" id="offer-title" placeholder="خصم 20% على كل القهوة"></div>
           <div><label class="form-label">تاريخ الانتهاء</label><input type="date" class="form-input" id="offer-date"></div>
         </div>
         <div><label class="form-label">وصف العرض</label><textarea class="form-input" id="offer-desc" rows="2" placeholder="تفاصيل العرض..."></textarea></div>
-        <div><label class="form-label">كود الخصم (اختياري)</label><input class="form-input" id="offer-code" placeholder="SIKKA20"></div>
-        <button onclick="addBizOffer('${b.id}')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-add-line ml-1"></i> نشر العرض</button>
+        <div><label class="form-label">كود الخصم (اختياري)</label><input class="form-input" id="offer-code" placeholder="SIKKA20" style="max-width:200px"></div>
+        <div class="mt-2">
+          <button onclick="addBizOffer('${b.id}')" class="px-6 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm">
+            <i class="ri-megaphone-line ml-1"></i> نشر العرض
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- Offers List -->
     <div class="space-y-3">
       ${offers.length ? offers.map((o, i) => `
-        <div class="bg-white border border-gray-200 rounded-2xl p-5">
-          <div class="flex items-start gap-3">
-            <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0"><i class="ri-megaphone-line text-amber-500 text-xl"></i></div>
+        <div class="bg-white border border-gray-100 rounded-2xl p-5 hover:shadow-sm transition-all">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <i class="ri-megaphone-line text-white text-xl"></i>
+            </div>
             <div class="flex-1">
               <h4 class="font-bold">${o.title}</h4>
-              <p class="text-gray-500 text-sm mt-1">${o.description || ''}</p>
-              <div class="flex items-center gap-3 mt-2 text-xs text-gray-400">
-                ${o.endDate ? `<span><i class="ri-calendar-line"></i> ينتهي: ${o.endDate}</span>` : ''}
-                ${o.code ? `<span class="bg-gray-100 px-2 py-0.5 rounded font-mono">${o.code}</span>` : ''}
+              ${o.description ? `<p class="text-gray-500 text-sm mt-1 leading-relaxed">${o.description}</p>` : ''}
+              <div class="flex flex-wrap items-center gap-3 mt-2">
+                ${o.endDate ? `<span class="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-lg font-medium"><i class="ri-calendar-line ml-1"></i> ينتهي: ${o.endDate}</span>` : ''}
+                ${o.code ? `<span class="px-2 py-1 bg-green-50 text-green-600 text-xs rounded-lg font-mono font-medium">${o.code}</span>` : ''}
               </div>
             </div>
-            <button onclick="removeBizOffer('${b.id}',${i})" class="text-red-400 hover:text-red-600 text-sm"><i class="ri-delete-bin-line"></i></button>
+            <button onclick="removeBizOffer('${b.id}',${i})" class="w-9 h-9 bg-red-50 text-red-400 rounded-xl flex items-center justify-center hover:bg-red-100 hover:text-red-600 transition-all flex-shrink-0">
+              <i class="ri-delete-bin-line"></i>
+            </button>
           </div>
         </div>
-      `).join('') : '<div class="text-center py-10 text-gray-400"><i class="ri-megaphone-line text-3xl"></i><p class="mt-2">مفيش عروض لسه</p></div>'}
+      `).join('') : `
+        <div class="text-center py-16 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i class="ri-megaphone-line text-3xl text-gray-300"></i>
+          </div>
+          <h3 class="font-bold text-gray-700 mb-2">مفيش عروض لسه</h3>
+          <p class="text-gray-400 text-sm">اعمل عروض تجذب الزباين وتزود المبيعات</p>
+        </div>
+      `}
     </div>
   `;
 }
@@ -1338,21 +2200,52 @@ function removeBizOffer(id, idx) {
 
 function renderDashSettings(c, b) {
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">إعدادات الحساب</h2>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-      <h3 class="font-bold mb-3">معلومات الحساب</h3>
-      <div class="space-y-3">
-        <div><label class="form-label">الاسم</label><input class="form-input" id="set-name" value="${currentUser.name}"></div>
-        <div><label class="form-label">البريد الإلكتروني</label><input class="form-input" id="set-email" value="${currentUser.email}" disabled></div>
-        <div><label class="form-label">المحافظة</label><select class="form-input" id="set-gov"><option value="">اختار المحافظة</option></select></div>
-        <div><label class="form-label">المركز/الحي</label><select class="form-input" id="set-center"><option value="">اختار المركز</option></select></div>
-        <button onclick="saveDashSettings()" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm"><i class="ri-save-line ml-1"></i> حفظ</button>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">إعدادات الحساب</h2>
+      <p class="text-gray-500 text-sm">عدّل معلومات حسابك الشخصي</p>
+    </div>
+
+    <!-- Account Info -->
+    <div class="dash-section mb-6">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-blue-50 text-blue-500"><i class="ri-user-settings-line"></i></div>
+        <div>
+          <h3 class="font-bold text-sm">معلومات الحساب</h3>
+          <p class="text-xs text-gray-400">بياناتك الشخصية</p>
+        </div>
+      </div>
+      <div class="dash-section-body">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="form-label">الاسم</label><input class="form-input" id="set-name" value="${currentUser.name}"></div>
+          <div><label class="form-label">البريد الإلكتروني</label><input class="form-input" id="set-email" value="${currentUser.email}" disabled></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="form-label">المحافظة</label><select class="form-input" id="set-gov"><option value="">اختار المحافظة</option></select></div>
+          <div><label class="form-label">المركز/الحي</label><select class="form-input" id="set-center"><option value="">اختار المركز</option></select></div>
+        </div>
+        <div class="mt-2">
+          <button onclick="saveDashSettings()" class="px-6 py-2.5 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all text-sm">
+            <i class="ri-save-line ml-1"></i> حفظ التعديلات
+          </button>
+        </div>
       </div>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
-      <h3 class="font-bold mb-3">حذف الحساب</h3>
-      <p class="text-gray-500 text-sm mb-4">حذف الحساب يعني حذف جميع بياناتك نهائياً</p>
-      <button onclick="deleteDashAccount('${b.id}')" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl font-medium hover:bg-red-100 transition-all text-sm"><i class="ri-delete-bin-line ml-1"></i> حذف الحساب والشغل</button>
+
+    <!-- Danger Zone -->
+    <div class="dash-section border-red-200 bg-red-50/50">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-red-100 text-red-500"><i class="ri-error-warning-line"></i></div>
+        <div>
+          <h3 class="font-bold text-sm text-red-700">منطقة الخطر</h3>
+          <p class="text-xs text-red-400">الإجراءات دي لا رجعة فيها</p>
+        </div>
+      </div>
+      <div class="dash-section-body">
+        <p class="text-sm text-red-600 mb-4">حذف الحساب يعني حذف جميع بياناتك نهائياً من الموقع. مفيش رجوع من الإجراء ده.</p>
+        <button onclick="deleteDashAccount('${b.id}')" class="px-5 py-2.5 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-all text-sm">
+          <i class="ri-delete-bin-line ml-1"></i> حذف الحساب والشغل
+        </button>
+      </div>
     </div>
   `;
   populateGovSelect('set-gov', 'set-center');
@@ -1460,25 +2353,86 @@ function renderAddForm() {
   }
 
   c.innerHTML = `
-    <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="sm:col-span-2"><label class="form-label">اسم الشغل *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم الشغل بالعربي"></div>
-        <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختار الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
-        <div><label class="form-label">المحافظة *</label><select class="form-input" id="biz-city"><option value="">اختار المحافظة</option>${Object.keys(GOVERNORATES).map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>
-        <div><label class="form-label">المركز/الحي</label><select class="form-input" id="biz-district" disabled><option value="">اختار المحافظة الأول</option></select></div>
-        <div class="sm:col-span-2"><label class="form-label">العنوان بالتفصيل</label><input type="text" class="form-input" id="biz-address" placeholder="العنوان بالتفصيل"></div>
-        <div><label class="form-label">التليفون *</label><input type="tel" class="form-input" id="biz-phone" placeholder="01XXXXXXXXX"></div>
-        <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="201XXXXXXXXX"></div>
-        <div><label class="form-label">الإيميل</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
-        <div class="sm:col-span-2"><label class="form-label">الوصف</label><textarea class="form-input" id="biz-description" rows="3" placeholder="وصف شغلك"></textarea></div>
-        <div class="sm:col-span-2"><label class="form-label">الكلمات المفتاحية (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب"></div>
-        <div class="sm:col-span-2"><label class="form-label">البراندات (افصل بفاصلة)</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa"></div>
-        <div><label class="form-label">مواعيد الشغل (السبت-الخميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
-        <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <!-- Header -->
+      <div class="p-6 sm:p-8 border-b border-gray-100 text-center">
+        <div class="w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+          <i class="ri-store-2-line text-2xl text-white"></i>
+        </div>
+        <h2 class="text-xl font-bold mb-1">سجّل شغلك</h2>
+        <p class="text-gray-500 text-sm">اعمل حساب وابدأ انشر شغلك للزباين</p>
       </div>
-      <div class="flex gap-3 mt-6">
-        <button class="flex-1 py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()"><i class="ri-send-plane-line"></i> نشر الشغل</button>
-        <button class="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all" onclick="navigateTo('home')">إلغاء</button>
+
+      <div class="p-6 sm:p-8 space-y-6">
+        <!-- Basic Info Section -->
+        <div class="dash-section border-0 bg-gray-50">
+          <div class="dash-section-body">
+            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-store-2-line text-gray-400"></i> المعلومات الأساسية</h3>
+            <div class="space-y-4">
+              <div><label class="form-label">اسم الشغل بالعربي *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم شغلك"></div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختار الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
+                <div><label class="form-label">الوصف</label><input type="text" class="form-input" id="biz-description" placeholder="وصف مختصر لشغلك"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Section -->
+        <div class="dash-section border-0 bg-gray-50">
+          <div class="dash-section-body">
+            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-map-pin-line text-gray-400"></i> الموقع</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label class="form-label">المحافظة *</label><select class="form-input" id="biz-city"><option value="">اختار المحافظة</option>${Object.keys(GOVERNORATES).map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>
+              <div><label class="form-label">المركز/الحي</label><select class="form-input" id="biz-district" disabled><option value="">اختار المحافظة الأول</option></select></div>
+              <div class="sm:col-span-2"><label class="form-label">العنوان بالتفصيل</label><input type="text" class="form-input" id="biz-address" placeholder="شارع، رقم المبنى..."></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="dash-section border-0 bg-gray-50">
+          <div class="dash-section-body">
+            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-phone-line text-gray-400"></i> بيانات التواصل</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div><label class="form-label">التليفون *</label><input type="tel" class="form-input" id="biz-phone" placeholder="01XXXXXXXXX"></div>
+              <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="201XXXXXXXXX"></div>
+              <div><label class="form-label">الإيميل</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO & Hours Section -->
+        <div class="dash-section border-0 bg-gray-50">
+          <div class="dash-section-body">
+            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-search-eye-line text-gray-400"></i> معلومات إضافية</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label class="form-label">الكلمات المفتاحية (فاصلة)</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب"></div>
+              <div><label class="form-label">البراندات (فاصلة)</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa"></div>
+              <div><label class="form-label">مواعيد الشغل (سبت-خميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
+              <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="p-4 bg-blue-50 border border-blue-100 rounded-2xl">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"><i class="ri-information-line text-blue-600"></i></div>
+            <div>
+              <h4 class="font-bold text-blue-800 text-sm">ملاحظة مهمة</h4>
+              <p class="text-blue-600 text-xs mt-1 leading-relaxed">طلبك هيتراجع من الإدارة قبل ما يظهر في الدليل. هتتلقى إشعار لما شغلك يتعمله اعتماد. العملية عادة بتاخد 24 ساعة.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="flex gap-3">
+          <button class="flex-1 py-3.5 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()">
+            <i class="ri-send-plane-line"></i> إرسال طلب التسجيل
+          </button>
+          <button class="px-6 py-3.5 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all" onclick="navigateTo('home')">إلغاء</button>
+        </div>
       </div>
     </div>
   `;
@@ -1527,20 +2481,21 @@ function submitBusiness() {
       friday: document.getElementById('biz-hours-fri')?.value || '',
     },
     rating: { average: 0, count: 0 },
-    status: 'approved',
+    status: 'pending',
     ownerId: currentUser.id,
     userId: currentUser.id,
     userName: currentUser.name,
     isVerified: false,
     photos: [],
     offers: [],
+    products: [],
     views: 0,
     createdAt: new Date().toISOString()
   };
 
   businesses.push(newBiz);
   saveData();
-  showToast('اتضاف شغلك بنجاح!');
+  showToast('تم إرسال طلبك! هنراجعه ونبلغك', 'success');
   navigateTo('home');
 }
 
@@ -1564,7 +2519,30 @@ function loadCategoriesFull() {
 function loadBlog() {
   const g = document.getElementById('blog-list');
   if (!g) return;
-  g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>مفيش مقالات لسه</h3><p>قريب إن شاء الله</p></div>';
+  if (!BLOG_POSTS.length) { g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-article-line"></i></div><h3>مفيش مقالات لسه</h3><p>قريب إن شاء الله</p></div>'; return; }
+  const colors = ['from-blue-500 to-cyan-500','from-purple-500 to-pink-500','from-amber-500 to-orange-500','from-emerald-500 to-teal-500','from-rose-500 to-red-500','from-indigo-500 to-blue-500'];
+  g.innerHTML = BLOG_POSTS.map((post, i) => `
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 group" onclick="navigateTo('blog/${post.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+      <div class="h-36 bg-gradient-to-br ${colors[i % colors.length]} flex items-center justify-center relative overflow-hidden">
+        <i class="ri-article-line text-5xl text-white/20 group-hover:scale-110 transition-transform duration-300"></i>
+        <span class="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-600 text-xs rounded-lg font-medium">${post.category}</span>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs text-gray-400"><i class="ri-time-line ml-1"></i>${post.readTime}</span>
+          <span class="text-xs text-gray-300">|</span>
+          <span class="text-xs text-gray-400">${post.date}</span>
+        </div>
+        <h3 class="font-bold text-sm mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">${post.title}</h3>
+        <p class="text-gray-500 text-xs line-clamp-2 mb-3">${post.excerpt}</p>
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <i class="ri-user-3-line"></i> ${post.author}
+        </div>
+      </div>
+    </div>
+  `).join('');
+  const emptyState = document.getElementById('blog-empty-state');
+  if (emptyState) emptyState.style.display = 'none';
 }
 
 function openPost(id) {
@@ -1601,53 +2579,172 @@ function loadFavorites() {
 function loadAdmin() {
   const c = document.getElementById('admin-content');
   if (!c) return;
+  if (!currentUser?.isAdmin) { navigateTo('home'); return; }
 
   const allBiz = businesses;
   const pending = allBiz.filter(b => b.status === 'pending');
   const approved = allBiz.filter(b => b.status === 'approved');
+  const rejected = allBiz.filter(b => b.status === 'rejected');
   const totalReviews = Object.values(reviews).flat().length;
+  const totalReports = reports.length;
 
   c.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6">لوحة التحكم</h2>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">إجمالي الأعمال</div><div class="text-3xl font-bold">${allBiz.length}</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">معتمدة</div><div class="text-3xl font-bold text-green-600">${approved.length}</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">قيد المراجعة</div><div class="text-3xl font-bold text-amber-600">${pending.length}</div></div>
-      <div class="bg-white border border-gray-200 rounded-2xl p-5"><div class="text-sm text-gray-500 mb-2">التقييمات</div><div class="text-3xl font-bold">${totalReviews}</div></div>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-1">لوحة الإدارة</h2>
+      <p class="text-gray-500 text-sm">إدارة جميع الأعمال والمستخدمين</p>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
-      <h3 class="font-bold mb-4">جميع الأعمال</h3>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div class="dash-stat-card dash-stat-blue">
+        <div class="dash-stat-icon bg-blue-100 text-blue-600"><i class="ri-store-2-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-blue-700">${allBiz.length}</div>
+          <div class="text-xs text-blue-500/80">إجمالي الأعمال</div>
+        </div>
+      </div>
+      <div class="dash-stat-card dash-stat-green">
+        <div class="dash-stat-icon bg-green-100 text-green-600"><i class="ri-check-double-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-green-700">${approved.length}</div>
+          <div class="text-xs text-green-500/80">معتمدة</div>
+        </div>
+      </div>
+      <div class="dash-stat-card dash-stat-amber">
+        <div class="dash-stat-icon bg-amber-100 text-amber-600"><i class="ri-time-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-amber-700">${pending.length}</div>
+          <div class="text-xs text-amber-500/80">قيد المراجعة</div>
+        </div>
+      </div>
+      <div class="dash-stat-card dash-stat-purple">
+        <div class="dash-stat-icon bg-purple-100 text-purple-600"><i class="ri-chat-3-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold text-purple-700">${totalReviews}</div>
+          <div class="text-xs text-purple-500/80">تقييم</div>
+        </div>
+      </div>
+      <div class="dash-stat-card" style="border-color:${totalReports ? '#fecaca' : '#f3f4f6'}">
+        <div class="dash-stat-icon ${totalReports ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-500'}"><i class="ri-flag-line"></i></div>
+        <div>
+          <div class="text-2xl font-bold ${totalReports ? 'text-red-700' : 'text-gray-700'}">${totalReports}</div>
+          <div class="text-xs ${totalReports ? 'text-red-500/80' : 'text-gray-500/80'}">بلاغات</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Requests -->
+    ${pending.length ? `
+    <div class="dash-section mb-6">
+      <div class="dash-section-header" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-bottom-color:#fde68a">
+        <div class="dash-section-icon bg-amber-500 text-white"><i class="ri-notification-3-line"></i></div>
+        <div>
+          <h3 class="font-bold text-amber-800">طلبات تسجيل جديدة (${pending.length})</h3>
+          <p class="text-xs text-amber-600">في ناس مستنية одобрتك عشان شغلهم يظهر</p>
+        </div>
+      </div>
+      <div class="p-4 space-y-3">
+        ${pending.map(b => {
+          const style = getCategoryStyle(b.categoryNameAr);
+          return `
+          <div class="bg-white border border-amber-200 rounded-2xl p-5 hover:shadow-sm transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:${style.bg}">
+                <span style="font-size:1.5rem">${style.emoji}</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold">${b.nameAr || b.name}</div>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                  <span class="px-2 py-0.5 bg-gray-100 rounded-lg text-xs font-medium">${b.categoryNameAr || ''}</span>
+                  <span class="px-2 py-0.5 bg-gray-100 rounded-lg text-xs font-medium"><i class="ri-map-pin-line ml-1"></i>${b.location?.city || ''}</span>
+                  <span class="text-xs text-gray-400">${b.userName || 'غير معروف'}</span>
+                </div>
+                ${b.description ? `<div class="text-sm text-gray-500 mt-2 line-clamp-2">${b.description.substring(0, 150)}...</div>` : ''}
+                ${b.contact?.phone ? `<div class="text-xs text-blue-500 mt-2"><i class="ri-phone-line ml-1"></i>${b.contact.phone}</div>` : ''}
+                <div class="text-xs text-gray-400 mt-1">${new Date(b.createdAt).toLocaleDateString('ar-EG')}</div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <button onclick="approveBusiness('${b.id}','approved')" class="px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600 transition-all flex items-center gap-1 shadow-sm">
+                  <i class="ri-check-line"></i> اعتماد
+                </button>
+                <button onclick="approveBusiness('${b.id}','rejected')" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-medium hover:bg-red-100 transition-all flex items-center gap-1">
+                  <i class="ri-close-line"></i> رفض
+                </button>
+                <button onclick="deleteBusiness('${b.id}')" class="w-10 h-10 bg-gray-100 text-gray-500 rounded-xl flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    ` : ''}
+
+    <!-- All Businesses Table -->
+    <div class="dash-section">
+      <div class="dash-section-header">
+        <div class="dash-section-icon bg-gray-100 text-gray-500"><i class="ri-list-check"></i></div>
+        <div>
+          <h3 class="font-bold text-sm">جميع الأعمال</h3>
+          <p class="text-xs text-gray-400">${allBiz.length} عمل</p>
+        </div>
+      </div>
       ${allBiz.length ? `
         <div class="overflow-x-auto">
           <table class="w-full">
-            <thead><tr class="border-b border-gray-200 text-right text-sm text-gray-500">
-              <th class="py-3 font-semibold">الاسم</th><th class="py-3 font-semibold">الفئة</th><th class="py-3 font-semibold">المدينة</th><th class="py-3 font-semibold">الحالة</th><th class="py-3 font-semibold">إجراء</th>
+            <thead><tr class="border-b border-gray-100 text-right text-xs text-gray-500 uppercase tracking-wider">
+              <th class="p-4 font-semibold">العمل</th><th class="p-4 font-semibold">الفئة</th><th class="p-4 font-semibold">المدينة</th><th class="p-4 font-semibold">الصاحب</th><th class="p-4 font-semibold">الحالة</th><th class="p-4 font-semibold">إجراء</th>
             </tr></thead>
             <tbody>${allBiz.map(b => {
-              const statusClass = b.status === 'approved' ? 'text-green-600 bg-green-50' : b.status === 'pending' ? 'text-amber-600 bg-amber-50' : 'text-red-600 bg-red-50';
+              const style = getCategoryStyle(b.categoryNameAr);
+              const statusClass = b.status === 'approved' ? 'text-emerald-600 bg-emerald-50' : b.status === 'pending' ? 'text-amber-600 bg-amber-50' : 'text-red-600 bg-red-50';
               const statusText = b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
-              return `<tr class="border-b border-gray-100">
-                <td class="py-3 text-sm font-medium">${b.nameAr || b.name}</td>
-                <td class="py-3 text-sm text-gray-500">${b.categoryNameAr || ''}</td>
-                <td class="py-3 text-sm text-gray-500">${b.location?.city || ''}</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-lg text-xs font-semibold ${statusClass}">${statusText}</span></td>
-                <td class="py-3 space-x-2">
-                  ${b.status !== 'approved' ? `<button class="text-sm text-green-600 hover:underline" onclick="approveBusiness('${b.id}','approved')">اعتماد</button>` : ''}
-                  ${b.status !== 'rejected' ? `<button class="text-sm text-red-600 hover:underline" onclick="approveBusiness('${b.id}','rejected')">رفض</button>` : ''}
-                  <button class="text-sm text-gray-600 hover:underline" onclick="deleteBusiness('${b.id}')">حذف</button>
+              return `<tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                <td class="p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${style.bg}"><span style="font-size:0.9rem">${style.emoji}</span></div>
+                    <span class="font-medium text-sm">${b.nameAr || b.name}</span>
+                  </div>
+                </td>
+                <td class="p-4 text-sm text-gray-500">${b.categoryNameAr || ''}</td>
+                <td class="p-4 text-sm text-gray-500">${b.location?.city || ''}</td>
+                <td class="p-4 text-sm text-gray-500">${b.userName || '-'}</td>
+                <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-semibold ${statusClass}">${statusText}</span></td>
+                <td class="p-4">
+                  <div class="flex items-center gap-1">
+                    ${b.status !== 'approved' ? `<button class="w-8 h-8 bg-green-50 text-green-500 rounded-lg flex items-center justify-center hover:bg-green-100 transition-all" onclick="approveBusiness('${b.id}','approved')" title="اعتماد"><i class="ri-check-line text-sm"></i></button>` : ''}
+                    ${b.status !== 'rejected' ? `<button class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-100 transition-all" onclick="approveBusiness('${b.id}','rejected')" title="رفض"><i class="ri-close-line text-sm"></i></button>` : ''}
+                    <button class="w-8 h-8 bg-gray-100 text-gray-500 rounded-lg flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all" onclick="deleteBusiness('${b.id}')" title="حذف"><i class="ri-delete-bin-line text-sm"></i></button>
+                  </div>
                 </td>
               </tr>`;
             }).join('')}</tbody>
           </table>
         </div>
-      ` : '<p class="text-gray-500 text-center py-8">مفيش أعمال لسه</p>'}
+      ` : '<div class="text-center py-12 text-gray-400"><i class="ri-store-2-line text-3xl"></i><p class="mt-2 text-sm">مفيش أعمال</p></div>'}
     </div>
   `;
 }
 
 function approveBusiness(id, status) {
   const b = businesses.find(biz => biz.id === id);
-  if (b) { b.status = status; saveData(); showToast('اتحديث الحالة'); loadAdmin(); }
+  if (!b) return;
+  b.status = status;
+  const notifKey = 'sikka_notifications_' + b.ownerId;
+  let notifs = JSON.parse(localStorage.getItem(notifKey) || '[]');
+  notifs.push({
+    type: status === 'approved' ? 'success' : 'error',
+    title: status === 'approved' ? 'شغلك اتعمله اعتماد ✓' : 'تم رفض طلب تسجيل شغلك',
+    message: status === 'approved' ? 'شغلك "' + (b.nameAr || b.name) + '" اعتمد وظهر في الدليل.' : 'شغلك "' + (b.nameAr || b.name) + '" ما اتعملاش اعتماد. تواصل معنا للمزيد من التفاصيل.',
+    bizId: b.id,
+    date: new Date().toISOString(),
+    read: false
+  });
+  localStorage.setItem(notifKey, JSON.stringify(notifs));
+  saveData();
+  showToast(status === 'approved' ? 'اتعمل اعتماد لـ ' + (b.nameAr||b.name) : 'اترفض ' + (b.nameAr||b.name));
+  loadAdmin();
 }
 
 function deleteBusiness(id) {
@@ -1662,6 +2759,302 @@ function deleteBusiness(id) {
 function showAdminTab(tab) {
   document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
   event?.target?.closest('.admin-nav-item')?.classList.add('active');
+}
+
+// ==================== BLOG DATA ====================
+const BLOG_POSTS = [
+  { id:'blog1', title:'أفضل 10 مقاهي في الفيوم', excerpt:'اكتشف أحسن المقاهي في الفيوم اللي لازم تزورها. قهوة مختصة وأجواء حلوة.', category:'دليل أكل', date:'2025-03-15', readTime:'5 دقائق', author:'سِكّة', content:'الفيوم فيها مقاهي كتير أوي، بس فيهم ناس متميزين بجد. كافيه لافندر من أحسن المقاهي في شارع الحرفيين. قهوة مختصة وأجواء هادية مع حديقة صغيرة. ستار بيكسر فرع الفيوم في سيتي سنتر أحسن أنواع القهوة المختصة. كافيه أروما في سنورس من أحدث المقاهي مع ويش بار حلو.' },
+  { id:'blog2', title:'دليل المطاعم الشعبية في الفيوم', excerpt:'أشهر المطاعم الشعبية في الفيوم. أكل مصري أصلي بأسعار مناسبة.', category:'دليل أكل', date:'2025-03-10', readTime:'7 دقائق', author:'سِكّة', content:'الفيوم مشهورة بأكلها المصري الأصلي. مطعم الكرنك أشهر مطعم مشويات في الفيوم. مطعم المحطة في إطسا مطعم ريفي مشهور بأكله المصري التقليدي.' },
+  { id:'blog3', title:'كيف تسوّق لشغلك على سِكّة', excerpt:'نصائح عملية تساعدك تسوّق لشغلك وتوصل لأكبر عدد من الزباين.', category:'نصائح أعمال', date:'2025-03-05', readTime:'6 دقائق', author:'سِكّة', content:'لو عندك شغل أو محل وعايز تسوّق له، سِكّة أحسن مكان تبدأ منه. سجّل شغلك بشكل كامل، أضف صور حلوة، رد على التقييمات، وحدث العروض بانتظام.' },
+  { id:'blog4', title:'أفضل الأماكن السياحية في الفيوم', excerpt:'الفيوم فيها أماكن سياحية كتير. اكتشف أحلى أماكن تزورها.', category:'سياحة', date:'2025-02-28', readTime:'8 دقائق', author:'سِكّة', content:'الفيوم من أحلى المحافظات في مصر من ناحية السياحة. بحر الفيوم بحيرة طبيعية جميلة، الهضبة فيها إطلالة رائعة، متحف الفيوم فيه تحف أثرية مهمة.' },
+  { id:'blog5', title:'نصائح لكتابة تقييم مفيد', excerpt:'إزاي تكتب تقييم يساعد الناس وتكون مفيد.', category:'نصائح', date:'2025-02-20', readTime:'4 دقائق', author:'سِكّة', content:'التقييمات بتفرق كتير في اختيار الناس للمكان. اكتب عن التجربة كلها، كن صادق، أضف صور، واكتب عن التفاصيل الصغيرة.' },
+  { id:'blog6', title:'كيف تبدأ مشروع صغير في مصر', excerpt:'خطوات عملية تبدأ بيها مشروع صغير في مصر بـ capital قليل.', category:'نصائح أعمال', date:'2025-02-15', readTime:'10 دقائق', author:'سِكّة', content:'البدء بمشروع صغير في مصر مش صعب. اختار المجال، ابحث عن السوق، ابدأ صغير، سجّل على سِكّة، واسمع للزباين.' },
+];
+
+// ==================== DISTANCE ====================
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2) * Math.sin(dLng/2);
+  return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
+}
+
+function getUserLocation() {
+  return new Promise(resolve => {
+    if (!navigator.geolocation) { resolve(null); return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => resolve(null), { timeout: 5000 }
+    );
+  });
+}
+
+// ==================== LAST VISITED ====================
+function getLastVisited() { return JSON.parse(localStorage.getItem('sikka_last_visited') || '[]'); }
+function addLastVisited(id) {
+  let last = getLastVisited().filter(v => v !== id);
+  last.unshift(id);
+  localStorage.setItem('sikka_last_visited', JSON.stringify(last.slice(0, 5)));
+}
+
+// ==================== COMPARE ====================
+function addToCompare(id) {
+  if (compareList.includes(id)) { showToast('الشغل موجود أصلاً في المقارنة', 'info'); return; }
+  if (compareList.length >= 3) { showToast('ممكن تقارن 3 أعمال بس', 'error'); return; }
+  compareList.push(id);
+  localStorage.setItem('sikka_compare', JSON.stringify(compareList));
+  updateCompareBadge();
+  showToast('اتضاف للمقارنة');
+}
+function removeFromCompare(id) {
+  compareList = compareList.filter(c => c !== id);
+  localStorage.setItem('sikka_compare', JSON.stringify(compareList));
+  updateCompareBadge();
+  renderCompare();
+}
+function updateCompareBadge() {
+  const badge = document.getElementById('compare-badge');
+  if (badge) {
+    if (compareList.length > 0) { badge.textContent = compareList.length; badge.classList.remove('hidden'); }
+    else badge.classList.add('hidden');
+  }
+}
+function renderCompare() {
+  const c = document.getElementById('compare-content');
+  if (!c) return;
+  if (!compareList.length) {
+    c.innerHTML = `
+      <div class="text-center py-20">
+        <div class="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-5">
+          <i class="ri-scales-line text-4xl text-gray-300"></i>
+        </div>
+        <h2 class="text-xl font-bold mb-2">مفيش أعمال للمقارنة</h2>
+        <p class="text-gray-500 mb-6 text-sm">اضغط على زر المقارنة في أي صفحة نشاط</p>
+        <button onclick="navigateTo('businesses')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+          <i class="ri-store-2-line ml-1"></i> شوف الأعمال
+        </button>
+      </div>`;
+    return;
+  }
+  const bizList = compareList.map(id => businesses.find(b => b.id === id)).filter(Boolean);
+  const rows = [
+    { label:'الفئة', fn: b => b.categoryNameAr||'-' },
+    { label:'المدينة', fn: b => (b.location?.city||'-') + (b.location?.district?' - '+b.location.district:'') },
+    { label:'التقييم', fn: b => '<div class="flex items-center justify-center gap-1"><span class="text-amber-500 font-bold">'+(b.rating?.average||0).toFixed(1)+'</span><i class="ri-star-fill text-amber-400 text-sm"></i><span class="text-gray-400 text-xs">('+(b.rating?.count||0)+')</span></div>' },
+    { label:'المشاهدات', fn: b => '<span class="font-bold text-blue-600">'+(b.views||0)+'</span>' },
+    { label:'المنتجات', fn: b => '<span class="font-bold text-purple-600">'+(b.products||[]).length+'</span>' },
+    { label:'العروض', fn: b => '<span class="font-bold text-green-600">'+(b.offers||[]).length+'</span>' },
+    { label:'التليفون', fn: b => b.contact?.phone ? '<a href="tel:'+b.contact.phone+'" class="text-blue-600 hover:underline font-medium">'+b.contact.phone+'</a>' : '<span class="text-gray-300">-</span>' },
+    { label:'الحالة', fn: b => checkIfOpen(b.workingHours) ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-semibold"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>مفتوح</span>' : '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-500 rounded-lg text-xs font-semibold"><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>مقفول</span>' },
+  ];
+
+  c.innerHTML = `
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center">
+          <i class="ri-scales-line text-purple-500 text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold">مقارنة الأعمال</h2>
+          <p class="text-gray-500 text-sm">${bizList.length} أعمال قيد المقارنة</p>
+        </div>
+      </div>
+      <button onclick="compareList=[];localStorage.setItem('sikka_compare','[]');updateCompareBadge();renderCompare();" class="px-4 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-medium hover:bg-red-100 transition-all flex items-center gap-1">
+        <i class="ri-delete-bin-line"></i> مسح الكل
+      </button>
+    </div>
+
+    <div class="bg-white border border-gray-100 rounded-2xl overflow-x-auto">
+      <table class="w-full min-w-[600px]">
+        <thead>
+          <tr class="border-b border-gray-100">
+            <th class="p-5 text-right text-sm font-bold text-gray-500 w-32"></th>
+            ${bizList.map(b => {
+              const style = getCategoryStyle(b.categoryNameAr);
+              return `<th class="p-5 text-center">
+                <div class="flex flex-col items-center gap-3">
+                  <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:${style.bg}">
+                    <span style="font-size:1.5rem">${style.emoji}</span>
+                  </div>
+                  <div>
+                    <div class="font-bold text-sm">${b.nameAr||b.name}</div>
+                    <div class="text-xs text-gray-400 mt-0.5">${b.categoryNameAr||''}</div>
+                  </div>
+                  <button onclick="removeFromCompare('${b.id}')" class="text-xs text-red-500 hover:text-red-600 hover:underline font-medium">إزالة</button>
+                </div>
+              </th>`;
+            }).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((row, ri) => `
+            <tr class="${ri%2===0?'bg-gray-50/50':''} hover:bg-gray-50 transition-colors">
+              <td class="p-4 text-sm font-bold text-gray-600">${row.label}</td>
+              ${bizList.map(b => '<td class="p-4 text-center text-sm">'+row.fn(b)+'</td>').join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+// ==================== QR CODE ====================
+function openQRModal(bizId) {
+  const b = businesses.find(biz => biz.id === bizId);
+  if (!b) return;
+  const url = location.origin + location.pathname + '#/business/' + bizId;
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=0f172a';
+  const modal = document.getElementById('qr-modal');
+  const content = document.getElementById('qr-modal-content');
+  if (modal && content) {
+    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-2">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><img src="' + qrUrl + '" alt="QR Code" class="mx-auto mb-4 rounded-xl border border-gray-200" width="250" height="250"><p class="text-xs text-gray-400 mb-4 break-all">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all"><i class="ri-download-line ml-1"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
+    modal.style.display = 'flex';
+  }
+}
+function closeQRModal() { document.getElementById('qr-modal').style.display = 'none'; }
+
+// ==================== REPORT ====================
+function openReportModal(bizId) {
+  if (!currentUser) { showAuthModal(); return; }
+  const modal = document.getElementById('report-modal');
+  const content = document.getElementById('report-modal-content');
+  if (modal && content) {
+    content.innerHTML = '<h2 class="text-xl font-bold text-center mb-2">إبلاغ عن شغل</h2><p class="text-gray-500 text-sm text-center mb-6">اختار سبب الإبلاغ</p><div class="space-y-2"><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="wrong-info" class="accent-red-500"> <span class="text-sm">معلومات غلط</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="closed" class="accent-red-500"> <span class="text-sm">مقفول دائماً</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="inappropriate" class="accent-red-500"> <span class="text-sm">محتوى مسيء</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="spam" class="accent-red-500"> <span class="text-sm">سبام أو إعلان</span></label></div><div class="flex gap-3 mt-6"><button onclick="submitReport(\'' + bizId + '\')" class="flex-1 py-2.5 bg-red-500 text-white rounded-xl font-medium text-sm hover:bg-red-600 transition-all"><i class="ri-send-plane-line ml-1"></i> إرسال</button><button onclick="closeReportModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إلغاء</button></div>';
+    modal.style.display = 'flex';
+  }
+}
+function closeReportModal() { document.getElementById('report-modal').style.display = 'none'; }
+function submitReport(bizId) {
+  const selected = document.querySelector('input[name="report-reason"]:checked');
+  if (!selected) { showToast('اختار سبب الإبلاغ', 'error'); return; }
+  reports.push({ bizId, userId: currentUser.id, reason: selected.value, date: new Date().toISOString() });
+  localStorage.setItem('sikka_reports', JSON.stringify(reports));
+  closeReportModal();
+  showToast('اتبعت الإبلاغ. شكراً!', 'success');
+}
+
+// ==================== MAP PAGE ====================
+function initMapPage() {
+  const container = document.getElementById('leaflet-map');
+  if (!container) return;
+  if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+  const approved = businesses.filter(b => b.status === 'approved' && b.location?.lat);
+  leafletMap = L.map('leaflet-map').setView([29.30, 30.84], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(leafletMap);
+  const catColors = { 'المقاهي':'#92400e','المطاعم':'#dc2626','البنوك':'#1e40af','التجزئة':'#7c3aed','الصحة':'#dc2626','التعليم':'#2563eb','الخدمات':'#475569','السفر والسياحة':'#0284c7','الجمال':'#db2777','الرياضة':'#16a34a' };
+  approved.forEach(b => {
+    const style = getCategoryStyle(b.categoryNameAr);
+    const color = catColors[b.categoryNameAr] || '#64748b';
+    const marker = L.marker([b.location.lat, b.location.lng], {
+      icon: L.divIcon({ className:'custom-marker', html:'<div style="background:'+color+';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,0.3);border:3px solid white;cursor:pointer">'+style.emoji+'</div>', iconSize:[36,36], iconAnchor:[18,18] })
+    }).addTo(leafletMap);
+    marker.bindPopup('<div style="text-align:center;min-width:150px"><div style="font-size:24px;margin-bottom:4px">'+style.emoji+'</div><div style="font-weight:700;font-size:14px">'+(b.nameAr||b.name)+'</div><div style="color:#64748b;font-size:12px">'+(b.categoryNameAr||'')+'</div><div style="color:#f59e0b;font-size:13px;margin:4px 0">⭐ '+(b.rating?.average||0).toFixed(1)+'</div><button onclick="openBusiness(\''+b.id+'\')" style="color:#2563eb;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer">عرض التفاصيل ←</button></div>');
+  });
+  setTimeout(() => leafletMap.invalidateSize(), 100);
+  renderMapSidebar(approved);
+}
+function renderMapSidebar(list) {
+  const sidebar = document.getElementById('map-sidebar-list');
+  if (!sidebar) return;
+  sidebar.innerHTML = list.map(b => {
+    const style = getCategoryStyle(b.categoryNameAr);
+    return '<div class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition-all border-b border-gray-100" onclick="flyToBusiness(\''+b.id+'\','+b.location.lat+','+b.location.lng+')"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:'+style.bg+'"><span style="font-size:1rem">'+style.emoji+'</span></div><div class="flex-1 min-w-0"><div class="font-bold text-sm truncate">'+(b.nameAr||b.name)+'</div><div class="text-xs text-gray-500">'+(b.categoryNameAr||'')+' · ⭐ '+(b.rating?.average||0).toFixed(1)+'</div></div></div>';
+  }).join('');
+}
+function flyToBusiness(id, lat, lng) {
+  if (leafletMap && lat && lng) {
+    leafletMap.flyTo([lat, lng], 16, { duration: 1 });
+    openBusiness(id);
+  }
+}
+function filterMapByCategory(cat) {
+  if (!leafletMap) return;
+  leafletMap.eachLayer(layer => { if (layer instanceof L.Marker) leafletMap.removeLayer(layer); });
+  const approved = businesses.filter(b => b.status === 'approved' && b.location?.lat);
+  const filtered = cat ? approved.filter(b => b.categoryNameAr === cat) : approved;
+  const catColors = { 'المقاهي':'#92400e','المطاعم':'#dc2626','البنوك':'#1e40af','التجزئة':'#7c3aed','الصحة':'#dc2626','التعليم':'#2563eb','الخدمات':'#475569','السفر والسياحة':'#0284c7','الجمال':'#db2777','الرياضة':'#16a34a' };
+  filtered.forEach(b => {
+    const style = getCategoryStyle(b.categoryNameAr);
+    const color = catColors[b.categoryNameAr] || '#64748b';
+    const marker = L.marker([b.location.lat, b.location.lng], {
+      icon: L.divIcon({ className:'custom-marker', html:'<div style="background:'+color+';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,0.3);border:3px solid white;cursor:pointer">'+style.emoji+'</div>', iconSize:[36,36], iconAnchor:[18,18] })
+    }).addTo(leafletMap);
+    marker.bindPopup('<div style="text-align:center;min-width:150px"><div style="font-size:24px;margin-bottom:4px">'+style.emoji+'</div><div style="font-weight:700;font-size:14px">'+(b.nameAr||b.name)+'</div><div style="color:#64748b;font-size:12px">'+(b.categoryNameAr||'')+'</div><div style="color:#f59e0b;font-size:13px;margin:4px 0">⭐ '+(b.rating?.average||0).toFixed(1)+'</div><button onclick="openBusiness(\''+b.id+'\')" style="color:#2563eb;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer">عرض التفاصيل ←</button></div>');
+  });
+  renderMapSidebar(filtered);
+}
+
+// ==================== SHARE TO WHATSAPP ====================
+function shareWhatsApp(id) {
+  const biz = businesses.find(b => b.id === id);
+  const url = location.origin + location.pathname + '#/business/' + id;
+  window.open('https://wa.me/?text=' + encodeURIComponent('شوف ' + (biz?.nameAr || '') + ' على سِكّة: ' + url), '_blank');
+}
+
+function copyPhone(phone) {
+  if (navigator.clipboard) navigator.clipboard.writeText(phone).then(() => showToast('اتنسخ النمره', 'success'));
+}
+
+// ==================== BLOG RENDERING ====================
+function renderBlogPost(post) {
+  const c = document.getElementById('post-detail');
+  if (!c) return;
+  c.innerHTML = `
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <button onclick="navigateTo('blog')" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium text-sm">
+        <i class="ri-arrow-right-line"></i> ارجع للمدونة
+      </button>
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <i class="ri-article-line text-6xl text-white/30"></i>
+        </div>
+        <div class="p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold">${post.category}</span>
+            <span class="text-xs text-gray-400"><i class="ri-time-line ml-1"></i>${post.readTime}</span>
+            <span class="text-xs text-gray-400">${post.date}</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold mb-4">${post.title}</h1>
+          <p class="text-gray-400 text-sm mb-6 flex items-center gap-2">
+            <i class="ri-user-3-line"></i>بقلم: ${post.author}
+          </p>
+          <div class="prose max-w-none text-gray-600 leading-relaxed whitespace-pre-line text-sm">${post.content}</div>
+          <div class="mt-8 pt-6 border-t border-gray-100">
+            <h4 class="font-bold text-sm mb-3">شارك المقال</h4>
+            <div class="flex gap-2">
+              <button onclick="navigator.clipboard.writeText(window.location.href);showToast('اتنسخ الرابط','success')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                <i class="ri-link"></i> نسخ الرابط
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ==================== PAGINATION ====================
+function renderBusinessesPaginated(list, container) {
+  if (!container) return;
+  if (!list.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش نتائج</h3><p>جرّب تغيير الفلتر أو كلمات البحث</p></div>'; return; }
+  const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE);
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const pageItems = list.slice(start, start + ITEMS_PER_PAGE);
+  container.innerHTML = '<div class="col-span-full mb-2 text-sm text-gray-500">' + list.length + ' نتيجة</div>' + pageItems.map((b, i) => renderBusinessCard(b, start + i)).join('');
+  if (totalPages > 1) {
+    container.innerHTML += '<div class="col-span-full flex items-center justify-center gap-2 mt-8"><button onclick="changePage(' + (currentPage - 1) + ')" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition-all ' + (currentPage === 1 ? 'opacity-50 pointer-events-none' : '') + '"><i class="ri-arrow-right-line"></i> السابق</button><span class="text-sm text-gray-500">صفحة ' + currentPage + ' من ' + totalPages + '</span><button onclick="changePage(' + (currentPage + 1) + ')" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition-all ' + (currentPage === totalPages ? 'opacity-50 pointer-events-none' : '') + '">التالي <i class="ri-arrow-left-line"></i></button></div>';
+  }
+  window._currentFilteredList = list;
+}
+function changePage(page) {
+  const list = window._currentFilteredList || businesses.filter(b => b.status === 'approved');
+  const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderBusinessesPaginated(list, document.getElementById('all-businesses-grid'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== WINDOW EXPORTS ====================
@@ -1705,3 +3098,26 @@ window.deleteDashAccount = deleteDashAccount;
 window.addBizProduct = addBizProduct;
 window.removeBizProduct = removeBizProduct;
 window.filterDashProducts = filterDashProducts;
+window.toggleDarkMode = toggleDarkMode;
+window.addToCompare = addToCompare;
+window.removeFromCompare = removeFromCompare;
+window.openQRModal = openQRModal;
+window.closeQRModal = closeQRModal;
+window.openReportModal = openReportModal;
+window.closeReportModal = closeReportModal;
+window.submitReport = submitReport;
+window.initMapPage = initMapPage;
+window.filterMapByCategory = filterMapByCategory;
+window.flyToBusiness = flyToBusiness;
+window.shareWhatsApp = shareWhatsApp;
+window.copyPhone = copyPhone;
+window.handleSearchInput = handleSearchInput;
+window.hideAutocomplete = hideAutocomplete;
+window.startVoiceSearch = startVoiceSearch;
+window.clearSearchHistory = clearSearchHistory;
+window.clearSearch = clearSearch;
+window.toggleSearchLocation = toggleSearchLocation;
+window.filterSearchLocations = filterSearchLocations;
+window.selectSearchLocation = selectSearchLocation;
+window.changePage = changePage;
+window.clearNotifications = clearNotifications;
