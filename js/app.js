@@ -1241,26 +1241,28 @@ function renderBusinessCard(b, i = 0) {
   const isOpen = checkIfOpen(b.workingHours);
 
   return `
-    <div class="biz-card group" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+    <div class="biz-card" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 40}">
       <div class="biz-card-img" style="background:${style.bg}">
-        <div style="font-size:2.5rem;opacity:0.9;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))">${style.emoji}</div>
-        ${b.isVerified ? '<span class="biz-badge verified">موثق</span>' : ''}
-        <span class="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-xs font-medium ${isOpen ? 'text-emerald-600' : 'text-red-500'}">
-          <span class="w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-500' : 'bg-red-500'}"></span>
+        <div style="font-size:2.8rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))">${style.emoji}</div>
+        <span class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${isOpen ? 'bg-emerald-50/90 text-emerald-600' : 'bg-red-50/90 text-red-500'}" style="border:1px solid ${isOpen ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}">
+          <span class="w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse"></span>
           ${isOpen ? 'مفتوح' : 'مقفول'}
         </span>
+        ${b.isVerified ? '<span class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-amber-50/90 text-amber-600 rounded-full text-xs font-semibold backdrop-blur-sm" style="border:1px solid rgba(245,158,11,0.2)"><i class="ri-verified-badge-fill"></i> موثق</span>' : ''}
       </div>
       <div class="biz-card-body">
         <div class="biz-card-name">${b.nameAr || b.name}</div>
-        <div class="biz-card-cat">${b.categoryNameAr || ''}</div>
+        <div class="biz-card-cat" style="display:flex;align-items:center;gap:4px">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${style.bg};flex-shrink:0"></span>
+          ${b.categoryNameAr || ''}
+        </div>
         <div class="biz-card-info">
-          ${b.location?.city ? `<span><i class="ri-map-pin-2-line"></i> ${b.location.city}</span>` : ''}
-          ${b.contact?.phone ? `<span><i class="ri-phone-line"></i> ${b.contact.phone}</span>` : ''}
+          ${b.location?.city ? `<span><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' — ' + b.location.district : ''}</span>` : ''}
         </div>
       </div>
       <div class="biz-card-footer">
-        <div class="biz-rating"><i class="ri-star-fill"></i> ${rating.toFixed(1)} <span>(${totalReviews})</span></div>
-        ${b.products?.length ? `<span class="text-xs text-gray-400"><i class="ri-shopping-bag-3-line ml-1"></i>${b.products.length} منتج</span>` : ''}
+        <div class="biz-rating"><i class="ri-star-fill"></i> ${rating > 0 ? rating.toFixed(1) : '—'} <span>(${totalReviews})</span></div>
+        ${b.products?.length ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:#64748b;background:#f8fafc;padding:4px 10px;border-radius:20px"><i class="ri-shopping-bag-3-line"></i>${b.products.length} منتج</span>` : ''}
       </div>
     </div>
   `;
