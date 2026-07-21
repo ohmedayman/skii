@@ -23,8 +23,10 @@
   <meta property="og:url" id="og-url" content="https://ohmedayman.github.io/skii/">
   <meta property="og:title" id="og-title" content="سِكّة — دليل الأعمال الذكي في مصر | Sikka Business Directory">
   <meta property="og:description" id="og-desc" content="اكتشف أفضل المحلات والمطاعم والمقاهي والخدمات في مصر. تقييمات حقيقية، خريطة تفاعلية، وبحث ذكي. سجّل شغلك مجاناً.">
-  <meta property="og:image" id="og-image" content="https://ohmedayman.github.io/skii/assets/icons/favicon.svg">
+  <meta property="og:image" id="og-image" content="https://ohmedayman.github.io/skii/assets/icons/logo.png">
   <meta property="og:image:alt" content="سِكّة - دليل الأعمال الذكي في مصر">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="سِكّة - Sikka">
   <meta property="og:locale" content="ar_EG">
   <meta property="og:locale:alternate" content="en_US">
@@ -33,7 +35,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" id="tw-title" content="سِكّة — دليل الأعمال الذكي في مصر">
   <meta name="twitter:description" id="tw-desc" content="اكتشف أفضل المحلات والمطاعم والخدمات في مصر. تقييمات حقيقية وبحث ذكي.">
-  <meta name="twitter:image" id="tw-image" content="https://ohmedayman.github.io/skii/assets/icons/favicon.svg">
+  <meta name="twitter:image" id="tw-image" content="https://ohmedayman.github.io/skii/assets/icons/logo.png">
   <meta name="twitter:image:alt" content="سِكّة - دليل الأعمال الذكي في مصر">
 
   <!-- Structured Data: WebSite -->
@@ -61,7 +63,7 @@
     "@type": "Organization",
     "name": "سِكّة - Sikka",
     "url": "https://ohmedayman.github.io/skii/",
-    "logo": "https://ohmedayman.github.io/skii/assets/icons/favicon.svg",
+    "logo": "https://ohmedayman.github.io/skii/assets/icons/logo.png",
     "description": "دليل الأعمال الذكي في مصر",
     "foundingDate": "2025",
     "areaServed": {
@@ -148,11 +150,8 @@
   <header class="sticky top-0 z-50" id="main-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex items-center justify-between h-16">
-        <a href="#/home" class="flex items-center gap-3 group" onclick="navigateTo('home')">
-          <div class="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-all">
-            <i class="ri-road-map-line text-lg"></i>
-          </div>
-          <span class="text-xl font-bold bg-gradient-to-l from-gray-800 to-gray-600 bg-clip-text text-transparent">سِكّة</span>
+        <a href="#/home" class="flex items-center gap-2 group" onclick="navigateTo('home')">
+          <img src="assets/icons/logo.png" alt="سِكّة" class="h-10 w-auto rounded-lg group-hover:scale-105 transition-all">
         </a>
         <nav class="hidden md:flex items-center gap-1">
           <a href="#/home" class="nav-link active" data-nav="home" onclick="navigateTo('home')"><i class="ri-home-5-line ml-1"></i>الرئيسية</a>
@@ -715,9 +714,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       <!-- Header -->
       <div class="text-center mb-10">
-        <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-          <i class="ri-road-map-line text-2xl text-white"></i>
-        </div>
+        <img src="assets/icons/logo.png" alt="سِكّة" class="h-16 w-auto rounded-2xl mx-auto mb-4 shadow-lg">
         <h1 class="text-3xl font-bold mb-2">عن سِكّة</h1>
         <p class="text-gray-500">دليل الأعمال الذكي في مصر</p>
       </div>
@@ -942,11 +939,13 @@
       <!-- Admin Sidebar -->
       <aside class="w-64 p-4 hidden md:flex flex-col" style="background:#0f172a;color:white;min-height:100%">
         <div class="mb-8 px-2">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <img src="assets/icons/logo.png" alt="سِكّة" style="height:32px;width:auto;border-radius:8px">
+          </div>
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
             <div style="width:8px;height:8px;background:#10b981;border-radius:50%;animation:pulse 2s infinite"></div>
             <span style="font-size:0.75rem;color:rgba(255,255,255,0.5)">لوحة الإدارة</span>
           </div>
-          <h3 style="font-size:1rem;font-weight:800;color:white">سِكّة Admin</h3>
         </div>
         <div class="space-y-1 flex-1">
           <a href="#" class="admin-nav-item" onclick="showAdminTab('dashboard')" style="color:rgba(255,255,255,0.7)"><i class="ri-dashboard-3-line"></i> الرئيسية</a>
@@ -978,10 +977,7 @@
         <!-- Column 1: Brand -->
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
-              <i class="ri-road-map-line text-lg"></i>
-            </div>
-            <span class="text-xl font-bold">سِكّة</span>
+            <img src="assets/icons/logo.png" alt="سِكّة" class="h-10 w-auto rounded-lg">
           </div>
           <p class="text-gray-400 text-sm leading-relaxed mb-4">دليل الأعمال الذكي في مصر. اكتشف أفضل المحلات والخدمات حسب موقعك.</p>
           <div class="flex gap-3">
@@ -1074,9 +1070,7 @@
     <div class="relative flex items-center justify-center h-full">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i class="ri-road-map-line text-2xl text-white"></i>
-        </div>
+        <img src="assets/icons/logo.png" alt="سِكّة" class="h-14 w-auto rounded-2xl mx-auto mb-4">
         <h2 class="text-xl font-bold">تسجيل دخول</h2>
         <p class="text-gray-500 text-sm mt-1">ادخل عشان تضيف شغلك وتحفظ المفضلة</p>
       </div>

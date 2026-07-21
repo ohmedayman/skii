@@ -310,10 +310,10 @@ function generateSEO(title, description, image, url) {
   if (ogDesc) ogDesc.content = description;
   if (ogUrl) ogUrl.content = url || BASE_URL;
   if (ogType) ogType.content = url && url !== BASE_URL ? 'business.business' : 'website';
-  if (ogImage) ogImage.content = image || BASE_URL + 'assets/icons/favicon.svg';
+  if (ogImage) ogImage.content = image || BASE_URL + 'assets/icons/logo.png';
   if (twTitle) twTitle.content = title;
   if (twDesc) twDesc.content = description;
-  if (twImage) twImage.content = image || BASE_URL + 'assets/icons/favicon.svg';
+  if (twImage) twImage.content = image || BASE_URL + 'assets/icons/logo.png';
   if (canonical) canonical.href = url || BASE_URL;
 }
 
@@ -408,7 +408,7 @@ function handleHash() {
       generateSEO(
         (b.nameAr || b.name) + ' | سِكّة',
         b.description || (b.nameAr || b.name) + ' - ' + (b.categoryNameAr || '') + ' في ' + (b.location?.city || 'مصر'),
-        b.images?.[0] || BASE + 'assets/icons/favicon.svg',
+        b.images?.[0] || BASE + 'assets/icons/logo.png',
         bizUrl
       );
       // Add JSON-LD
@@ -434,7 +434,7 @@ function handleHash() {
       generateSEO(
         post.title + ' | مدونة سِكّة',
         post.excerpt || post.title,
-        BASE + 'assets/icons/favicon.svg',
+        BASE + 'assets/icons/logo.png',
         BASE + '#/blog/' + post.id
       );
     } else show404();
@@ -3219,7 +3219,7 @@ function openQRModal(bizId) {
   if (!b) return;
   const url = location.origin + location.pathname + '#/business/' + bizId;
   const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=0f172a&margin=10';
-  const logoUrl = location.origin + location.pathname + 'assets/icons/favicon.svg';
+  const logoUrl = location.origin + location.pathname + 'assets/icons/logo.png';
   const modal = document.getElementById('qr-modal');
   const content = document.getElementById('qr-modal-content');
   if (modal && content) {
