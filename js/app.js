@@ -1402,15 +1402,15 @@ function shareBusiness(id) {
 }
 
 function checkIfOpen(hours) {
-  if (!hours || !hours.saturday) return false;
+  if (!hours) return null;
   const now = new Date();
   const dayIndex = now.getDay();
   const dayMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
   const todayKey = dayMap[dayIndex];
-  const todayHours = hours[todayKey] || hours.saturday || '';
+  const todayHours = hours[todayKey] || '';
   if (!todayHours || todayHours === 'مغلق') return false;
   const match = todayHours.match(/(\d{1,2}):(\d{2})\s*(ص|م)\s*-\s*(\d{1,2}):(\d{2})\s*(ص|م)/);
-  if (!match) return true;
+  if (!match) return null;
   let [_, sh, sm, sap, eh, em, eap] = match;
   sh = parseInt(sh); sm = parseInt(sm); eh = parseInt(eh); em = parseInt(em);
   if (sap === 'م' && sh !== 12) sh += 12;
@@ -1498,6 +1498,7 @@ function showDashTab(tab) {
   else if (tab === 'reviews') renderDashReviews(c, myBiz);
   else if (tab === 'offers') renderDashOffers(c, myBiz);
   else if (tab === 'settings') renderDashSettings(c, myBiz);
+  else renderDashOverview(c, myBiz);
 }
 
 function renderDashOverview(c, b) {
@@ -2261,10 +2262,18 @@ function saveDashSettings() {
 
 function deleteDashAccount(bizId) {
   if (!confirm('متأكد إنك عايز تمسح حسابك وشغلك؟')) return;
+  if (!confirm('تأكيد أخير: الحذف لا رجعة فيه!')) return;
   businesses = businesses.filter(b => b.id !== bizId);
   users = users.filter(u => u.id !== currentUser.id);
-  reviews[bizId] = undefined;
   delete reviews[bizId];
+  reports = reports.filter(r => r.bizId !== bizId);
+  let favs = JSON.parse(localStorage.getItem('sikka_favorites') || '[]');
+  favs = favs.filter(f => f !== bizId);
+  localStorage.setItem('sikka_favorites', JSON.stringify(favs));
+  let lastVis = JSON.parse(localStorage.getItem('sikka_last_visited') || '[]');
+  lastVis = lastVis.filter(f => f !== bizId);
+  localStorage.setItem('sikka_last_visited', JSON.stringify(lastVis));
+  compareList = compareList.filter(c => c !== bizId);
   saveData();
   logout();
   showToast('اتمسح بنجاح', 'success');
@@ -2439,8 +2448,21 @@ function renderAddForm() {
 
 function submitBusiness() {
   if (!currentUser) { showAuthModal(); return; }
-  const name = document.getElementById('biz-name')?.value;
-  if (!name) { showToast('اكتب اسم الشغل', 'error'); return; }
+  const name = document.getElementById('biz-name')?.value?.trim();
+  const category = document.getElementById('biz-category')?.value;
+  const city = document.getElementById('biz-city')?.value;
+  const phone = document.getElementById('biz-phone')?.value?.trim();
+
+  const errors = [];
+  if (!name) errors.push('اسم الشغل');
+  if (!category) errors.push('الفئة');
+  if (!city) errors.push('المحافظة');
+  if (!phone) errors.push('رقم التليفون');
+
+  if (errors.length) {
+    showToast('اكتب: ' + errors.join('، '), 'error');
+    return;
+  }
 
   const newBiz = {
     id: 'biz_' + Date.now(),
@@ -2744,6 +2766,75 @@ function deleteBusiness(id) {
 function showAdminTab(tab) {
   document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
   event?.target?.closest('.admin-nav-item')?.classList.add('active');
+  const c = document.getElementById('admin-content');
+  if (!c) return;
+  if (tab === 'dashboard') { loadAdmin(); return; }
+  if (tab === 'businesses') { renderAdminBusinesses(c); return; }
+  if (tab === 'users') { renderAdminUsers(c); return; }
+  if (tab === 'posts') { renderAdminPosts(c); return; }
+  if (tab === 'categories') { renderAdminCategories(c); return; }
+  if (tab === 'settings') { renderAdminSettings(c); return; }
+}
+
+function renderAdminBusinesses(c) {
+  const allBiz = businesses;
+  c.innerHTML = `
+    <div class="mb-6"><h2 class="text-xl font-bold">جميع الأعمال</h2><p class="text-gray-500 text-sm">${allBiz.length} عمل</p></div>
+    <div class="overflow-x-auto bg-white rounded-2xl border border-gray-100">
+      <table class="w-full"><thead><tr class="border-b border-gray-100 text-right text-xs text-gray-500">
+        <th class="p-4 font-semibold">العمل</th><th class="p-4 font-semibold">الفئة</th><th class="p-4 font-semibold">المدينة</th><th class="p-4 font-semibold">الحالة</th><th class="p-4 font-semibold">إجراء</th>
+      </tr></thead><tbody>${allBiz.map(b => {
+        const style = getCategoryStyle(b.categoryNameAr);
+        const sc = b.status === 'approved' ? 'text-emerald-600 bg-emerald-50' : b.status === 'pending' ? 'text-amber-600 bg-amber-50' : 'text-red-600 bg-red-50';
+        const st = b.status === 'approved' ? 'معتمد' : b.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
+        return '<tr class="border-b border-gray-50 hover:bg-gray-50"><td class="p-4"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:'+style.bg+'"><span style="font-size:.9rem">'+style.emoji+'</span></div><span class="font-medium text-sm">'+(b.nameAr||b.name)+'</span></div></td><td class="p-4 text-sm text-gray-500">'+(b.categoryNameAr||'')+'</td><td class="p-4 text-sm text-gray-500">'+(b.location?.city||'')+'</td><td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-semibold '+sc+'">'+st+'</span></td><td class="p-4"><div class="flex items-center gap-1">'+(b.status!=='approved'?'<button class="w-8 h-8 bg-green-50 text-green-500 rounded-lg flex items-center justify-center hover:bg-green-100" onclick="approveBusiness(\''+b.id+'\',\'approved\')" title="اعتماد"><i class="ri-check-line text-sm"></i></button>':'')+(b.status!=='rejected'?'<button class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-100" onclick="approveBusiness(\''+b.id+'\',\'rejected\')" title="رفض"><i class="ri-close-line text-sm"></i></button>':'')+'<button class="w-8 h-8 bg-gray-100 text-gray-500 rounded-lg flex items-center justify-center hover:bg-red-50 hover:text-red-500" onclick="deleteBusiness(\''+b.id+'\')" title="حذف"><i class="ri-delete-bin-line text-sm"></i></button></div></td></tr>';
+      }).join('')}</tbody></table>
+    </div>`;
+}
+
+function renderAdminUsers(c) {
+  const uniqueUsers = {};
+  businesses.forEach(b => { if (b.ownerId) uniqueUsers[b.ownerId] = { id: b.ownerId, name: b.userName || 'غير معروف', biz: b.nameAr || b.name, status: b.status }; });
+  const userList = Object.values(uniqueUsers);
+  c.innerHTML = `
+    <div class="mb-6"><h2 class="text-xl font-bold">المستخدمين</h2><p class="text-gray-500 text-sm">${userList.length} مستخدم مسجّل</p></div>
+    <div class="space-y-3">${userList.length ? userList.map(u => {
+      const sc = u.status === 'approved' ? 'bg-emerald-50 text-emerald-600' : u.status === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-600';
+      const st = u.status === 'approved' ? 'معتمد' : u.status === 'pending' ? 'قيد المراجعة' : 'مرفوض';
+      return '<div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3"><div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">'+(u.name||'?')[0]+'</div><div class="flex-1"><div class="font-bold text-sm">'+u.name+'</div><div class="text-xs text-gray-500">'+u.biz+'</div></div><span class="px-2.5 py-1 rounded-lg text-xs font-semibold '+sc+'">'+st+'</span></div>';
+    }).join('') : '<div class="empty-state"><div class="empty-state-icon"><i class="ri-user-3-line"></i></div><h3>مفيش مستخدمين</h3></div>'}</div>`;
+}
+
+function renderAdminPosts(c) {
+  c.innerHTML = `
+    <div class="mb-6"><h2 class="text-xl font-bold">المقالات</h2><p class="text-gray-500 text-sm">${BLOG_POSTS.length} مقال</p></div>
+    <div class="space-y-3">${BLOG_POSTS.map(p => '<div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0"><i class="ri-article-line text-white text-lg"></i></div><div class="flex-1 min-w-0"><div class="font-bold text-sm truncate">'+p.title+'</div><div class="text-xs text-gray-500">'+p.category+' · '+p.date+'</div></div><span class="text-xs text-gray-400"><i class="ri-time-line ml-1"></i>'+p.readTime+'</span></div>').join('')}</div>`;
+}
+
+function renderAdminCategories(c) {
+  c.innerHTML = `
+    <div class="mb-6"><h2 class="text-xl font-bold">الفئات</h2><p class="text-gray-500 text-sm">${CATEGORIES.length} فئة</p></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">${CATEGORIES.map(cat => {
+      const style = getCategoryStyle(cat.name);
+      const count = businesses.filter(b => b.categoryNameAr === cat.name && b.status === 'approved').length;
+      return '<div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3"><div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:'+style.bg+'"><span style="font-size:1.3rem">'+style.emoji+'</span></div><div class="flex-1"><div class="font-bold text-sm">'+cat.name+'</div><div class="text-xs text-gray-500">'+count+' عمل</div></div></div>';
+    }).join('')}</div>`;
+}
+
+function renderAdminSettings(c) {
+  c.innerHTML = `
+    <div class="mb-6"><h2 class="text-xl font-bold">إعدادات الإدارة</h2><p class="text-gray-500 text-sm">إدارة الموقع</p></div>
+    <div class="space-y-4">
+      <div class="bg-white border border-gray-100 rounded-2xl p-5">
+        <h3 class="font-bold text-sm mb-3"><i class="ri-information-line text-blue-500 ml-1"></i> معلومات الموقع</h3>
+        <div class="grid grid-cols-2 gap-4 text-sm"><div><span class="text-gray-500">اسم الموقع:</span> <span class="font-medium">سِكّة</span></div><div><span class="text-gray-500">الإصدار:</span> <span class="font-medium">2.0</span></div><div><span class="text-gray-500">إجمالي الأعمال:</span> <span class="font-medium">${businesses.length}</span></div><div><span class="text-gray-500">إجمالي التقييمات:</span> <span class="font-medium">${Object.values(reviews).flat().length}</span></div></div>
+      </div>
+      <div class="bg-white border border-red-200 rounded-2xl p-5">
+        <h3 class="font-bold text-sm mb-3 text-red-600"><i class="ri-delete-bin-line ml-1"></i> منطقة الخطر</h3>
+        <p class="text-sm text-gray-500 mb-4">مسح جميع البيانات النهائياً</p>
+        <button onclick="if(confirm('متأكد متأكد؟ هيتمسح كل حاجة!')){localStorage.clear();location.reload();}" class="px-5 py-2.5 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700 transition-all"><i class="ri-delete-bin-line ml-1"></i> مسح كل البيانات</button>
+      </div>
+    </div>`;
 }
 
 // ==================== BLOG DATA ====================
