@@ -774,44 +774,29 @@ function searchScore(b, q) {
   const kw = (b.keywords || []).join(' ').toLowerCase();
   const br = (b.brands || []).join(' ').toLowerCase();
 
-  // Exact name match = highest score
-  if (nameAr === qLow || nameEn.toLowerCase() === qLow) score += 1000;
-  // Name starts with query
-  if (nameAr.startsWith(qLow) || nameEn.toLowerCase().startsWith(qLow)) score += 500;
-  // Name contains query
+  if (nameAr === qLow || nameEn === qLow) score += 1000;
+  if (nameAr.startsWith(qLow) || nameEn.startsWith(qLow)) score += 500;
   if (nameAr.includes(qLow)) score += 300;
-  if (nameEn.toLowerCase().includes(qLow)) score += 250;
-  // Category match
+  if (nameEn.includes(qLow)) score += 250;
   if (cat.includes(qLow)) score += 200;
-  // City match
   if (city.includes(qLow)) score += 150;
-  // District match
   if (district.includes(qLow)) score += 120;
-  // Address match
   if (addr.includes(qLow)) score += 100;
-  // Keywords match
   if (kw.includes(qLow)) score += 80;
-  // Brands match
   if (br.includes(qLow)) score += 80;
-  // Description match
   if (desc.includes(qLow)) score += 40;
 
-  // Multi-word matching: each word must match somewhere
   const allText = [nameAr, nameEn, cat, city, district, addr, desc, kw, br].join(' ');
   const allWordsMatch = words.every(w => allText.includes(w));
   if (allWordsMatch) score += 100;
 
-  // Fuzzy matching for typos
+  // Fuzzy only for name/category (not allText)
   if (score === 0) {
-    if (fuzzyMatch(nameAr, qLow) || fuzzyMatch(nameEn.toLowerCase(), qLow)) score += 50;
+    if (fuzzyMatch(nameAr, qLow) || fuzzyMatch(nameEn, qLow)) score += 50;
     else if (fuzzyMatch(cat, qLow)) score += 30;
-    else if (fuzzyMatch(kw, qLow)) score += 20;
-    else if (fuzzyMatch(allText, qLow)) score += 10;
   }
 
-  // Rating bonus
   score += (b.rating?.average || 0) * 2;
-  // Views bonus
   score += Math.min((b.views || 0) / 100, 10);
 
   return score;
@@ -2941,49 +2926,77 @@ function initMapPage() {
   if (!container) return;
   if (leafletMap) { leafletMap.remove(); leafletMap = null; }
   const approved = businesses.filter(b => b.status === 'approved' && b.location?.lat);
-  leafletMap = L.map('leaflet-map').setView([29.30, 30.84], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(leafletMap);
+  leafletMap = L.map('leaflet-map', { zoomControl: false }).setView([29.30, 30.84], 12);
+  L.control.zoom({ position: 'bottomleft' }).addTo(leafletMap);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }).addTo(leafletMap);
+  window._mapCurrentCategory = '';
+  window._mapCurrentSearch = '';
+  renderMapMarkers(approved);
+  renderMapSidebar(approved);
+  setTimeout(() => leafletMap.invalidateSize(), 200);
+}
+
+function renderMapMarkers(list) {
+  if (!leafletMap) return;
+  leafletMap.eachLayer(layer => { if (layer instanceof L.Marker) leafletMap.removeLayer(layer); });
   const catColors = { 'المقاهي':'#92400e','المطاعم':'#dc2626','البنوك':'#1e40af','التجزئة':'#7c3aed','الصحة':'#dc2626','التعليم':'#2563eb','الخدمات':'#475569','السفر والسياحة':'#0284c7','الجمال':'#db2777','الرياضة':'#16a34a' };
-  approved.forEach(b => {
+  list.forEach(b => {
     const style = getCategoryStyle(b.categoryNameAr);
     const color = catColors[b.categoryNameAr] || '#64748b';
     const marker = L.marker([b.location.lat, b.location.lng], {
-      icon: L.divIcon({ className:'custom-marker', html:'<div style="background:'+color+';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,0.3);border:3px solid white;cursor:pointer">'+style.emoji+'</div>', iconSize:[36,36], iconAnchor:[18,18] })
+      icon: L.divIcon({ className:'custom-marker', html:'<div style="background:'+color+';width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.3);border:3px solid white;cursor:pointer;transition:transform 0.2s" onmouseenter="this.style.transform=\'scale(1.15)\'" onmouseleave="this.style.transform=\'scale(1)\'">'+style.emoji+'</div>', iconSize:[38,38], iconAnchor:[19,19] })
     }).addTo(leafletMap);
-    marker.bindPopup('<div style="text-align:center;min-width:150px"><div style="font-size:24px;margin-bottom:4px">'+style.emoji+'</div><div style="font-weight:700;font-size:14px">'+(b.nameAr||b.name)+'</div><div style="color:#64748b;font-size:12px">'+(b.categoryNameAr||'')+'</div><div style="color:#f59e0b;font-size:13px;margin:4px 0">⭐ '+(b.rating?.average||0).toFixed(1)+'</div><button onclick="openBusiness(\''+b.id+'\')" style="color:#2563eb;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer">عرض التفاصيل ←</button></div>');
+    marker.bindPopup('<div style="text-align:center;min-width:160px;font-family:IBM Plex Sans Arabic,sans-serif"><div style="font-size:28px;margin-bottom:6px">'+style.emoji+'</div><div style="font-weight:700;font-size:15px;color:#0f172a">'+(b.nameAr||b.name)+'</div><div style="color:#64748b;font-size:12px;margin:2px 0">'+(b.categoryNameAr||'')+'</div><div style="color:#f59e0b;font-size:13px;margin:4px 0">⭐ '+(b.rating?.average||0).toFixed(1)+'</div><button onclick="openBusiness(\''+b.id+'\')" style="margin-top:6px;padding:6px 16px;background:#0f172a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer">عرض التفاصيل</button></div>');
   });
-  setTimeout(() => leafletMap.invalidateSize(), 100);
-  renderMapSidebar(approved);
 }
+
 function renderMapSidebar(list) {
   const sidebar = document.getElementById('map-sidebar-list');
+  const countEl = document.getElementById('map-count');
+  if (countEl) countEl.textContent = list.length + ' عمل على الخريطة';
   if (!sidebar) return;
+  if (!list.length) {
+    sidebar.innerHTML = '<div class="p-6 text-center text-gray-400"><i class="ri-map-pin-line text-3xl mb-2 block"></i><p class="text-sm">مفيش أعمال في المنطقة دي</p></div>';
+    return;
+  }
   sidebar.innerHTML = list.map(b => {
     const style = getCategoryStyle(b.categoryNameAr);
-    return '<div class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition-all border-b border-gray-100" onclick="flyToBusiness(\''+b.id+'\','+b.location.lat+','+b.location.lng+')"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:'+style.bg+'"><span style="font-size:1rem">'+style.emoji+'</span></div><div class="flex-1 min-w-0"><div class="font-bold text-sm truncate">'+(b.nameAr||b.name)+'</div><div class="text-xs text-gray-500">'+(b.categoryNameAr||'')+' · ⭐ '+(b.rating?.average||0).toFixed(1)+'</div></div></div>';
+    return '<div class="map-sidebar-item" onclick="flyToBusiness(\''+b.id+'\','+b.location.lat+','+b.location.lng+')"><div class="item-emoji" style="background:'+style.bg+'">'+style.emoji+'</div><div class="flex-1 min-w-0"><div class="font-bold text-sm truncate" style="color:#0f172a">'+(b.nameAr||b.name)+'</div><div class="text-xs text-gray-500 mt-0.5">'+(b.categoryNameAr||'')+' · '+(b.location?.city||'')+'</div><div class="flex items-center gap-1 mt-1"><span class="text-amber-500 text-xs">⭐ '+(b.rating?.average||0).toFixed(1)+'</span><span class="text-gray-300 text-xs">·</span><span class="text-gray-400 text-xs">'+(b.views||0)+' مشاهدة</span></div></div></div>';
   }).join('');
 }
+
 function flyToBusiness(id, lat, lng) {
   if (leafletMap && lat && lng) {
     leafletMap.flyTo([lat, lng], 16, { duration: 1 });
     openBusiness(id);
   }
 }
-function filterMapByCategory(cat) {
-  if (!leafletMap) return;
-  leafletMap.eachLayer(layer => { if (layer instanceof L.Marker) leafletMap.removeLayer(layer); });
-  const approved = businesses.filter(b => b.status === 'approved' && b.location?.lat);
-  const filtered = cat ? approved.filter(b => b.categoryNameAr === cat) : approved;
-  const catColors = { 'المقاهي':'#92400e','المطاعم':'#dc2626','البنوك':'#1e40af','التجزئة':'#7c3aed','الصحة':'#dc2626','التعليم':'#2563eb','الخدمات':'#475569','السفر والسياحة':'#0284c7','الجمال':'#db2777','الرياضة':'#16a34a' };
-  filtered.forEach(b => {
-    const style = getCategoryStyle(b.categoryNameAr);
-    const color = catColors[b.categoryNameAr] || '#64748b';
-    const marker = L.marker([b.location.lat, b.location.lng], {
-      icon: L.divIcon({ className:'custom-marker', html:'<div style="background:'+color+';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;box-shadow:0 3px 10px rgba(0,0,0,0.3);border:3px solid white;cursor:pointer">'+style.emoji+'</div>', iconSize:[36,36], iconAnchor:[18,18] })
-    }).addTo(leafletMap);
-    marker.bindPopup('<div style="text-align:center;min-width:150px"><div style="font-size:24px;margin-bottom:4px">'+style.emoji+'</div><div style="font-weight:700;font-size:14px">'+(b.nameAr||b.name)+'</div><div style="color:#64748b;font-size:12px">'+(b.categoryNameAr||'')+'</div><div style="color:#f59e0b;font-size:13px;margin:4px 0">⭐ '+(b.rating?.average||0).toFixed(1)+'</div><button onclick="openBusiness(\''+b.id+'\')" style="color:#2563eb;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer">عرض التفاصيل ←</button></div>');
+
+function filterMapByCategory(btn, cat) {
+  document.querySelectorAll('.map-cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  window._mapCurrentCategory = cat;
+  applyMapFilters();
+}
+
+function filterMapBySearch(val) {
+  window._mapCurrentSearch = (val || '').toLowerCase();
+  applyMapFilters();
+}
+
+function applyMapFilters() {
+  let approved = businesses.filter(b => b.status === 'approved' && b.location?.lat);
+  const cat = window._mapCurrentCategory || '';
+  const search = window._mapCurrentSearch || '';
+  if (cat) approved = approved.filter(b => b.categoryNameAr === cat);
+  if (search) approved = approved.filter(b => {
+    const name = (b.nameAr || b.name || '').toLowerCase();
+    const city = (b.location?.city || '').toLowerCase();
+    const cat2 = (b.categoryNameAr || '').toLowerCase();
+    return name.includes(search) || city.includes(search) || cat2.includes(search);
   });
-  renderMapSidebar(filtered);
+  renderMapMarkers(approved);
+  renderMapSidebar(approved);
 }
 
 // ==================== SHARE TO WHATSAPP ====================

@@ -472,29 +472,46 @@
 
   <!-- ==================== PAGE: MAP ==================== -->
   <div id="page-mapview" class="page">
-    <div class="flex h-[calc(100vh-64px)]">
-      <div class="w-80 bg-white border-l border-gray-100 flex flex-col hidden lg:flex">
+    <div class="flex h-[calc(100vh-64px)] relative">
+      <!-- Map Sidebar -->
+      <div id="map-sidebar" class="w-80 bg-white border-l border-gray-100 flex flex-col hidden lg:flex absolute lg:relative right-0 top-0 h-full z-20 shadow-lg lg:shadow-none">
         <div class="p-4 border-b border-gray-100">
-          <div class="flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center"><i class="ri-map-2-line text-blue-500 text-sm"></i></div>
-            <h3 class="font-bold text-sm">الخريطة</h3>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center"><i class="ri-map-2-line text-white text-sm"></i></div>
+              <h3 class="font-bold text-sm">الخريطة</h3>
+            </div>
+            <button class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200" onclick="document.getElementById('map-sidebar').classList.add('hidden')">
+              <i class="ri-close-line text-gray-500"></i>
+            </button>
           </div>
-          <select class="form-input text-sm" onchange="filterMapByCategory(this.value)">
-            <option value="">كل الفئات</option>
-            <option value="المقاهي">المقاهي</option>
-            <option value="المطاعم">المطاعم</option>
-            <option value="البنوك">البنوك</option>
-            <option value="التجزئة">التجزئة</option>
-            <option value="الصحة">الصحة</option>
-            <option value="التعليم">التعليم</option>
-            <option value="الخدمات">الخدمات</option>
-            <option value="السفر والسياحة">السفر والسياحة</option>
-            <option value="الجمال">الجمال</option>
-            <option value="الرياضة">الرياضة</option>
-          </select>
+          <div class="relative">
+            <input type="text" id="map-search-input" class="w-full px-4 py-2.5 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-400 focus:bg-white transition-all" placeholder="ابحث في الخريطة..." oninput="filterMapBySearch(this.value)">
+            <i class="ri-search-line absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-3" id="map-cat-filters">
+            <button class="map-cat-btn active" onclick="filterMapByCategory(this, '')" data-cat="">الكل</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'المقاهي')" data-cat="المقاهي">☕ مقاهي</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'المطاعم')" data-cat="المطاعم">🍽 مطاعم</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'البنوك')" data-cat="البنوك">🏦 بنوك</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'التجزئة')" data-cat="التجزئة">🛍 تجزئة</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'الصحة')" data-cat="الصحة">🏥 صحة</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'التعليم')" data-cat="التعليم">📚 تعليم</button>
+            <button class="map-cat-btn" onclick="filterMapByCategory(this, 'الخدمات')" data-cat="الخدمات">🔧 خدمات</button>
+          </div>
         </div>
-        <div class="flex-1 overflow-y-auto p-2" id="map-sidebar-list"></div>
+        <div class="flex-1 overflow-y-auto" id="map-sidebar-list"></div>
+        <div class="p-3 border-t border-gray-100 bg-gray-50">
+          <div class="text-xs text-gray-500 text-center" id="map-count">0 عمل على الخريطة</div>
+        </div>
       </div>
+
+      <!-- Mobile Toggle Button -->
+      <button class="lg:hidden fixed bottom-24 right-4 z-30 w-12 h-12 bg-blue-500 text-white rounded-full shadow-xl flex items-center justify-center hover:bg-blue-600 transition-all" onclick="document.getElementById('map-sidebar').classList.toggle('hidden')" id="map-sidebar-toggle">
+        <i class="ri-menu-unfold-line text-xl"></i>
+      </button>
+
+      <!-- Map -->
       <div id="leaflet-map" class="flex-1 w-full" style="min-height:400px"></div>
     </div>
   </div>

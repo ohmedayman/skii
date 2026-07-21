@@ -1917,6 +1917,115 @@ textarea.form-input {
   z-index: 1;
 }
 
+.map-cat-btn {
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.map-cat-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+.map-cat-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.map-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.map-sidebar-item:hover {
+  background: #f0f7ff;
+}
+
+.map-sidebar-item.active {
+  background: #eff6ff;
+  border-right: 3px solid #3b82f6;
+}
+
+.map-sidebar-item .item-emoji {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 16px !important;
+  font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
+
+.dark-mode .map-cat-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark-mode .map-cat-btn:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.dark-mode .map-cat-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.dark-mode #map-sidebar {
+  background: #0f172a;
+  border-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .map-sidebar-item {
+  border-color: rgba(255,255,255,0.05);
+}
+
+.dark-mode .map-sidebar-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.dark-mode #map-search-input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
 /* ============================================
    26. COMPARE TABLE
    ============================================ */
