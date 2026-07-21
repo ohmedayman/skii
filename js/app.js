@@ -301,7 +301,12 @@ async function loadData() {
         DEFAULT_BUSINESSES.forEach(async biz => { await saveBizToFirestore(biz); });
         businesses = [...DEFAULT_BUSINESSES];
       } else {
-        businesses = remote;
+        const remoteIds = new Set(remote.map(b => b.id));
+        const missing = DEFAULT_BUSINESSES.filter(b => !remoteIds.has(b.id));
+        if (missing.length > 0) {
+          missing.forEach(async biz => { await saveBizToFirestore(biz); });
+        }
+        businesses = [...remote, ...missing];
       }
       saveLocal();
       startRealtimeSync();
