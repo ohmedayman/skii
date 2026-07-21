@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقرير تقني - منصة سِكّة</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Cairo', Tahoma, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.7; }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 50px 40px; border-radius: 20px; margin-bottom: 40px; text-align: center; }
+    .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+    .header .subtitle { color: #94a3b8; font-size: 1rem; }
+    .header .date { color: #64748b; font-size: 0.85rem; margin-top: 12px; }
+    .section { background: white; border-radius: 16px; padding: 32px; margin-bottom: 24px; border: 1px solid #e2e8f0; }
+    .section h2 { font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; gap: 10px; }
+    .section h2 .icon { width: 36px; height: 36px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th { background: #f8fafc; padding: 12px 16px; text-align: right; font-weight: 700; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+    tr:hover td { background: #f8fafc; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-purple { background: #f3e8ff; color: #7c3aed; }
+    .badge-orange { background: #ffedd5; color: #c2410c; }
+    .badge-red { background: #fee2e2; color: #dc2626; }
+    .arch-diagram { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-top: 16px; text-align: center; }
+    .arch-row { display: flex; justify-content: center; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+    .arch-box { padding: 12px 20px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; border: 2px solid; min-width: 140px; }
+    .arch-box.client { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
+    .arch-box.firebase { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+    .arch-box.hosting { background: #dcfce7; border-color: #22c55e; color: #166534; }
+    .arch-arrow { color: #94a3b8; font-size: 1.2rem; }
+    .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 16px 20px; margin-top: 16px; font-size: 0.85rem; color: #92400e; }
+    .note strong { color: #78350f; }
+    .footer { text-align: center; padding: 20px; color: #94a3b8; font-size: 0.8rem; margin-top: 20px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
+    .stat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; }
+    .stat-box .num { font-size: 1.8rem; font-weight: 800; color: #0f172a; }
+    .stat-box .label { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+    .flow-steps { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+    .flow-step { background: #f1f5f9; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; }
+    .flow-arrow { color: #94a3b8; font-size: 1.2rem; }
+    @media print { .container { padding: 20px; } .header { padding: 30px; } }
+    @media (max-width: 640px) { .header h1 { font-size: 1.5rem; } .section { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>تقرير تقني شامل</h1>
+      <div class="subtitle">منصة سِكّة — دليل الأعمال الذكي في مصر</div>
+      <div class="date">أغسطس 2025 — الإصدار 1.0</div>
+    </div>
+
+    <!-- ===== ملخص تنفيذي ===== -->
+    <div class="section">
+      <h2><span class="icon">📋</span> ملخص تنفيذي</h2>
+      <p style="margin-bottom:16px;">
+        منصة <strong>سِكّة (Sikka)</strong> هي دليل أعمال ذكي مبني كتطبيق ويب أحادي الصفحة (SPA) بالكامل على تقنيات الطرف الأمامي (Client-Side)، مع استخدام <strong>Firebase</strong> كلادة تخزين وقاعدة بيانات في الوقت الحقيقي، و<strong>GitHub Pages</strong> كمنصة استضافة.
+      </p>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="num">27</div><div class="label">محافظة مصرية</div></div>
+        <div class="stat-box"><div class="num">16</div><div class="label">فئة أعمال</div></div>
+        <div class="stat-box"><div class="num">3</div><div class="label">لغات واجهة</div></div>
+        <div class="stat-box"><div class="num">100%</div><div class="label">مجاني مفتوح المصدر</div></div>
+      </div>
+    </div>
+
+    <!-- ===== البنية المعمارية ===== -->
+    <div class="section">
+      <h2><span class="icon">🏗️</span> البنية المعمارية العامة</h2>
+      <div class="arch-diagram">
+        <div class="arch-row">
+          <div class="arch-box client">🖥️ المتصفح (Client)<br><small>HTML + CSS + JS</small></div>
+        </div>
+        <div class="arch-arrow">⬇️ ⬆️</div>
+        <div class="arch-row">
+          <div class="arch-box firebase">🔥 Firebase Auth<br><small>المصادقة</small></div>
+          <div class="arch-box firebase">🗄️ Cloud Firestore<br><small>قاعدة البيانات</small></div>
+        </div>
+        <div class="arch-arrow">⬇️</div>
+        <div class="arch-row">
+          <div class="arch-box hosting">🌍 GitHub Pages<br><small>الاستضافة (Static)</small></div>
+        </div>
+      </div>
+      <div class="note">
+        <strong>ملاحظة مهمة:</strong> لا يوجد خادم (Server) مخصص. جميع العمليات تتم من المتصفح مباشرة إلى Firebase. هذا يعني أن المنصة تعمل كتطبيق "Serverless" بالكامل.
+      </div>
+    </div>
+
+    <!-- ===== التقنيات ===== -->
+    <div class="section">
+      <h2><span class="icon">⚙️</span> التقنيات المستخدمة (تفصيلياً)</h2>
+      <table>
+        <thead>
+          <tr><th>التقنية</th><th>الإصدار</th><th>الاستخدام</th><th>النوع</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HTML5</strong></td>
+            <td>-</td>
+            <td>الهيكل الأساسي للتطبيق</td>
+            <td><span class="badge badge-blue">Frontend</span></td>
+          </tr>
+          <tr>
+            <td><strong>Tailwind CSS</strong></td>
+            <td>CDN (Latest)</td>
+            <td>إطار عمل التنسيق (Utility-First)</td>
+            <td><span class="badge badge-blue">CSS Framework</span></td>
+          </tr>
+          <tr>
+            <td><strong>Custom CSS</strong></td>
+            <td>-</td>
+            <td>تنسيقات مخصصة + أنيميشن + Dark Mode</td>
+            <td><span class="badge badge-blue">CSS</span></td>
+          </tr>
+          <tr>
+            <td><strong>JavaScript (ES6+)</strong></td>
+            <td>-</td>
+            <td>المنطق البرمجي الكامل للتطبيق</td>
+            <td><span class="badge badge-blue">Frontend</span></td>
+          </tr>
+          <tr>
+            <td><strong>Firebase Auth</strong></td>
+            <td>v10.12.0 (Compat)</td>
+            <td>المصادقة: Google Sign-in + Email/Password</td>
+            <td><span class="badge badge-orange">Backend Service</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cloud Firestore</strong></td>
+            <td>v10.12.0 (Compat)</td>
+            <td>قاعدة البيانات الآنية (Real-time CRUD)</td>
+            <td><span class="badge badge-orange">Database</span></td>
+          </tr>
+          <tr>
+            <td><strong>Leaflet.js</strong></td>
+            <td>v1.9.4</td>
+            <td>الخريطة التفاعلية (OpenStreetMap)</td>
+            <td><span class="badge badge-purple">Library</span></td>
+          </tr>
+          <tr>
+            <td><strong>AOS</strong></td>
+            <td>v2.3.1</td>
+            <td>تأثيرات الظهور عند التمرير (Scroll Animations)</td>
+            <td><span class="badge badge-purple">Library</span></td>
+          </tr>
+          <tr>
+            <td><strong>RemixIcon</strong></td>
+            <td>CDN</td>
+            <td>مكتبة الأيقونات</td>
+            <td><span class="badge badge-purple">Icons</span></td>
+          </tr>
+          <tr>
+            <td><strong>Chart.js</strong></td>
+            <td>v4.4.0</td>
+            <td>الرسوم البيانية في لوحة التحكم</td>
+            <td><span class="badge badge-purple">Library</span></td>
+          </tr>
+          <tr>
+            <td><strong>Web Speech API</strong></td>
+            <td>Built-in</td>
+            <td>البحث الصوتي (Voice Search)</td>
+            <td><span class="badge badge-green">Browser API</span></td>
+          </tr>
+          <tr>
+            <td><strong>QRCode.js</strong></td>
+            <td>مدمج</td>
+            <td>إنشاء أكواد QR للأعمال</td>
+            <td><span class="badge badge-purple">Library</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== الميزات التقنية ===== -->
+    <div class="section">
+      <h2><span class="icon">🚀</span> الميزات التقنية الرئيسية</h2>
+      <table>
+        <thead>
+          <tr><th>الميزة</th><th>التقنية المستخدمة</th><th>الحالة</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تسجيل الدخول بالبريد الإلكتروني</td>
+            <td>Firebase Auth (Email/Password)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>تسجيل الدخول بـ Google</td>
+            <td>Firebase Auth (Google Provider)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>مزامنة البيانات بين الأجهزة</td>
+            <td>Firestore Real-time (onSnapshot)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>البحث الذكي</td>
+            <td>Algorithme Fuzzy Match + Weighted Scoring</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>البحث الصوتي</td>
+            <td>Web Speech API (SpeechRecognition)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>البحث بالاقتراحات</td>
+            <td>Autocomplete (Categories + Cities + History)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>الخريطة التفاعلية</td>
+            <td>Leaflet.js + OpenStreetMap</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>لوحة تحكم صاحب الشغل</td>
+            <td>Custom Dashboard (Products + Photos + Offers)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>لوحة تحكم المسؤول (Admin)</td>
+            <td>Custom Admin Panel (Approve/Reject/Delete)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>نظام الحجوزات</td>
+            <td>Booking.js + Firestore</td>
+            <td><span class="badge badge-orange">جاهز للتفعيل</span></td>
+          </tr>
+          <tr>
+            <td>نظام الباقات والاشتراكات</td>
+            <td>Plans.js (Free + Pro + Business)</td>
+            <td><span class="badge badge-orange">جاهز للتفعيل</span></td>
+          </tr>
+          <tr>
+            <td>الوضع الليلي (Dark Mode)</td>
+            <td>Custom CSS + data-theme Attribute</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>تصميم متجاوب (Responsive)</td>
+            <td>Tailwind CSS Breakpoints (sm/md/lg)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>تحسين محركات البحث (SEO)</td>
+            <td>Dynamic Meta Tags + JSON-LD Schema</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>مشاركة على واتساب</td>
+            <td>WhatsApp Deep Link</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>أكواد QR</td>
+            <td>QRCode.js + Logo Overlay</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>نظام المقارنة</td>
+            <td>Compare Page (LocalStorage)</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>المفضلة</td>
+            <td>LocalStorage + Firestore</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>نظام التقييمات</td>
+            <td>Firestore Reviews Collection</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+          <tr>
+            <td>نظام الإشعارات</td>
+            <td>LocalStorage + Owner Notifications</td>
+            <td><span class="badge badge-green">مكتمل</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== هيكل الملفات ===== -->
+    <div class="section">
+      <h2><span class="icon">📁</span> هيكل المشروع</h2>
+      <table>
+        <thead>
+          <tr><th>الملف</th><th>الحجم التقريبي</th><th>الوصف</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>index.html</code></td><td>~1,260 سطر</td><td>الصفحة الوحيدة — هيكل التطبيق + جميع الصفحات</td></tr>
+          <tr><td><code>css/style.css</code></td><td>~2,040 سطر</td><td>التنسيقات المخصصة — كروت، داشبورد، خريطة، Dark Mode</td></tr>
+          <tr><td><code>js/app.js</code></td><td>~3,460 سطر</td><td>المنطق البرمجي الرئيسي — Auth, Firestore, Search, Routing</td></tr>
+          <tr><td><code>js/plans.js</code></td><td>~230 سطر</td><td>نظام الباقات والأسعار</td></tr>
+          <tr><td><code>js/booking.js</code></td><td>~270 سطر</td><td>نظام الحجوزات والتقويم</td></tr>
+          <tr><td><code>assets/icons/</code></td><td>-</td><td>الأيقونات (Logo + Favicon SVG)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== Firebase ===== -->
+    <div class="section">
+      <h2><span class="icon">🔥</span> تفاصيل Firebase</h2>
+      <table>
+        <thead>
+          <tr><th>الخدمة</th><th>الاستخدام</th><th>Collections</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Authentication</strong></td>
+            <td>تسجيل الدخول (Google + Email)</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td><strong>Cloud Firestore</strong></td>
+            <td>قاعدة البيانات الأساسية</td>
+            <td><code>businesses</code>, <code>reviews</code>, <code>users</code>, <code>bookings</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <strong>Security Rules:</strong> Firestore مضبوط على وضع الاختبار (Public Access) — يُنصح بتفعيل Security Rules قبل الإطلاق النهائي.
+      </div>
+    </div>
+
+    <!-- ===== مسار المستخدم ===== -->
+    <div class="section">
+      <h2><span class="icon">👤</span> مسار المستخدم (User Flow)</h2>
+      <div class="flow-steps">
+        <div class="flow-step">فتح الموقع</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">مودال تسجيل الدخول</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Google / Email</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">الرئيسية</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">تصفح / بحث / خريطة</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">تفاصيل Business</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">تقييم / مفضلة / حجز</div>
+      </div>
+      <div class="flow-steps" style="margin-top: 8px;">
+        <div class="flow-step" style="background:#fef3c7;">صاحب شغل</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">سجّل شغلك</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">انتظار الاعتماد</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">لوحة التحكم</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">إدارة الشغل</div>
+      </div>
+      <div class="flow-steps" style="margin-top: 8px;">
+        <div class="flow-step" style="background:#fee2e2;">المسؤول</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">admin@sikka.com</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">لوحة الإدارة</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">اعتماد / رفض / حذف</div>
+      </div>
+    </div>
+
+    <!-- ===== ملاحظات للبوابة ===== -->
+    <div class="section" style="background: #fffbeb; border-color: #fde68a;">
+      <h2><span class="icon">💳</span> ملاحظات لبوابة الدفع</h2>
+      <table>
+        <thead>
+          <tr><th>النقطة</th><th>التفاصيل</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>نوع التطبيق</strong></td>
+            <td>Static SPA (لا يوجد Server-side rendering)</td>
+          </tr>
+          <tr>
+            <td><strong>الخادم</strong></td>
+            <td>لا يوجد — كل العمليات من المتصفح مباشرة (Serverless)</td>
+          </tr>
+          <tr>
+            <td><strong>الاستضافة</strong></td>
+            <td>GitHub Pages (استضافة ثابتة فقط — لا تدعم Webhooks)</td>
+          </tr>
+          <tr>
+            <td><strong>الخيار المقترح</strong></td>
+            <td>Redirect-based payment flow + Firebase Cloud Functions كـ Webhook receiver</td>
+          </tr>
+          <tr>
+            <td><strong>العملات</strong></td>
+            <td>جنيه مصري (EGP)</td>
+          </tr>
+          <tr>
+            <td><strong>العملات المدعومة</strong></td>
+            <td>Free (مجاني) / Pro (99 ج.م/شهر) / Business (299 ج.م/شهر)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== متطلبات التشغيل ===== -->
+    <div class="section">
+      <h2><span class="icon">🌐</span> متطلبات التشغيل</h2>
+      <table>
+        <thead>
+          <tr><th>المتطلب</th><th>التفاصيل</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>المتصفح</td><td>Chrome / Firefox / Safari / Edge (أحدث إصدار)</td></tr>
+          <tr><td>الإنترنت</td><td>مطلوب للتسجيل + المزامنة + الخريطة</td></tr>
+          <tr><td>الموبايل</td><td>تصميم متجاوب بالكامل — يعمل على جميع أحجام الشاشات</td></tr>
+          <tr><td>HTTPS</td><td>مطلوب لـ Firebase Auth + Microphone API</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>تقرير تقني — منصة سِكّة (Sikka) — 2025</p>
+      <p>https://ohmedayman.github.io/skii/</p>
+    </div>
+
+  </div>
+</body>
+</html>
