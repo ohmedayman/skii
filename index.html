@@ -1234,8 +1234,8 @@
     }
     initParticles();
 
-    // Animate hero stats counter
-    function animateCounter(el, target, suffix) {
+    // Animate hero stats counter (for hero section only)
+    function animateHeroCounter(el, target, suffix) {
       if (!el) return;
       let current = 0;
       const step = Math.ceil(target / 40);

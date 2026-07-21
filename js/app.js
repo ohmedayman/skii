@@ -455,7 +455,7 @@ function handleHash() {
     '#/contact': 'contact',
     '#/terms': 'terms',
     '#/map': 'mapview',
-    '#/compare': 'compare', '#/plans': 'plans', '#/plans': 'plans',
+    '#/compare': 'compare', '#/plans': 'plans',
   };
 
   const page = pageMap[hash];
@@ -500,6 +500,7 @@ function handleHash() {
   if (page === 'favorites') loadFavorites();
   if (page === 'mapview') setTimeout(() => initMapPage(), 100);
   if (page === 'compare') renderCompare();
+  if (page === 'plans' && typeof renderPlansPage === 'function') renderPlansPage(document.getElementById('plans-content'));
 }
 
 function show404() {
@@ -544,7 +545,7 @@ function showToast(msg, type = 'success') {
 function navigateTo(page) {
   if (!authReady) { showAuthModal(); return; }
   console.log('📄 Navigate to:', page);
-  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare' };
+  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare', plans:'#/plans' };
   let newHash;
   if (page.startsWith('blog/')) {
     newHash = '#/' + page;
@@ -1693,6 +1694,7 @@ function showDashTab(tab) {
   else if (tab === 'photos') renderDashPhotos(c, myBiz);
   else if (tab === 'reviews') renderDashReviews(c, myBiz);
   else if (tab === 'offers') renderDashOffers(c, myBiz);
+  else if (tab === 'bookings') { c.innerHTML = '<div id="dash-bookings-container"></div>'; if (typeof renderBusinessBookings === 'function') renderBusinessBookings(myBiz.id, document.getElementById('dash-bookings-container')); }
   else if (tab === 'settings') renderDashSettings(c, myBiz);
   else renderDashOverview(c, myBiz);
 }
