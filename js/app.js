@@ -1,5 +1,20 @@
-// ==================== SIKKA - Self-Contained SaaS Platform ====================
-// No Firebase, No Backend - Works everywhere!
+// ==================== SIKKA - Smart Business Directory ====================
+
+// ==================== FIREBASE INIT ====================
+const firebaseConfig = {
+  apiKey: "AIzaSyDEYpUv2SQvwiY17o9cSxQnsHWVp2yRrW0",
+  authDomain: "sikka-e74f6.firebaseapp.com",
+  projectId: "sikka-e74f6",
+  storageBucket: "sikka-e74f6.firebasestorage.app",
+  messagingSenderId: "666858367619",
+  appId: "1:666858367619:web:c671bad75fa36b141049b6",
+  measurementId: "G-RR31B4BCH2"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const provider = new firebase.auth.GoogleAuthProvider();
 
 // ==================== STATE ====================
 let currentUser = null;
@@ -124,13 +139,56 @@ const GOVERNORATES = {
 const CITIES = Object.keys(GOVERNORATES);
 
 // ==================== STORAGE ====================
-function saveData() {
+// ==================== FIRESTORE SYNC ====================
+function saveLocal() {
   localStorage.setItem('sikka_businesses', JSON.stringify(businesses));
   localStorage.setItem('sikka_reviews', JSON.stringify(reviews));
   localStorage.setItem('sikka_users', JSON.stringify(users));
 }
 
-function loadData() {
+async function saveBizToFirestore(biz) {
+  try { await db.collection('businesses').doc(biz.id).set(biz); } catch(e) { console.log('Firestore write error:', e); }
+}
+
+async function deleteBizFromFirestore(id) {
+  try { await db.collection('businesses').doc(id).delete(); } catch(e) { console.log('Firestore delete error:', e); }
+}
+
+async function saveReviewToFirestore(bizId, items) {
+  try { await db.collection('reviews').doc(bizId).set({ items }); } catch(e) { console.log('Firestore reviews error:', e); }
+}
+
+async function saveUserToFirestore(user) {
+  try { await db.collection('users').doc(user.id).set(user); } catch(e) { console.log('Firestore user error:', e); }
+}
+
+function startRealtimeSync() {
+  db.collection('businesses').onSnapshot(snap => {
+    const remote = [];
+    snap.forEach(doc => remote.push(doc.data()));
+    if (remote.length > 0) {
+      businesses = remote;
+      saveLocal();
+      const h = location.hash || '#/home';
+      if (h === '#/home') loadHome();
+      else if (h === '#/businesses') loadAllBusinesses();
+    }
+  }, err => console.log('Firestore businesses listen error:', err));
+
+  db.collection('reviews').onSnapshot(snap => {
+    const remote = {};
+    snap.forEach(doc => { remote[doc.id] = doc.data().items || []; });
+    reviews = remote;
+    saveLocal();
+  }, err => console.log('Firestore reviews listen error:', err));
+}
+
+async function saveData() {
+  saveLocal();
+  for (const biz of businesses) { await saveBizToFirestore(biz); }
+}
+
+async function loadData() {
   try {
     const b = localStorage.getItem('sikka_businesses');
     const r = localStorage.getItem('sikka_reviews');
@@ -138,48 +196,35 @@ function loadData() {
     businesses = b ? JSON.parse(b) : [...DEFAULT_BUSINESSES];
     reviews = r ? JSON.parse(r) : {};
     users = u ? JSON.parse(u) : [];
-    if (!b) saveData();
 
-    // Migrate old businesses
-    let migrated = false;
-    businesses.forEach(biz => {
-      if (biz.views === undefined) { biz.views = 0; migrated = true; }
-      if (!biz.photos) { biz.photos = []; migrated = true; }
-      if (!biz.offers) { biz.offers = []; migrated = true; }
-      if (!biz.products) { biz.products = []; migrated = true; }
-      if (!biz.ownerId && biz.userId) { biz.ownerId = biz.userId; migrated = true; }
-    });
-
-    // Force reset if data has Saudi cities (old data)
-    if (businesses.length && businesses[0].location?.city === 'الرياض') {
-      businesses = [...DEFAULT_BUSINESSES];
-      migrated = true;
-    }
-
-    // Ensure admin account exists
     if (!users.find(u => u.email === 'admin@sikka.com')) {
-      users.push({
-        id: 'admin_001',
-        name: 'مدير سِكّة',
-        email: 'admin@sikka.com',
-        password: 'admin123',
-        isAdmin: true,
-        createdAt: new Date().toISOString()
-      });
-      migrated = true;
+      users.push({ id: 'admin_001', name: 'مدير سِكّة', email: 'admin@sikka.com', password: 'admin123', isAdmin: true, createdAt: new Date().toISOString() });
+      saveLocal();
     }
-    if (migrated) saveData();
+
+    db.collection('businesses').get().then(snap => {
+      const remote = [];
+      snap.forEach(doc => remote.push(doc.data()));
+      if (remote.length === 0) {
+        DEFAULT_BUSINESSES.forEach(async biz => { await saveBizToFirestore(biz); });
+        businesses = [...DEFAULT_BUSINESSES];
+      } else {
+        businesses = remote;
+      }
+      saveLocal();
+      startRealtimeSync();
+      const h = location.hash || '#/home';
+      if (h === '#/home') loadHome();
+      else if (h === '#/businesses') loadAllBusinesses();
+    });
   } catch(e) {
     businesses = [...DEFAULT_BUSINESSES];
     reviews = {};
     users = [];
   }
 
-  // Load current user
   const savedUser = localStorage.getItem('sikka_current_user');
-  if (savedUser) {
-    currentUser = JSON.parse(savedUser);
-  }
+  if (savedUser) currentUser = JSON.parse(savedUser);
 }
 
 // ==================== INIT ====================
@@ -582,40 +627,31 @@ function loginWithEmail() {
   const passEl = document.getElementById('password-input');
   const errEl = document.getElementById('auth-error');
 
-  console.log('📧 Email element:', emailEl);
-  console.log('🔑 Pass element:', passEl);
-
   const email = emailEl ? emailEl.value.trim() : '';
   const pass = passEl ? passEl.value : '';
 
-  console.log('📧 Email value:', email);
-  console.log('🔑 Pass value:', pass ? '***' : 'EMPTY');
-
   if (!email || !pass) {
-    console.log('❌ Missing fields');
-    if (errEl) {
-      errEl.textContent = 'ابدأ كل الخانات';
-      errEl.classList.remove('hidden');
-    }
+    if (errEl) { errEl.textContent = 'ابدأ كل الخانات'; errEl.classList.remove('hidden'); }
     return;
   }
 
-  const user = users.find(u => u.email === email && u.password === pass);
-  if (!user) {
-    console.log('❌ User not found');
+  auth.signInWithEmailAndPassword(email, pass).then(cred => {
+    const uid = cred.user.uid;
+    const name = cred.user.displayName || email.split('@')[0];
+    const userObj = { id: uid, name, email, isAdmin: email === 'admin@sikka.com' };
+    currentUser = userObj;
+    localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
+    db.collection('users').doc(uid).set(userObj, { merge: true });
+    hideAuthModal();
+    updateAuthUI();
+    showToast('أهلاً بيك ' + name + '!');
+  }).catch(err => {
     if (errEl) {
-      errEl.textContent = 'الإيميل أو كلمة السر غلط - سجّل حساب جديد الأول';
+      errEl.textContent = err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found'
+        ? 'الإيميل أو كلمة السر غلط' : 'في مشكلة حاول تاني';
       errEl.classList.remove('hidden');
     }
-    return;
-  }
-
-  console.log('✅ Login success:', user.name);
-  currentUser = user;
-  localStorage.setItem('sikka_current_user', JSON.stringify(user));
-  hideAuthModal();
-  updateAuthUI();
-  showToast('أهلاً بيك ' + user.name + '!');
+  });
 }
 
 function signupWithEmail() {
@@ -626,55 +662,64 @@ function signupWithEmail() {
 
   if (!name || !email || !pass) { errEl.textContent = 'ابدأ كل الخانات'; errEl.classList.remove('hidden'); return; }
   if (pass.length < 4) { errEl.textContent = 'كلمة السر لازم تكون 4 حروف على الأقل'; errEl.classList.remove('hidden'); return; }
-  if (users.find(u => u.email === email)) { errEl.textContent = 'الإيميل ده متسجل قبل كده'; errEl.classList.remove('hidden'); return; }
 
-  const user = {
-    id: 'user_' + Date.now(),
-    name: name,
-    email: email,
-    password: pass,
-    isAdmin: email === 'admin@sikka.com',
-    governorate: document.getElementById('signup-gov')?.value || '',
-    center: document.getElementById('signup-center')?.value || '',
-    createdAt: new Date().toISOString()
-  };
-
-  users.push(user);
-  currentUser = user;
-  localStorage.setItem('sikka_current_user', JSON.stringify(user));
-  saveData();
-  hideSignupModal();
-  updateAuthUI();
-  showToast('تم عمل الحساب بنجاح!');
+  auth.createUserWithEmailAndPassword(email, pass).then(cred => {
+    const userObj = {
+      id: cred.user.uid, name, email, isAdmin: email === 'admin@sikka.com',
+      governorate: document.getElementById('signup-gov')?.value || '',
+      center: document.getElementById('signup-center')?.value || '',
+      createdAt: new Date().toISOString()
+    };
+    cred.user.updateProfile({ displayName: name });
+    db.collection('users').doc(cred.user.uid).set(userObj);
+    currentUser = userObj;
+    localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
+    hideSignupModal();
+    updateAuthUI();
+    showToast('تم عمل الحساب بنجاح!');
+  }).catch(err => {
+    if (errEl) {
+      errEl.textContent = err.code === 'auth/email-already-in-use' ? 'الإيميل ده متسجل قبل كده' : 'في مشكلة حاول تاني';
+      errEl.classList.remove('hidden');
+    }
+  });
 }
 
 function loginWithGoogle() {
-  // Simulate Google login
-  const name = 'مستخدم Google';
-  const email = 'google_' + Date.now() + '@gmail.com';
-
-  let user = users.find(u => u.email === email);
-  if (!user) {
-    user = { id: 'user_' + Date.now(), name, email, password: '', isAdmin: false, createdAt: new Date().toISOString() };
-    users.push(user);
-    saveData();
-  }
-
-  currentUser = user;
-  localStorage.setItem('sikka_current_user', JSON.stringify(user));
-  hideAuthModal();
-  hideSignupModal();
-  updateAuthUI();
-  showToast('أهلاً بيك!');
+  auth.signInWithPopup(provider).then(result => {
+    const u = result.user;
+    const userObj = { id: u.uid, name: u.displayName, email: u.email, isAdmin: u.email === 'admin@sikka.com', createdAt: new Date().toISOString() };
+    db.collection('users').doc(u.uid).set(userObj, { merge: true });
+    currentUser = userObj;
+    localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
+    hideAuthModal();
+    hideSignupModal();
+    updateAuthUI();
+    showToast('أهلاً بيك ' + u.displayName + '!');
+  }).catch(err => {
+    showToast('في مشكلة في تسجيل الدخول - حاول تاني');
+  });
 }
 
 function logout() {
-  currentUser = null;
-  localStorage.removeItem('sikka_current_user');
-  updateAuthUI();
-  showToast('اتعمل خروج');
-  navigateTo('home');
+  auth.signOut().then(() => {
+    currentUser = null;
+    localStorage.removeItem('sikka_current_user');
+    updateAuthUI();
+    showToast('اتعمل خروج');
+    navigateTo('home');
+  });
 }
+
+// ==================== AUTH STATE LISTENER ====================
+auth.onAuthStateChanged(user => {
+  if (user) {
+    const userObj = { id: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email, isAdmin: user.email === 'admin@sikka.com' };
+    currentUser = userObj;
+    localStorage.setItem('sikka_current_user', JSON.stringify(userObj));
+    updateAuthUI();
+  }
+});
 
 // ==================== SEARCH ENGINE ====================
 let searchHistory = JSON.parse(localStorage.getItem('sikka_search_history') || '[]');
@@ -1899,6 +1944,7 @@ function saveDashEdit(id) {
     thursday: document.getElementById('de-thu').value,
     friday: document.getElementById('de-fri').value,
   };
+  saveBizToFirestore(b);
   saveData();
   showToast('تم حفظ التعديلات بنجاح', 'success');
 }
@@ -1994,6 +2040,7 @@ function addBizProduct(id) {
     image: document.getElementById('prod-image')?.value?.trim() || '',
     category: document.getElementById('prod-category')?.value?.trim() || '',
   });
+  saveBizToFirestore(b);
   saveData();
   showToast('اتضاف المنتج بنجاح', 'success');
   renderDashProducts(document.getElementById('dashboard-content'), b);
@@ -2003,6 +2050,7 @@ function removeBizProduct(bizId, prodId) {
   const b = businesses.find(biz => biz.id === bizId);
   if (!b || !b.products) return;
   b.products = b.products.filter(p => p.id !== prodId);
+  saveBizToFirestore(b);
   saveData();
   showToast('اتحذف المنتج', 'success');
   renderDashProducts(document.getElementById('dashboard-content'), b);
@@ -2077,6 +2125,7 @@ function addBizPhoto(id) {
   if (!b) return;
   if (!b.photos) b.photos = [];
   b.photos.push(url);
+  saveBizToFirestore(b);
   saveData();
   showToast('اتضافت الصورة', 'success');
   renderDashPhotos(document.getElementById('dashboard-content'), b);
@@ -2086,6 +2135,7 @@ function removeBizPhoto(id, idx) {
   const b = businesses.find(biz => biz.id === id);
   if (!b || !b.photos) return;
   b.photos.splice(idx, 1);
+  saveBizToFirestore(b);
   saveData();
   showToast('اتحذفت الصورة', 'success');
   renderDashPhotos(document.getElementById('dashboard-content'), b);
@@ -2226,6 +2276,7 @@ function addBizOffer(id) {
   if (!b) return;
   if (!b.offers) b.offers = [];
   b.offers.push({ title, description: desc, endDate: date, code, createdAt: new Date().toISOString() });
+  saveBizToFirestore(b);
   saveData();
   showToast('اتنشر العرض', 'success');
   renderDashOffers(document.getElementById('dashboard-content'), b);
@@ -2235,6 +2286,7 @@ function removeBizOffer(id, idx) {
   const b = businesses.find(biz => biz.id === id);
   if (!b || !b.offers) return;
   b.offers.splice(idx, 1);
+  saveBizToFirestore(b);
   saveData();
   showToast('اتحذف العرض', 'success');
   renderDashOffers(document.getElementById('dashboard-content'), b);
@@ -2311,6 +2363,7 @@ function saveDashSettings() {
   localStorage.setItem('sikka_current_user', JSON.stringify(currentUser));
   const u = users.find(u => u.id === currentUser.id);
   if (u) { u.name = name; u.governorate = currentUser.governorate; u.center = currentUser.center; }
+  saveUserToFirestore(currentUser);
   saveData();
   updateAuthUI();
   showToast('اتحفظت المعلومات', 'success');
@@ -2323,6 +2376,7 @@ function deleteDashAccount(bizId) {
   users = users.filter(u => u.id !== currentUser.id);
   delete reviews[bizId];
   reports = reports.filter(r => r.bizId !== bizId);
+  deleteBizFromFirestore(bizId);
   let favs = JSON.parse(localStorage.getItem('sikka_favorites') || '[]');
   favs = favs.filter(f => f !== bizId);
   localStorage.setItem('sikka_favorites', JSON.stringify(favs));
@@ -2379,6 +2433,7 @@ function submitReview() {
     b.rating = { average: avg, count: allRatings.length };
   }
 
+  saveReviewToFirestore(currentReviewBizId, reviews[currentReviewBizId]);
   saveData();
   showToast('اتبعت التقييم!');
   closeReviewModal();
@@ -2557,6 +2612,7 @@ function submitBusiness() {
   };
 
   businesses.push(newBiz);
+  saveBizToFirestore(newBiz);
   saveData();
   showToast('تم إرسال طلبك! هنراجعه ونبلغك', 'success');
   navigateTo('home');
@@ -2805,6 +2861,7 @@ function approveBusiness(id, status) {
     read: false
   });
   localStorage.setItem(notifKey, JSON.stringify(notifs));
+  saveBizToFirestore(b);
   saveData();
   showToast(status === 'approved' ? 'اتعمل اعتماد لـ ' + (b.nameAr||b.name) : 'اترفض ' + (b.nameAr||b.name));
   loadAdmin();
@@ -2814,6 +2871,7 @@ function deleteBusiness(id) {
   if (!confirm('متأكد من الحذف؟')) return;
   businesses = businesses.filter(b => b.id !== id);
   delete reviews[id];
+  deleteBizFromFirestore(id);
   saveData();
   showToast('اتحذف');
   loadAdmin();
