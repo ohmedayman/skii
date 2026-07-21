@@ -499,37 +499,101 @@
 
   <!-- ==================== PAGE: BUSINESSES ==================== -->
   <div id="page-businesses" class="page">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center">
-          <i class="ri-store-2-line text-gray-500 text-xl"></i>
+    <div class="yelp-search-page">
+      <!-- LEFT SIDEBAR: FILTERS -->
+      <aside class="yelp-filters" id="yelp-filters">
+        <div class="yelp-filters-head">
+          <h2>الفلاتر</h2>
         </div>
-        <div>
-          <h1 class="text-2xl font-bold">كل الأعمال</h1>
-          <p class="text-gray-500 text-sm" id="businesses-count"></p>
+
+        <!-- Price -->
+        <div class="yelp-filter-group">
+          <div class="yelp-filter-title">السعر</div>
+          <div class="yelp-price-btns">
+            <button class="yelp-price-btn" data-price="$" onclick="togglePriceFilter(this)">جنيه</button>
+            <button class="yelp-price-btn" data-price="$$" onclick="togglePriceFilter(this)">جنيهين</button>
+            <button class="yelp-price-btn" data-price="$$$" onclick="togglePriceFilter(this)">3</button>
+            <button class="yelp-price-btn" data-price="$$$$" onclick="togglePriceFilter(this)">4</button>
+          </div>
         </div>
+
+        <!-- Suggested -->
+        <div class="yelp-filter-group">
+          <div class="yelp-filter-title">الاقتراحات</div>
+          <div class="yelp-filter-checks">
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="openNow"> <span class="yelp-check-mark"></span> مفتوح دلوقتي</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasBooking"> <span class="yelp-check-mark"></span> بيقبل حجز</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasDelivery"> <span class="yelp-check-mark"></span> بيوصل</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasTakeaway"> <span class="yelp-check-mark"></span> تيك أواي</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="isVerified"> <span class="yelp-check-mark"></span> موثق</label>
+          </div>
+        </div>
+
+        <!-- Dietary -->
+        <div class="yelp-filter-group">
+          <div class="yelp-filter-title">نوع الأكل</div>
+          <div class="yelp-filter-tags">
+            <button class="yelp-tag-btn" onclick="toggleTagFilter(this, 'حلال')">حلال</button>
+            <button class="yelp-tag-btn" onclick="toggleTagFilter(this, 'نباتي')">نباتي</button>
+            <button class="yelp-tag-btn" onclick="toggleTagFilter(this, 'صحي')">صحي</button>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="yelp-filter-group">
+          <div class="yelp-filter-title">الفئة</div>
+          <div id="yelp-category-filters" class="yelp-filter-tags"></div>
+          <button class="yelp-see-all" id="yelp-cat-more" onclick="toggleAllCategories()" style="display:none">عرض الكل</button>
+        </div>
+
+        <!-- Features -->
+        <div class="yelp-filter-group">
+          <div class="yelp-filter-title">المميزات</div>
+          <div class="yelp-filter-checks">
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasOutdoor"> <span class="yelp-check-mark"></span> تربيع خارجي</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="goodForFamilies"> <span class="yelp-check-mark"></span> مناسب للعيله</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasWifi"> <span class="yelp-check-mark"></span> واي فاي</label>
+            <label class="yelp-check"><input type="checkbox" onchange="applyYelpFilters()" data-filter="hasParking"> <span class="yelp-check-mark"></span> موقف سيارات</label>
+          </div>
+        </div>
+
+        <button class="yelp-clear-filters" onclick="clearYelpFilters()">مسح كل الفلاتر</button>
+      </aside>
+
+      <!-- CENTER: RESULTS -->
+      <main class="yelp-results">
+        <div class="yelp-results-head">
+          <div>
+            <h1 class="yelp-results-title" id="yelp-results-title">كل الأعمال</h1>
+            <p class="yelp-results-sub" id="businesses-count"></p>
+          </div>
+          <div class="yelp-sort">
+            <label>ترتيب:</label>
+            <select id="yelp-sort-select" onchange="applyYelpFilters()">
+              <option value="relevance">الأكثر صلة</option>
+              <option value="rating">الأعلى تقييم</option>
+              <option value="reviews">الأكتر تقييمات</option>
+              <option value="views">الأكتر مشاهدة</option>
+              <option value="alpha">أبجدي</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sort pills for mobile -->
+        <div class="yelp-sort-pills">
+          <button class="yelp-sort-pill active" onclick="setYelpSort(this,'relevance')">الأكثر صلة</button>
+          <button class="yelp-sort-pill" onclick="setYelpSort(this,'rating')">الأعلى تقييم</button>
+          <button class="yelp-sort-pill" onclick="setYelpSort(this,'reviews')">الأكتر تقييمات</button>
+        </div>
+
+        <div id="all-businesses-grid" class="yelp-results-list"></div>
+      </main>
+
+      <!-- RIGHT: MAP -->
+      <div class="yelp-map-panel" id="yelp-map-panel">
+        <div id="yelp-search-map" class="yelp-search-map"></div>
+        <button class="yelp-map-expand" onclick="expandYelpMap()" title="توسيع الخريطة"><i class="ri-fullscreen-line"></i></button>
       </div>
-      <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-6 shadow-sm">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <select class="filter-select" id="filter-category" onchange="applyFilters()">
-            <option value="">كل الفئات</option>
-          </select>
-          <select class="filter-select" id="filter-city" onchange="applyFilters()">
-            <option value="">كل المحافظات</option>
-          </select>
-          <select class="filter-select" id="filter-area" onchange="applyFilters()">
-            <option value="">كل المناطق</option>
-          </select>
-          <select class="filter-select" id="filter-sort" onchange="applyFilters()">
-            <option value="relevance">الأكثر صلة</option>
-            <option value="rating">الأعلى تقييم</option>
-            <option value="reviews">الأكتر تقييمات</option>
-            <option value="alpha">أبجدي</option>
-            <option value="views">الأكتر مشاهدة</option>
-          </select>
-        </div>
-      </div>
-      <div id="all-businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
     </div>
   </div>
 

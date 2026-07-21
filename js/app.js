@@ -1339,79 +1339,221 @@ function renderLastVisited(approved) {
 }
 
 // ==================== BUSINESSES PAGE ====================
+let yelpFilters = { prices: [], tags: [], category: '' };
+let yelpSearchMap = null;
+
 function loadAllBusinesses() {
   const approved = businesses.filter(b => b.status === 'approved');
-  populateFilters(approved);
-  renderBusinessesTo(approved, document.getElementById('all-businesses-grid'));
-  const countEl = document.getElementById('businesses-count');
-  if (countEl) countEl.textContent = approved.length + ' عمل متاح';
+  renderYelpCategoryFilters(approved);
+  applyYelpFilters();
+  initYelpSearchMap(approved);
 }
 
-function populateFilters(list) {
-  const catSelect = document.getElementById('filter-category');
-  const citySelect = document.getElementById('filter-city');
-  const areaSelect = document.getElementById('filter-area');
-
-  const allCats = [...new Set([...list.map(b => b.categoryNameAr), ...CATEGORIES.map(c => c.name)].filter(Boolean))];
-  const allCities = Object.keys(GOVERNORATES);
-
-  if (catSelect) catSelect.innerHTML = '<option value="">كل الفئات</option>' + allCats.sort().map(c => `<option value="${c}">${c}</option>`).join('');
-  if (citySelect) {
-    citySelect.innerHTML = '<option value="">كل المحافظات</option>' + allCities.map(c => `<option value="${c}">${c}</option>`).join('');
-    const newCityHandler = () => {
-      const city = citySelect.value;
-      if (areaSelect) {
-        if (city && GOVERNORATES[city]) {
-          const bizDistricts = list.filter(b => b.location?.city === city).map(b => b.location?.district).filter(Boolean);
-          const allDistricts = [...new Set([...bizDistricts, ...GOVERNORATES[city]])].sort();
-          areaSelect.innerHTML = '<option value="">كل المناطق</option>' + allDistricts.map(a => `<option value="${a}">${a}</option>`).join('');
-          areaSelect.disabled = false;
-        } else {
-          areaSelect.innerHTML = '<option value="">اختار المحافظة الأول</option>';
-          areaSelect.disabled = true;
-        }
-      }
-    };
-    citySelect.replaceWith(citySelect.cloneNode(true));
-    document.getElementById('filter-city').addEventListener('change', newCityHandler);
-  }
+function renderYelpCategoryFilters(list) {
+  const cats = [...new Set(list.map(b => b.categoryNameAr).filter(Boolean))].sort();
+  const container = document.getElementById('yelp-category-filters');
+  const moreBtn = document.getElementById('yelp-cat-more');
+  if (!container) return;
+  const show = cats.slice(0, 6);
+  const rest = cats.slice(6);
+  container.innerHTML = show.map(c => `<button class="yelp-tag-btn" onclick="toggleCategoryFilter(this, '${c}')">${c}</button>`).join('') + (rest.length ? `<span class="yelp-tag-more" data-rest='${JSON.stringify(rest)}' style="display:none"></span>` : '');
+  if (moreBtn) moreBtn.style.display = rest.length ? '' : 'none';
 }
 
-function applyFilters() {
-  const cat = document.getElementById('filter-category')?.value || '';
-  const city = document.getElementById('filter-city')?.value || '';
-  const area = document.getElementById('filter-area')?.value || '';
-  const sort = document.getElementById('filter-sort')?.value || 'relevance';
+function toggleAllCategories() {
+  const more = document.querySelector('.yelp-tag-more');
+  const container = document.getElementById('yelp-category-filters');
+  if (!more || !container) return;
+  const rest = JSON.parse(more.dataset.rest || '[]');
+  rest.forEach(c => { container.innerHTML += `<button class="yelp-tag-btn" onclick="toggleCategoryFilter(this, '${c}')">${c}</button>`; });
+  document.getElementById('yelp-cat-more').style.display = 'none';
+}
+
+function togglePriceFilter(btn) {
+  const p = btn.dataset.price;
+  btn.classList.toggle('active');
+  if (yelpFilters.prices.includes(p)) yelpFilters.prices = yelpFilters.prices.filter(x => x !== p);
+  else yelpFilters.prices.push(p);
+  applyYelpFilters();
+}
+
+function toggleTagFilter(btn, tag) {
+  btn.classList.toggle('active');
+  if (yelpFilters.tags.includes(tag)) yelpFilters.tags = yelpFilters.tags.filter(x => x !== tag);
+  else yelpFilters.tags.push(tag);
+  applyYelpFilters();
+}
+
+function toggleCategoryFilter(btn, cat) {
+  document.querySelectorAll('#yelp-category-filters .yelp-tag-btn').forEach(b => b.classList.remove('active'));
+  if (yelpFilters.category === cat) { yelpFilters.category = ''; }
+  else { btn.classList.add('active'); yelpFilters.category = cat; }
+  applyYelpFilters();
+}
+
+function setYelpSort(btn, val) {
+  document.querySelectorAll('.yelp-sort-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('yelp-sort-select').value = val;
+  applyYelpFilters();
+}
+
+function clearYelpFilters() {
+  yelpFilters = { prices: [], tags: [], category: '' };
+  document.querySelectorAll('.yelp-price-btn, .yelp-tag-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#yelp-filters input[type=checkbox]').forEach(c => c.checked = false);
+  document.getElementById('yelp-sort-select').value = 'relevance';
+  applyYelpFilters();
+}
+
+function applyYelpFilters() {
   let filtered = businesses.filter(b => b.status === 'approved');
 
-  if (cat) filtered = filtered.filter(b => b.categoryNameAr === cat);
-  if (city) filtered = filtered.filter(b => b.location?.city === city);
-  if (area) filtered = filtered.filter(b => b.location?.district === area);
+  // Price filter
+  if (yelpFilters.prices.length) filtered = filtered.filter(b => yelpFilters.prices.includes(b.priceLevel));
+
+  // Category filter
+  if (yelpFilters.category) filtered = filtered.filter(b => b.categoryNameAr === yelpFilters.category);
+
+  // Checkbox filters
+  document.querySelectorAll('#yelp-filters input[type=checkbox]:checked').forEach(cb => {
+    const f = cb.dataset.filter;
+    if (f === 'openNow') filtered = filtered.filter(b => checkIfOpen(b.workingHours) === true);
+    if (f === 'hasBooking') filtered = filtered.filter(b => b.hasBooking || b.products?.length);
+    if (f === 'hasDelivery') filtered = filtered.filter(b => b.hasDelivery);
+    if (f === 'hasTakeaway') filtered = filtered.filter(b => b.hasTakeaway);
+    if (f === 'isVerified') filtered = filtered.filter(b => b.isVerified);
+    if (f === 'hasOutdoor') filtered = filtered.filter(b => b.features?.includes('outdoor'));
+    if (f === 'goodForFamilies') filtered = filtered.filter(b => b.features?.includes('family'));
+    if (f === 'hasWifi') filtered = filtered.filter(b => b.features?.includes('wifi'));
+    if (f === 'hasParking') filtered = filtered.filter(b => b.features?.includes('parking'));
+  });
+
+  // Tag filters (dietary)
+  if (yelpFilters.tags.length) filtered = filtered.filter(b => yelpFilters.tags.some(t => (b.keywords || []).includes(t) || (b.tags || []).includes(t)));
+
+  // Sort
+  const sort = document.getElementById('yelp-sort-select')?.value || 'relevance';
   if (sort === 'rating') filtered.sort((a, b) => (b.rating?.average || 0) - (a.rating?.average || 0));
   else if (sort === 'reviews') filtered.sort((a, b) => (b.rating?.count || 0) - (a.rating?.count || 0));
   else if (sort === 'alpha') filtered.sort((a, b) => (a.nameAr || '').localeCompare(b.nameAr || '', 'ar'));
   else if (sort === 'views') filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
 
-  renderBusinessesTo(filtered, document.getElementById('all-businesses-grid'));
+  const container = document.getElementById('all-businesses-grid');
   const countEl = document.getElementById('businesses-count');
+  const titleEl = document.getElementById('yelp-results-title');
   if (countEl) countEl.textContent = filtered.length + ' نتيجة';
+  if (titleEl && yelpFilters.category) titleEl.textContent = yelpFilters.category;
+  else if (titleEl) titleEl.textContent = 'كل الأعمال';
+
+  renderYelpResults(filtered, container);
+  updateYelpMapMarkers(filtered);
 }
 
-function renderBusinessesTo(list, container) {
+function renderYelpResults(list, container) {
   if (!container) return;
   if (!list.length) {
-    container.innerHTML = `
-      <div class="col-span-full text-center py-16 bg-white border border-gray-100 rounded-2xl">
-        <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i class="ri-search-line text-3xl text-gray-300"></i>
-        </div>
-        <h3 class="font-bold text-gray-700 mb-2">مفيش نتائج</h3>
-        <p class="text-gray-400 text-sm">جرّب تغيير الفلتر أو كلمات البحث</p>
-      </div>`;
+    container.innerHTML = `<div class="yelp-empty-state"><div class="yelp-empty-icon"><i class="ri-search-line"></i></div><h3>مفيش نتائج</h3><p>جرّب تغيير الفلتر أو كلمات البحث</p></div>`;
     return;
   }
-  renderBusinessesPaginated(list, container);
+  container.innerHTML = list.map((b, i) => renderYelpResultCard(b, i)).join('');
 }
+
+function renderYelpResultCard(b, i) {
+  const rating = b.rating?.average || 0;
+  const reviewCount = b.rating?.count || 0;
+  const bizReviews = reviews[b.id] || [];
+  const totalReviews = reviewCount + bizReviews.length;
+  const style = getCategoryStyle(b.categoryNameAr);
+  const isOpen = checkIfOpen(b.workingHours);
+  const photos = b.photos || [];
+  const firstReview = bizReviews[0];
+  const topProducts = (b.products || []).slice(0, 2);
+
+  let reviewSnippet = '';
+  if (firstReview && firstReview.comment) {
+    const text = firstReview.comment.length > 120 ? firstReview.comment.substring(0, 120) + '...' : firstReview.comment;
+    reviewSnippet = `<div class="yelp-card-review"><i class="ri-double-quotes-l"></i> "${text}"</div>`;
+  }
+
+  const tagsHtml = (b.keywords || []).slice(0, 3).map(k => `<span class="yelp-card-tag">${k}</span>`).join('');
+
+  return `
+    <div class="yelp-result-card" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${Math.min(i * 30, 150)}">
+      <div class="yelp-card-photos">
+        ${photos.length ? photos.slice(0, 3).map(p => `<img src="${p}" onerror="this.style.display='none'" alt="">`).join('') : `<div class="yelp-card-photo-placeholder" style="background:${style.bg}"><span>${style.emoji}</span></div>`}
+        ${photos.length > 3 ? `<div class="yelp-card-more-photos">+${photos.length - 3}</div>` : ''}
+      </div>
+      <div class="yelp-card-body">
+        <div class="yelp-card-head">
+          <h3 class="yelp-card-name">${b.nameAr || b.name}</h3>
+          <div class="yelp-card-rating">
+            <div class="yelp-stars-sm">${Array.from({length:5}, (_, j) => `<i class="ri-star-${j < Math.round(rating) ? 'fill' : 'line'}"></i>`).join('')}</div>
+            <span class="yelp-card-rating-num">${rating > 0 ? rating.toFixed(1) : ''}</span>
+            <span class="yelp-card-review-count">(${totalReviews})</span>
+          </div>
+        </div>
+        <div class="yelp-card-meta">
+          ${b.priceLevel ? `<span class="yelp-card-price">${b.priceLevel}</span><span class="yelp-card-dot">·</span>` : ''}
+          ${b.location?.city ? `<span class="yelp-card-location"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' — ' + b.location.district : ''}</span><span class="yelp-card-dot">·</span>` : ''}
+          <span class="yelp-card-status ${isOpen ? 'open' : 'closed'}"><span class="yelp-status-dot"></span>${isOpen ? 'مفتوح' : 'مقفول'}</span>
+        </div>
+        ${b.categoryNameAr ? `<div class="yelp-card-category"><i class="${style.emoji === '🛒' ? 'ri-shopping-bag-line' : style.emoji === '🍽️' ? 'ri-restaurant-line' : style.emoji === '☕' ? 'ri-cup-line' : 'ri-store-2-line'}"></i> ${b.categoryNameAr}</div>` : ''}
+        ${reviewSnippet}
+        <div class="yelp-card-tags">${tagsHtml}</div>
+        ${topProducts.length ? `<div class="yelp-card-products">${topProducts.map(p => `<span class="yelp-card-product"><span class="yelp-card-product-emoji">📦</span>${p.name}${p.price ? ' · ' + p.price + ' ج' : ''}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ==================== YELP SEARCH MAP ====================
+function initYelpSearchMap(list) {
+  setTimeout(() => {
+    const mapEl = document.getElementById('yelp-search-map');
+    if (!mapEl || yelpSearchMap) return;
+    try {
+      yelpSearchMap = L.map('yelp-search-map', { zoomControl: false }).setView([30.0444, 31.2357], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(yelpSearchMap);
+      L.control.zoom({ position: 'bottomleft' }).addTo(yelpSearchMap);
+      updateYelpMapMarkers(list);
+    } catch(e) {}
+  }, 300);
+}
+
+function updateYelpMapMarkers(list) {
+  if (!yelpSearchMap) return;
+  yelpSearchMap.eachLayer(l => { if (l instanceof L.Marker) yelpSearchMap.removeLayer(l); });
+  const located = list.filter(b => b.location?.lat && b.location?.lng);
+  if (!located.length) return;
+  located.forEach(b => {
+    const style = getCategoryStyle(b.categoryNameAr);
+    const icon = L.divIcon({
+      className: 'yelp-map-marker',
+      html: `<div class="yelp-marker-pin" style="background:#d32323">${style.emoji}</div>`,
+      iconSize: [32, 36],
+      iconAnchor: [16, 36]
+    });
+    L.marker([b.location.lat, b.location.lng], { icon }).addTo(yelpSearchMap)
+      .bindPopup(`<div style="font-weight:700;font-size:0.85rem">${b.nameAr || b.name}</div><div style="font-size:0.75rem;color:#666">${b.categoryNameAr || ''}</div>`);
+  });
+  if (located.length === 1) yelpSearchMap.setView([located[0].location.lat, located[0].location.lng], 14);
+  else {
+    const bounds = L.latLngBounds(located.map(b => [b.location.lat, b.location.lng]));
+    yelpSearchMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 13 });
+  }
+}
+
+function expandYelpMap() {
+  const panel = document.getElementById('yelp-map-panel');
+  if (panel) panel.classList.toggle('expanded');
+  setTimeout(() => { if (yelpSearchMap) yelpSearchMap.invalidateSize(); }, 300);
+}
+
+// Backward compat
+function applyFilters() { applyYelpFilters(); }
+function renderBusinessesTo(list, container) { renderYelpResults(list, container); }
+function populateFilters() {}
 
 // ==================== BUSINESS DETAIL ====================
 function openBusiness(id) {
