@@ -461,10 +461,11 @@ function showToast(msg, type = 'success') {
   if (!t) return;
   const icon = type === 'success' ? 'ri-check-double-line' : type === 'error' ? 'ri-error-warning-line' : 'ri-information-line';
   const bg = type === 'success' ? 'linear-gradient(135deg,#059669,#047857)' : type === 'error' ? 'linear-gradient(135deg,#dc2626,#b91c1c)' : 'linear-gradient(135deg,#1e293b,#0f172a)';
-  t.innerHTML = `<div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.2)"><i class="${icon} text-sm"></i></div><span class="text-sm font-medium">${msg}</span></div>`;
-  t.style.background = bg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  t.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translate(-50%,20px);color:white;padding:14px 28px;border-radius:16px;font-size:0.875rem;font-weight:500;box-shadow:0 12px 32px rgba(0,0,0,0.25);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:2000;pointer-events:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);max-width:90vw;display:flex;align-items:center;gap:12px;font-family:IBM Plex Sans Arabic,sans-serif;background:' + bg;
+  t.innerHTML = '<div style="width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,0.2)"><i class="' + icon + '" style="font-size:14px"></i></div><span>' + msg + '</span>';
+  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)'; });
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, 20px)'; }, 3000);
 }
 
 // ==================== NAVIGATION ====================
@@ -1498,7 +1499,9 @@ let dashTab = 'overview';
 function loadDashboard() {
   if (!currentUser) { navigateTo('home'); showAuthModal(); return; }
   const myBiz = businesses.find(b => b.ownerId === currentUser.id);
+  const navList = document.getElementById('dash-nav-list');
   if (!myBiz) {
+    if (navList) navList.style.display = 'none';
     document.getElementById('dashboard-content').innerHTML = `
       <div class="max-w-md mx-auto text-center py-20">
         <div class="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-5">
@@ -1512,6 +1515,7 @@ function loadDashboard() {
       </div>`;
     return;
   }
+  if (navList) navList.style.display = '';
   showDashTab('overview');
 }
 
@@ -3033,11 +3037,12 @@ function openQRModal(bizId) {
   const b = businesses.find(biz => biz.id === bizId);
   if (!b) return;
   const url = location.origin + location.pathname + '#/business/' + bizId;
-  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=0f172a';
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=0f172a&margin=10';
+  const logoUrl = location.origin + location.pathname + 'assets/icons/favicon.svg';
   const modal = document.getElementById('qr-modal');
   const content = document.getElementById('qr-modal-content');
   if (modal && content) {
-    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-2">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><img src="' + qrUrl + '" alt="QR Code" class="mx-auto mb-4 rounded-xl border border-gray-200" width="250" height="250"><p class="text-xs text-gray-400 mb-4 break-all">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all"><i class="ri-download-line ml-1"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
+    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-1">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><div class="relative inline-block mb-4"><img src="' + qrUrl + '" alt="QR Code" class="rounded-2xl border border-gray-200" width="280" height="280"><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center border border-gray-100"><img src="' + logoUrl + '" alt="سِكّة" width="40" height="40"></div></div><p class="text-xs text-gray-400 mb-5 break-all max-w-xs mx-auto">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all flex items-center gap-1"><i class="ri-download-line"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
     modal.style.display = 'flex';
   }
 }
