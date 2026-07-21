@@ -1437,36 +1437,35 @@ function renderBusinessDetail(b) {
   const totalReviews = reviewCount + bizReviews.length;
   const isFav = currentUser && (JSON.parse(localStorage.getItem('sikka_favorites') || '[]')).includes(b.id);
   const isOpen = checkIfOpen(b.workingHours);
+  const style = getCategoryStyle(b.categoryNameAr);
 
   const hours = b.workingHours || {};
   const hoursHtml = hours.saturday ? `
     <div class="detail-section">
-      <h3><i class="ri-time-line text-amber-500"></i> مواعيد الشغل</h3>
-      ${Object.entries(hours).filter(([_, v]) => v).map(([day, time]) => `<div class="hours-row"><span>${getDayName(day)}</span><span>${time}</span></div>`).join('')}
+      <div class="detail-section-title"><i class="ri-time-line"></i> مواعيد الشغل</div>
+      <div class="hours-list">
+        ${Object.entries(hours).filter(([_, v]) => v).map(([day, time]) => `<div class="hours-row"><span>${getDayName(day)}</span><span>${time}</span></div>`).join('')}
+      </div>
     </div>
   ` : '';
 
-  const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><h3><i class="ri-hashtag text-blue-500"></i> الكلمات المفتاحية</h3><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
-  const brandsHtml = b.brands?.length ? `<div class="detail-section"><h3><i class="ri-bookmark-line text-purple-500"></i> البراندات</h3><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
+  const keywordsHtml = b.keywords?.length ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-hashtag"></i> الكلمات المفتاحية</div><div class="keywords-list">${b.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div></div>` : '';
+  const brandsHtml = b.brands?.length ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-bookmark-line"></i> البراندات</div><div class="keywords-list">${b.brands.map(b => `<span class="keyword-tag">${b}</span>`).join('')}</div></div>` : '';
 
   const products = b.products || [];
   const productsHtml = products.length ? `
     <div class="detail-section">
-      <h3><i class="ri-shopping-bag-line text-emerald-500"></i> المنتجات والخدمات (${products.length})</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="detail-section-title"><i class="ri-shopping-bag-line"></i> المنتجات والخدمات <span class="detail-section-count">${products.length}</span></div>
+      <div class="products-grid">
         ${products.map(p => `
-          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all">
-            <div class="w-14 h-14 rounded-xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
-              ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='📦'">` : '<span class="text-xl">📦</span>'}
+          <div class="product-item">
+            <div class="product-img">${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="product-img-fallback" style="display:none">📦</div>` : '<div class="product-img-fallback">📦</div>'}</div>
+            <div class="product-info">
+              <div class="product-name">${p.name}</div>
+              ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
+              ${p.category ? `<div class="product-cat">${p.category}</div>` : ''}
             </div>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold text-sm truncate">${p.name}</div>
-              ${p.desc ? `<div class="text-xs text-gray-500 truncate">${p.desc}</div>` : ''}
-              ${p.category ? `<div class="text-xs text-blue-500">${p.category}</div>` : ''}
-            </div>
-            <div class="flex-shrink-0">
-              ${p.price ? `<span class="font-bold text-green-600 text-sm">${p.price} ج</span>` : '<span class="text-xs text-gray-400">اتصال</span>'}
-            </div>
+            <div class="product-price">${p.price ? p.price + ' ج' : 'السعر عند الاتصال'}</div>
           </div>
         `).join('')}
       </div>
@@ -1476,29 +1475,29 @@ function renderBusinessDetail(b) {
   const offers = b.offers || [];
   const offersHtml = offers.length ? `
     <div class="detail-section">
-      <h3><i class="ri-megaphone-line text-orange-500"></i> العروض (${offers.length})</h3>
-      <div class="space-y-3">${offers.map(o => `
-        <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-orange-600 font-bold text-sm">${o.title}</span>
-            ${o.code ? `<span class="bg-white border border-orange-300 px-2 py-0.5 rounded text-xs font-mono text-orange-700">${o.code}</span>` : ''}
+      <div class="detail-section-title"><i class="ri-megaphone-line"></i> العروض <span class="detail-section-count">${offers.length}</span></div>
+      <div class="offers-list">
+        ${offers.map(o => `
+          <div class="offer-item">
+            <div class="offer-header">
+              <span class="offer-title">${o.title}</span>
+              ${o.code ? `<span class="offer-code">${o.code}</span>` : ''}
+            </div>
+            ${o.description ? `<div class="offer-desc">${o.description}</div>` : ''}
+            ${o.endDate ? `<div class="offer-date"><i class="ri-calendar-line"></i> بينتهي: ${o.endDate}</div>` : ''}
           </div>
-          ${o.description ? `<p class="text-gray-600 text-xs">${o.description}</p>` : ''}
-          ${o.endDate ? `<p class="text-gray-400 text-xs mt-1"><i class="ri-calendar-line"></i> بينتهي: ${o.endDate}</p>` : ''}
-        </div>
-      `).join('')}</div>
+        `).join('')}
+      </div>
     </div>
   ` : '';
 
   const photos = b.photos || [];
   const photosHtml = photos.length ? `
     <div class="detail-section">
-      <h3><i class="ri-image-line text-green-500"></i> الصور (${photos.length})</h3>
-      <div class="grid grid-cols-3 gap-2">${photos.map(p => `
-        <div class="rounded-xl overflow-hidden bg-gray-100 aspect-square">
-          <img src="${p}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-gray-400\\'><i class=\\'ri-image-line text-2xl\\'></i></div>'">
-        </div>
-      `).join('')}</div>
+      <div class="detail-section-title"><i class="ri-image-line"></i> الصور <span class="detail-section-count">${photos.length}</span></div>
+      <div class="photos-grid">
+        ${photos.map(p => `<div class="photo-item"><img src="${p}" onerror="this.parentElement.style.display='none'"></div>`).join('')}
+      </div>
     </div>
   ` : '';
 
@@ -1508,57 +1507,65 @@ function renderBusinessDetail(b) {
       <div class="review-card">
         <div class="review-header">
           <div class="review-avatar">${r.userName[0]}</div>
-          <div><div class="review-name">${r.userName}</div><div class="review-date">${r.date}</div></div>
+          <div class="review-meta">
+            <div class="review-name">${r.userName}</div>
+            <div class="review-date">${r.date}</div>
+          </div>
         </div>
-        <div class="review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}" style="color:${i < r.rating ? '#f59e0b' : '#cbd5e1'}"></i>`).join('')}</div>
+        <div class="review-stars">${Array.from({length:5}, (_, i) => `<i class="ri-star-${i < r.rating ? 'fill' : 'line'}"></i>`).join('')}</div>
         ${r.title ? `<div class="review-title">${r.title}</div>` : ''}
         ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
       </div>
     `).join('');
   } else {
-    reviewsHtml = '<p class="text-gray-500 text-sm text-center py-4">مفيش تقييمات لسه. كون أول واحد يقيّم!</p>';
+    reviewsHtml = '<div class="empty-reviews"><i class="ri-chat-smile-3-line"></i><p>مفيش تقييمات لسه</p><span>كون أول واحد يقيّم!</span></div>';
   }
-
-  const style = getCategoryStyle(b.categoryNameAr);
 
   c.innerHTML = `
     <div class="detail-hero" style="background:${style.bg}">
-      ${b.location?.lat && b.location?.lng ? `<div id="detail-map" style="width:100%;height:100%"></div>` : `<div style="font-size:4rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2))">${style.emoji}</div>`}
-      <button class="back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
-      <button class="back-btn" style="right:auto;left:16px;background:${isFav ? '#ef4444' : 'white'};color:${isFav ? 'white' : '#64748b'}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
+      <button class="detail-back-btn" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
+      <button class="detail-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
+      <div class="detail-hero-emoji">${style.emoji}</div>
     </div>
-    <div class="detail-content">
+
+    <div class="detail-body">
       <div class="detail-header">
-        <div class="detail-logo" style="background:${style.bg};border-color:transparent">
-          <span style="font-size:1.8rem">${style.emoji}</span>
-        </div>
-        <div class="flex-1">
+        <div class="detail-logo" style="background:${style.bg}"><span>${style.emoji}</span></div>
+        <div class="detail-header-info">
           <h1 class="detail-name">${b.nameAr || b.name}</h1>
           <div class="detail-category">${b.categoryNameAr || ''}</div>
           <div class="detail-stats">
-            <div class="detail-stat"><i class="ri-star-fill"></i> ${rating.toFixed(1)} (${totalReviews} تقييم)</div>
-            ${b.location?.city ? `<div class="detail-stat"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' - ' + b.location.district : ''}</div>` : ''}
-            ${b.views ? `<div class="detail-stat"><i class="ri-eye-line"></i> ${b.views} مشاهدة</div>` : ''}
-            <div class="detail-stat"><span class="inline-block w-2 h-2 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}"></span> ${isOpen ? 'مفتوح دلوقتي' : 'مقفول'}</div>
+            <span class="detail-stat"><i class="ri-star-fill" style="color:#f59e0b"></i> ${rating > 0 ? rating.toFixed(1) : '—'} (${totalReviews})</span>
+            ${b.location?.city ? `<span class="detail-stat"><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' · ' + b.location.district : ''}</span>` : ''}
+            ${b.views ? `<span class="detail-stat"><i class="ri-eye-line"></i> ${b.views}</span>` : ''}
+            <span class="detail-stat detail-stat-status ${isOpen ? 'open' : 'closed'}"><span class="status-dot"></span>${isOpen ? 'مفتوح' : 'مقفول'}</span>
           </div>
         </div>
       </div>
+
       <div class="detail-actions">
-        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="action-btn call"><i class="ri-phone-line"></i> اتصل</a>` : ''}
-        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn whatsapp"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
-        ${b.contact?.phone ? `<button class="action-btn map" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i> نسخ النمره</button>` : ''}
-        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn map"><i class="ri-map-pin-line"></i> الخريطة</a>` : ''}
-        <button class="action-btn share" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير واتساب</button>
-        <button class="action-btn share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
-        <button class="action-btn review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> تقييم</button>
-        <button class="action-btn map" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
-        <button class="action-btn share" onclick="openReportModal('${b.id}')" style="color:#ef4444"><i class="ri-flag-line"></i> إبلاغ</button>
+        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="action-btn act-call"><i class="ri-phone-line"></i><span>اتصل</span></a>` : ''}
+        ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="action-btn act-wa"><i class="ri-whatsapp-line"></i><span>واتساب</span></a>` : ''}
+        ${b.contact?.phone ? `<button class="action-btn act-copy" onclick="copyPhone('${b.contact.phone}')"><i class="ri-file-copy-line"></i><span>نسخ النمره</span></button>` : ''}
+        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="action-btn act-map"><i class="ri-map-pin-line"></i><span>الخريطة</span></a>` : ''}
+        <button class="action-btn act-share" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i><span>شير</span></button>
+        <button class="action-btn act-share" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i><span>مشاركة</span></button>
+        <button class="action-btn act-review" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i><span>تقييم</span></button>
+        <button class="action-btn act-qr" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i><span>QR</span></button>
+        <button class="action-btn act-report" onclick="openReportModal('${b.id}')"><i class="ri-flag-line"></i><span>إبلاغ</span></button>
       </div>
-      ${b.description ? `<div class="detail-section"><h3><i class="ri-information-line text-gray-500"></i> عن الشغل</h3><p>${b.description}</p></div>` : ''}
-      ${b.location?.address ? `<div class="detail-section"><h3><i class="ri-map-pin-line text-red-500"></i> العنوان</h3><p>${b.location.address}${b.location.district ? ', ' + b.location.district : ''}${b.location.city ? ', ' + b.location.city : ''}</p></div>` : ''}
-      ${productsHtml}${offersHtml}${photosHtml}${hoursHtml}${keywordsHtml}${brandsHtml}
+
+      ${b.description ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-information-line"></i> عن الشغل</div><p class="detail-desc">${b.description}</p></div>` : ''}
+      ${b.location?.address ? `<div class="detail-section"><div class="detail-section-title"><i class="ri-map-pin-line"></i> العنوان</div><p class="detail-desc">${b.location.address}${b.location.district ? '، ' + b.location.district : ''}${b.location.city ? '، ' + b.location.city : ''}</p></div>` : ''}
+      ${productsHtml}
+      ${offersHtml}
+      ${photosHtml}
+      ${hoursHtml}
+      ${keywordsHtml}
+      ${brandsHtml}
+
       <div class="detail-section">
-        <h3><i class="ri-star-line text-amber-500"></i> التقييمات (${totalReviews})</h3>
+        <div class="detail-section-title"><i class="ri-star-line"></i> التقييمات <span class="detail-section-count">${totalReviews}</span></div>
         <div id="reviews-list">${reviewsHtml}</div>
       </div>
     </div>
