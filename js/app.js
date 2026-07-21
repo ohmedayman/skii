@@ -532,13 +532,117 @@ function show404() {
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   if (!t) return;
-  const icon = type === 'success' ? 'ri-check-double-line' : type === 'error' ? 'ri-error-warning-line' : 'ri-information-line';
-  const bg = type === 'success' ? 'linear-gradient(135deg,#059669,#047857)' : type === 'error' ? 'linear-gradient(135deg,#dc2626,#b91c1c)' : 'linear-gradient(135deg,#1e293b,#0f172a)';
-  t.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translate(-50%,20px);color:white;padding:14px 28px;border-radius:16px;font-size:0.875rem;font-weight:500;box-shadow:0 12px 32px rgba(0,0,0,0.25);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:2000;pointer-events:none;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);max-width:90vw;display:flex;align-items:center;gap:12px;font-family:IBM Plex Sans Arabic,sans-serif;background:' + bg;
+  const icon = type === 'success' ? 'ri-check-double-line' : type === 'error' ? 'ri-error-warning-line' : type === 'warning' ? 'ri-alarm-warning-line' : 'ri-information-line';
+  const colors = { success: '#059669', error: '#dc2626', info: '#2563eb', warning: '#d97706' };
+  const bg = `linear-gradient(135deg, ${colors[type] || colors.info}, ${colors[type] || colors.info}dd)`;
+  t.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translate(-50%,20px);color:white;padding:14px 24px;border-radius:16px;font-size:0.875rem;font-weight:500;box-shadow:0 12px 40px rgba(0,0,0,0.3);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:2000;pointer-events:none;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);max-width:90vw;display:flex;align-items:center;gap:12px;font-family:IBM Plex Sans Arabic,sans-serif;background:' + bg;
   t.innerHTML = '<div style="width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,0.2)"><i class="' + icon + '" style="font-size:14px"></i></div><span>' + msg + '</span>';
   requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)'; });
   clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, 20px)'; }, 3000);
+  window._toastTimer = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, 20px)'; }, 3500);
+}
+
+function addNotification(userId, title, body, type = 'info') {
+  const key = 'sikka_notifications_' + userId;
+  const notifs = JSON.parse(localStorage.getItem(key) || '[]');
+  notifs.unshift({ id: Date.now(), title, body, type, read: false, date: new Date().toLocaleDateString('ar-EG') });
+  if (notifs.length > 50) notifs.splice(50);
+  localStorage.setItem(key, JSON.stringify(notifs));
+  updateNotifBadge(userId);
+}
+
+function updateNotifBadge(userId) {
+  if (!userId) return;
+  const notifs = JSON.parse(localStorage.getItem('sikka_notifications_' + userId) || '[]');
+  const unread = notifs.filter(n => !n.read).length;
+  const badge = document.getElementById('notif-count');
+  const btnWrap = document.getElementById('notif-btn-wrap');
+  if (btnWrap) btnWrap.style.display = currentUser ? '' : 'none';
+  if (badge) {
+    if (unread > 0) { badge.textContent = unread; badge.classList.remove('hidden'); }
+    else { badge.classList.add('hidden'); }
+  }
+}
+
+function toggleNotifications() {
+  const panel = document.getElementById('notif-panel');
+  const overlay = document.getElementById('notif-panel-overlay');
+  if (!panel || !overlay) return;
+  const isOpen = !panel.classList.contains('hidden');
+  if (isOpen) {
+    panel.classList.add('hidden');
+    overlay.classList.add('hidden');
+  } else {
+    renderNotifPanel();
+    panel.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+  }
+}
+
+function renderNotifPanel() {
+  if (!currentUser) return;
+  const key = 'sikka_notifications_' + currentUser.id;
+  const notifs = JSON.parse(localStorage.getItem(key) || '[]');
+  const list = document.getElementById('notif-panel-list');
+  if (!list) return;
+  if (!notifs.length) {
+    list.innerHTML = '<div class="notif-empty"><i class="ri-notification-off-line"></i><p>مفيش إشعارات</p></div>';
+    return;
+  }
+  list.innerHTML = notifs.map(n => {
+    const icons = { success: 'ri-check-double-line', error: 'ri-error-warning-line', info: 'ri-information-line', booking: 'ri-calendar-check-line', review: 'ri-star-line', promo: 'ri-megaphone-line' };
+    const colors = { success: '#059669', error: '#dc2626', info: '#2563eb', booking: '#7c3aed', review: '#f59e0b', promo: '#d32323' };
+    return `<div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead(${n.id})">
+      <div class="notif-item-icon" style="background:${colors[n.type] || '#2563eb'}20;color:${colors[n.type] || '#2563eb'}"><i class="${icons[n.type] || 'ri-information-line'}"></i></div>
+      <div class="notif-item-body">
+        <div class="notif-item-title">${n.title}</div>
+        <div class="notif-item-text">${n.body}</div>
+        <div class="notif-item-date">${n.date}</div>
+      </div>
+      ${!n.read ? '<div class="notif-item-dot"></div>' : ''}
+    </div>`;
+  }).join('');
+  // Mark all as read after showing
+  setTimeout(() => {
+    notifs.forEach(n => n.read = true);
+    localStorage.setItem(key, JSON.stringify(notifs));
+    updateNotifBadge(currentUser.id);
+  }, 1000);
+}
+
+function markNotifRead(id) {
+  if (!currentUser) return;
+  const key = 'sikka_notifications_' + currentUser.id;
+  const notifs = JSON.parse(localStorage.getItem(key) || '[]');
+  const n = notifs.find(x => x.id === id);
+  if (n) { n.read = true; localStorage.setItem(key, JSON.stringify(notifs)); }
+  renderNotifPanel();
+  updateNotifBadge(currentUser.id);
+}
+
+function clearAllNotifications() {
+  if (!currentUser) return;
+  localStorage.removeItem('sikka_notifications_' + currentUser.id);
+  renderNotifPanel();
+  updateNotifBadge(currentUser.id);
+  showToast('تم مسح الإشعارات', 'success');
+}
+
+// ==================== AD BANNERS ====================
+function handleAdClick(slot) {
+  if (slot === 1) navigateTo('add');
+  else if (slot === 2) navigateTo('plans');
+  else if (slot === 3) navigateTo('businesses');
+}
+
+function loadAdBanners() {
+  // Ad banners are static HTML — just show/hide based on user state
+  const banner1 = document.getElementById('ad-banner-1');
+  if (banner1 && currentUser) {
+    // Don't show "register" ad to logged-in users
+    const biz = businesses.find(b => b.ownerId === currentUser.id);
+    if (biz) banner1.style.display = 'none';
+  }
 }
 
 // ==================== NAVIGATION ====================
@@ -1590,7 +1694,7 @@ function renderBusinessDetail(b) {
   } else if (photos.length > 0) {
     galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-full">${photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}<div class="gallery-emoji-fallback" style="display:none">${style.emoji}</div></div></div>`;
   } else {
-    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-placeholder" style="background:${style.bg}"><span class="gallery-emoji">${style.emoji}</span></div></div>`;
+    galleryHtml = `<div class="yelp-gallery"><div class="yelp-gallery-placeholder" style="background:${style.bg}"><div class="yelp-biz-banner"><span class="gallery-emoji" style="font-size:6rem;position:relative;z-index:2">${style.emoji}</span><div class="yelp-banner-pattern"></div></div></div></div>`;
   }
 
   // Hours
@@ -2299,18 +2403,23 @@ function renderDashProducts(c, b) {
 }
 
 function renderProductCard(p, i, bizId, editable = false) {
+  const categoryColors = {
+    'قهوة': '#92400e', 'مشروبات': '#0369a1', 'أكل': '#c2410c', 'ملابس': '#7c3aed',
+    ' ELECTRONICS': '#0891b2', ' default': '#475569'
+  };
+  const catColor = categoryColors[p.category] || categoryColors[' default'];
   return `
-    <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all group" data-aos="fade-up" data-aos-delay="${i * 30}">
-      <div class="h-40 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
-        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-full h-full items-center justify-center text-4xl" style="display:none"><i class="ri-shopping-bag-3-line text-4xl text-gray-300"></i></div>` : '<i class="ri-shopping-bag-3-line text-4xl text-gray-300"></i>'}
-        ${p.category ? `<span class="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-600 text-xs rounded-lg font-medium shadow-sm">${p.category}</span>` : ''}
+    <div class="store-product-card" data-aos="fade-up" data-aos-delay="${Math.min(i * 40, 200)}">
+      <div class="store-product-img">
+        ${p.image ? `<img src="${p.image}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${p.name}"><div class="store-product-fallback" style="display:none"><i class="ri-shopping-bag-3-line"></i></div>` : '<div class="store-product-fallback"><i class="ri-shopping-bag-3-line"></i></div>'}
+        ${p.category ? `<span class="store-product-cat" style="background:${catColor}">${p.category}</span>` : ''}
+        ${editable ? `<button class="store-product-del" onclick="event.stopPropagation();removeBizProduct('${bizId}','${p.id}')" title="حذف"><i class="ri-delete-bin-line"></i></button>` : ''}
       </div>
-      <div class="p-4">
-        <h4 class="font-bold text-sm mb-1 truncate">${p.name}</h4>
-        ${p.desc ? `<p class="text-gray-500 text-xs mb-3 line-clamp-2">${p.desc}</p>` : '<div class="mb-3"></div>'}
-        <div class="flex items-center justify-between">
-          ${p.price ? `<span class="text-lg font-bold text-green-600">${p.price} <span class="text-xs font-normal text-gray-400">جنيه</span></span>` : '<span class="text-xs text-gray-400">السعر عند الاتصال</span>'}
-          ${editable ? `<button onclick="removeBizProduct('${bizId}','${p.id}')" class="w-9 h-9 bg-red-50 text-red-400 rounded-xl flex items-center justify-center hover:bg-red-100 hover:text-red-600 transition-all"><i class="ri-delete-bin-line text-sm"></i></button>` : ''}
+      <div class="store-product-body">
+        <h4 class="store-product-name">${p.name}</h4>
+        ${p.desc ? `<p class="store-product-desc">${p.desc}</p>` : ''}
+        <div class="store-product-foot">
+          ${p.price ? `<span class="store-product-price">${p.price} <small>ج</small></span>` : '<span class="store-product-noprice">السعر عند الاتصال</span>'}
         </div>
       </div>
     </div>
@@ -3407,13 +3516,52 @@ function openQRModal(bizId) {
   const b = businesses.find(biz => biz.id === bizId);
   if (!b) return;
   const url = location.origin + location.pathname + '#/business/' + bizId;
-  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=0f172a&margin=10';
-  const logoUrl = location.origin + location.pathname + 'assets/icons/logo.png';
   const modal = document.getElementById('qr-modal');
   const content = document.getElementById('qr-modal-content');
   if (modal && content) {
-    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-1">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><div class="relative inline-block mb-4"><img src="' + qrUrl + '" alt="QR Code" class="rounded-2xl border border-gray-200" width="280" height="280" onerror="this.style.display=\'none\'"><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center border border-gray-100"><img src="' + logoUrl + '" alt="سِكّة" width="40" height="40" onerror="this.style.display=\'none\'"></div></div><p class="text-xs text-gray-400 mb-5 break-all max-w-xs mx-auto">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all flex items-center gap-1"><i class="ri-download-line"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
+    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-1">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><div id="qr-canvas-box" class="relative inline-block mb-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm"></div><p class="text-xs text-gray-400 mb-5 break-all max-w-xs mx-auto">' + url + '</p><div class="flex gap-3 justify-center"><button onclick="downloadQR(\'' + bizId + '\')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all flex items-center gap-1"><i class="ri-download-line"></i> تحميل</button><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
     modal.classList.remove('hidden');
+    setTimeout(() => {
+      const box = document.getElementById('qr-canvas-box');
+      if (box && typeof QRCode !== 'undefined') {
+        box.innerHTML = '';
+        const qrDiv = document.createElement('div');
+        box.appendChild(qrDiv);
+        new QRCode(qrDiv, { text: url, width: 240, height: 240, colorDark: '#0f172a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+        // Add logo center
+        setTimeout(() => {
+          const canvas = qrDiv.querySelector('canvas');
+          if (canvas) {
+            const logo = new Image();
+            logo.crossOrigin = 'anonymous';
+            logo.src = 'assets/icons/logo.png';
+            logo.onload = () => {
+              const ctx = canvas.getContext('2d');
+              const size = 44;
+              const x = (canvas.width - size) / 2;
+              const y = (canvas.height - size) / 2;
+              ctx.fillStyle = '#ffffff';
+              ctx.beginPath();
+              ctx.roundRect(x - 4, y - 4, size + 8, size + 8, 8);
+              ctx.fill();
+              ctx.drawImage(logo, x, y, size, size);
+            };
+          }
+        }, 200);
+      }
+    }, 100);
+  }
+}
+
+function downloadQR(bizId) {
+  const box = document.getElementById('qr-canvas-box');
+  if (!box) return;
+  const canvas = box.querySelector('canvas');
+  if (canvas) {
+    const link = document.createElement('a');
+    link.download = 'sikka-qr-' + bizId + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
   }
 }
 function closeQRModal() { document.getElementById('qr-modal')?.classList.add('hidden'); }

@@ -96,6 +96,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- QRCode.js -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -313,6 +315,20 @@
       </div>
     </section>
 
+    <!-- Ad Banner 1 -->
+    <div class="ad-banner-container" id="ad-banner-1">
+      <div class="ad-banner" onclick="handleAdClick(1)">
+        <div class="ad-banner-content">
+          <span class="ad-banner-badge">إعلان</span>
+          <div class="ad-banner-text">
+            <h3>سجّل شغلك على سِكّة مجاناً</h3>
+            <p>وصّل لآلاف الزوار كل يوم — ابدأ دلوقتي</p>
+          </div>
+          <button class="ad-banner-btn">سجّل دلوقتي <i class="ri-arrow-left-line"></i></button>
+        </div>
+      </div>
+    </div>
+
     <!-- Nearby Section (hidden by default) -->
     <section class="py-16 bg-blue-50/50" data-aos="fade-up" id="nearby-section" style="display:none">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -340,6 +356,20 @@
         <div id="businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
       </div>
     </section>
+
+    <!-- Ad Banner 2 -->
+    <div class="ad-banner-container" id="ad-banner-2">
+      <div class="ad-banner ad-banner-alt" onclick="handleAdClick(2)">
+        <div class="ad-banner-content">
+          <span class="ad-banner-badge">إعلان</span>
+          <div class="ad-banner-text">
+            <h3>الخطة Pro — تحليلات متقدمة</h3>
+            <p>شوف مين بيزور شغلك وامتى — كل الإحصائيات في مكان واحد</p>
+          </div>
+          <button class="ad-banner-btn">شوف الخطط <i class="ri-arrow-left-line"></i></button>
+        </div>
+      </div>
+    </div>
 
     <!-- Alpha Browse Section -->
     <section class="py-16 bg-white" data-aos="fade-up">
@@ -1309,6 +1339,16 @@
   </div>
 
   <!-- ==================== TOAST ==================== -->
+  <!-- Notification Panel -->
+  <div id="notif-panel" class="notif-panel hidden">
+    <div class="notif-panel-head">
+      <h3>الإشعارات</h3>
+      <button onclick="clearAllNotifications()" class="notif-clear-btn">مسح الكل</button>
+    </div>
+    <div id="notif-panel-list" class="notif-panel-list"></div>
+  </div>
+  <div id="notif-panel-overlay" class="notif-panel-overlay hidden" onclick="toggleNotifications()"></div>
+
   <div id="toast"></div>
 
   <!-- ==================== SCROLL TO TOP ==================== -->
