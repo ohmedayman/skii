@@ -867,7 +867,9 @@
   </nav>
 
   <!-- ==================== AUTH MODAL ==================== -->
-  <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)hideAuthModal()">
+  <div id="auth-modal" class="fixed inset-0 z-[1000] p-4 hidden" onclick="if(event.target===this)hideAuthModal()">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative flex items-center justify-center h-full">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -907,11 +909,14 @@
         <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideAuthModal();showSignupModal()">اعمل حساب جديد</a>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ==================== SIGNUP MODAL ==================== -->
-  <div id="signup-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)hideSignupModal()">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
+  <div id="signup-modal" class="fixed inset-0 z-[1000] p-4 hidden" onclick="if(event.target===this)hideSignupModal()">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative flex items-center justify-center h-full">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <i class="ri-user-add-line text-2xl text-white"></i>
@@ -963,11 +968,14 @@
         <a href="#" class="font-semibold text-gray-900 hover:underline" onclick="hideSignupModal();showAuthModal()">ادخل</a>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ==================== REVIEW MODAL ==================== -->
-  <div id="review-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeReviewModal()">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn">
+  <div id="review-modal" class="fixed inset-0 z-[1000] p-4 hidden" onclick="if(event.target===this)closeReviewModal()">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative flex items-center justify-center h-full">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
       <h2 class="text-xl font-bold text-center mb-2">اكتب تقييمك</h2>
       <p class="text-gray-500 text-sm text-center mb-6">شاركتنا رأيك في المكان ده</p>
       <div class="flex justify-center gap-2 mb-6" id="star-rating">
@@ -991,16 +999,23 @@
         <i class="ri-send-plane-line"></i> إرسال التقييم
       </button>
     </div>
+    </div>
   </div>
 
   <!-- ==================== QR MODAL ==================== -->
-  <div id="qr-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeQRModal()">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-sm shadow-2xl animate__animated animate__bounceIn" id="qr-modal-content"></div>
+  <div id="qr-modal" class="fixed inset-0 z-[1000] p-4 hidden" onclick="if(event.target===this)closeQRModal()">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative flex items-center justify-center h-full">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-sm shadow-2xl" id="qr-modal-content"></div>
+    </div>
   </div>
 
   <!-- ==================== REPORT MODAL ==================== -->
-  <div id="report-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm items-center justify-center z-[1000] p-4" style="display:none" onclick="if(event.target===this)closeReportModal()">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl animate__animated animate__bounceIn" id="report-modal-content"></div>
+  <div id="report-modal" class="fixed inset-0 z-[1000] p-4 hidden" onclick="if(event.target===this)closeReportModal()">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative flex items-center justify-center h-full">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl" id="report-modal-content"></div>
+    </div>
   </div>
 
   <!-- ==================== VOICE SEARCH MODAL ==================== -->

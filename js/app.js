@@ -500,22 +500,22 @@ function requireAuth(action) {
 }
 
 function showAuthModal() {
-  document.getElementById('auth-modal').style.display = 'flex';
+  document.getElementById('auth-modal').classList.remove('hidden');
   document.getElementById('auth-error').classList.add('hidden');
   document.getElementById('email-input').value = '';
   document.getElementById('password-input').value = '';
 }
-function hideAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+function hideAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
 
 function showSignupModal() {
-  document.getElementById('signup-modal').style.display = 'flex';
+  document.getElementById('signup-modal').classList.remove('hidden');
   document.getElementById('signup-error').classList.add('hidden');
   document.getElementById('signup-name').value = '';
   document.getElementById('signup-email').value = '';
   document.getElementById('signup-password').value = '';
   populateGovSelect('signup-gov', 'signup-center');
 }
-function hideSignupModal() { document.getElementById('signup-modal').style.display = 'none'; }
+function hideSignupModal() { document.getElementById('signup-modal').classList.add('hidden'); }
 
 function populateGovSelect(govId, centerId) {
   const govSelect = document.getElementById(govId);
@@ -2343,10 +2343,10 @@ function openReviewModal(bizId) {
   document.querySelectorAll('#star-rating button i').forEach(s => s.className = 'ri-star-line');
   document.getElementById('review-title').value = '';
   document.getElementById('review-text').value = '';
-  document.getElementById('review-modal').style.display = 'flex';
+  document.getElementById('review-modal').classList.remove('hidden');
 }
 
-function closeReviewModal() { document.getElementById('review-modal').style.display = 'none'; }
+function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
 
 function setRating(r) {
   currentRating = r;
@@ -3042,11 +3042,11 @@ function openQRModal(bizId) {
   const modal = document.getElementById('qr-modal');
   const content = document.getElementById('qr-modal-content');
   if (modal && content) {
-    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-1">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><div class="relative inline-block mb-4"><img src="' + qrUrl + '" alt="QR Code" class="rounded-2xl border border-gray-200" width="280" height="280"><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center border border-gray-100"><img src="' + logoUrl + '" alt="سِكّة" width="40" height="40"></div></div><p class="text-xs text-gray-400 mb-5 break-all max-w-xs mx-auto">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all flex items-center gap-1"><i class="ri-download-line"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
-    modal.style.display = 'flex';
+    content.innerHTML = '<div class="text-center"><h2 class="text-xl font-bold mb-1">QR Code</h2><p class="text-gray-500 text-sm mb-6">' + (b.nameAr||b.name) + '</p><div class="relative inline-block mb-4"><img src="' + qrUrl + '" alt="QR Code" class="rounded-2xl border border-gray-200" width="280" height="280" onerror="this.style.display=\'none\'"><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center border border-gray-100"><img src="' + logoUrl + '" alt="سِكّة" width="40" height="40" onerror="this.style.display=\'none\'"></div></div><p class="text-xs text-gray-400 mb-5 break-all max-w-xs mx-auto">' + url + '</p><div class="flex gap-3 justify-center"><a href="' + qrUrl + '" download="sikka-' + bizId + '.png" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl font-medium text-sm hover:shadow-lg transition-all flex items-center gap-1"><i class="ri-download-line"></i> تحميل</a><button onclick="closeQRModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إغلاق</button></div></div>';
+    modal.classList.remove('hidden');
   }
 }
-function closeQRModal() { document.getElementById('qr-modal').style.display = 'none'; }
+function closeQRModal() { document.getElementById('qr-modal')?.classList.add('hidden'); }
 
 // ==================== REPORT ====================
 function openReportModal(bizId) {
@@ -3055,10 +3055,10 @@ function openReportModal(bizId) {
   const content = document.getElementById('report-modal-content');
   if (modal && content) {
     content.innerHTML = '<h2 class="text-xl font-bold text-center mb-2">إبلاغ عن شغل</h2><p class="text-gray-500 text-sm text-center mb-6">اختار سبب الإبلاغ</p><div class="space-y-2"><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="wrong-info" class="accent-red-500"> <span class="text-sm">معلومات غلط</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="closed" class="accent-red-500"> <span class="text-sm">مقفول دائماً</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="inappropriate" class="accent-red-500"> <span class="text-sm">محتوى مسيء</span></label><label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all"><input type="radio" name="report-reason" value="spam" class="accent-red-500"> <span class="text-sm">سبام أو إعلان</span></label></div><div class="flex gap-3 mt-6"><button onclick="submitReport(\'' + bizId + '\')" class="flex-1 py-2.5 bg-red-500 text-white rounded-xl font-medium text-sm hover:bg-red-600 transition-all"><i class="ri-send-plane-line ml-1"></i> إرسال</button><button onclick="closeReportModal()" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-200 transition-all">إلغاء</button></div>';
-    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
   }
 }
-function closeReportModal() { document.getElementById('report-modal').style.display = 'none'; }
+function closeReportModal() { document.getElementById('report-modal')?.classList.add('hidden'); }
 function submitReport(bizId) {
   const selected = document.querySelector('input[name="report-reason"]:checked');
   if (!selected) { showToast('اختار سبب الإبلاغ', 'error'); return; }
