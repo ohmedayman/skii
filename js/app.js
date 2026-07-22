@@ -605,12 +605,23 @@ function showToast(msg, type = 'success') {
   if (!t) return;
   const icon = type === 'success' ? 'ri-check-double-line' : type === 'error' ? 'ri-error-warning-line' : type === 'warning' ? 'ri-alarm-warning-line' : 'ri-information-line';
   const colors = { success: '#059669', error: '#dc2626', info: '#2563eb', warning: '#d97706' };
-  const bg = `linear-gradient(135deg, ${colors[type] || colors.info}, ${colors[type] || colors.info}dd)`;
-  t.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translate(-50%,20px);color:white;padding:14px 24px;border-radius:16px;font-size:0.875rem;font-weight:500;box-shadow:0 12px 40px rgba(0,0,0,0.3);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:2000;pointer-events:none;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);max-width:90vw;display:flex;align-items:center;gap:12px;font-family:IBM Plex Sans Arabic,sans-serif;background:' + bg;
-  t.innerHTML = '<div style="width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,0.2)"><i class="' + icon + '" style="font-size:14px"></i></div><span>' + msg + '</span>';
-  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)'; });
+  const bg = colors[type] || colors.info;
+  t.className = 'toast-item toast-' + type;
+  t.style.cssText = '';
+  t.innerHTML = '<div class="toast-icon"><i class="' + icon + '"></i></div><span>' + msg + '</span>';
+  t.style.opacity = '0';
+  t.style.transform = 'translateX(100%) scale(0.8)';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      t.style.opacity = '1';
+      t.style.transform = 'translateX(0) scale(1)';
+    });
+  });
   clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, 20px)'; }, 3500);
+  window._toastTimer = setTimeout(() => {
+    t.classList.add('toast-fade-out');
+    setTimeout(() => { t.classList.remove('toast-fade-out'); }, 300);
+  }, 3500);
 }
 
 function addNotification(userId, title, body, type = 'info') {
