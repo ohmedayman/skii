@@ -427,6 +427,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
   updateAuthUI();
   handleHash();
+  setTimeout(() => {
+    const ls = document.getElementById('loading-screen');
+    if (ls) { ls.style.opacity = '0'; ls.style.transition = 'opacity 0.3s'; setTimeout(() => ls.remove(), 300); }
+  }, 800);
 });
 
 window.addEventListener('popstate', () => {
@@ -970,6 +974,8 @@ function showLoginGate() {
   document.getElementById('mobile-bottom-nav')?.classList.add('hidden');
   const header = document.querySelector('header');
   if (header) header.classList.add('hidden');
+  const footer = document.getElementById('main-footer');
+  if (footer) footer.classList.add('hidden');
   showAuthModal();
 }
 
@@ -979,6 +985,8 @@ function hideLoginGate() {
   document.getElementById('mobile-bottom-nav')?.classList.remove('hidden');
   const header = document.querySelector('header');
   if (header) header.classList.remove('hidden');
+  const footer = document.getElementById('main-footer');
+  if (footer) footer.classList.remove('hidden');
   hideAuthModal();
 }
 
@@ -1380,12 +1388,17 @@ function loadHome() {
   const approved = businesses.filter(b => b.status === 'approved');
   renderBusinesses(approved.slice(0, 8));
   renderCategories(CATEGORIES);
+  animateCounter('stat-biz-hero', approved.length);
   animateCounter('stat-biz', approved.length);
   animateCounter('stat-users', users.length);
   const totalReviews = Object.values(reviews).flat().length + approved.reduce((s, b) => s + (b.rating?.count || 0), 0);
+  animateCounter('stat-rev-hero', totalReviews);
   animateCounter('stat-reviews', totalReviews);
   const cities = [...new Set(approved.map(b => b.location?.city).filter(Boolean))];
+  animateCounter('stat-city-hero', cities.length || CITIES.length);
   animateCounter('stat-cities', cities.length || CITIES.length);
+  const hbc = document.getElementById('hero-biz-count');
+  if (hbc) hbc.textContent = approved.length;
   renderNearby(approved);
   renderLastVisited(approved);
 }
