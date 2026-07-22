@@ -3315,7 +3315,7 @@ function submitBusiness() {
       friday: document.getElementById('biz-hours-fri')?.value || '',
     },
     rating: { average: 0, count: 0 },
-    status: 'pending',
+    status: 'approved',
     ownerId: currentUser.id,
     userId: currentUser.id,
     userName: currentUser.name,
@@ -3330,7 +3330,8 @@ function submitBusiness() {
   businesses.push(newBiz);
   saveBizToFirestore(newBiz);
   saveData();
-  showToast('تم إرسال طلبك! هنراجعه ونبلغك', 'success');
+  addNotification(currentUser.id, 'شغلك اتسجّل! 🎉', 'ممكن تدخل لوحة التحكم وتملأ تفاصيل أكتر عن شغلك', 'success');
+  showToast('شغلك اتسجّل وهينزل مباشرة!', 'success');
   navigateTo('home');
 }
 
