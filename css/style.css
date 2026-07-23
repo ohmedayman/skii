@@ -4611,3 +4611,11 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 [data-theme="dark"] .onboard-item { background: #1e293b; border-color: #334155; }
 [data-theme="dark"] .onboard-item:hover { border-color: #3b82f6; background: rgba(59,130,246,0.1); }
 [data-theme="dark"] .onboard-select { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+
+/* --- PWA INSTALL BANNER --- */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#pwa-install-banner { pointer-events: auto; }
+#pwa-install-banner.hidden { display: none; }
