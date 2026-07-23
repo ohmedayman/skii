@@ -148,13 +148,46 @@
 </head>
 <body class="font-arabic bg-gray-50 text-gray-900 min-h-screen">
 
-  <!-- ==================== LOADING SCREEN ==================== -->
-  <div id="loading-screen" class="fixed inset-0 z-[3000] flex items-center justify-center bg-white">
-    <div class="text-center">
-      <img src="assets/icons/logo.png" alt="سِكّة" class="h-16 w-auto rounded-2xl mx-auto mb-4 animate-pulse">
-      <div class="flex items-center gap-2 justify-center text-gray-400 text-sm">
-        <div class="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-        <span>جاري التحميل...</span>
+  <!-- ==================== SPLASH SCREEN ==================== -->
+  <div id="splash-screen" class="fixed inset-0 z-[5000] flex items-center justify-center" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+    <div class="text-center splash-content">
+      <div class="splash-logo-wrap">
+        <img src="assets/icons/logo.png" alt="سِكّة" class="splash-logo">
+      </div>
+      <h1 class="splash-title">سِكّة</h1>
+      <p class="splash-subtitle">دليل أعمالك الذكي</p>
+      <div class="splash-loader">
+        <div class="splash-loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ONBOARDING ==================== -->
+  <div id="onboarding-screen" class="fixed inset-0 z-[4500] hidden flex items-center justify-center" style="background:var(--bg-primary,#f8fafc)">
+    <div class="onboarding-card">
+      <!-- Step 1: Welcome -->
+      <div id="onboard-step1" class="onboard-step active">
+        <div class="onboard-icon">🏙️</div>
+        <h2 class="onboard-title">أهلاً بيك في سِكّة!</h2>
+        <p class="onboard-desc">اختار محافظتك عشان نوريك الأ jobs القريبة منك</p>
+        <select id="onboard-gov" class="onboard-select" onchange="onOnboardGovChange()">
+          <option value="">اختار المحافظة</option>
+        </select>
+        <div id="onboard-gov-list" class="onboard-list"></div>
+      </div>
+      <!-- Step 2: District -->
+      <div id="onboard-step2" class="onboard-step">
+        <div class="onboard-icon">📍</div>
+        <h2 class="onboard-title">اختار المنطقة</h2>
+        <p class="onboard-desc">اختار المركز أو الحي</p>
+        <div id="onboard-district-list" class="onboard-list"></div>
+      </div>
+      <!-- Step 3: Done -->
+      <div id="onboard-step3" class="onboard-step">
+        <div class="onboard-icon">🎉</div>
+        <h2 class="onboard-title">تمام!</h2>
+        <p class="onboard-desc">هنوريك الأ jobs القريبة منك</p>
+        <button class="onboard-btn" onclick="finishOnboarding()">ابدأ التصفح</button>
       </div>
     </div>
   </div>

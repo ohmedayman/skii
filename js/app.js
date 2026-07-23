@@ -187,8 +187,6 @@ const DEFAULT_STYLE = { bg: 'linear-gradient(135deg,#64748b,#475569)', icon: 'ri
 
 function getCategoryStyle(cat) { return CATEGORY_STYLES[cat] || DEFAULT_STYLE; }
 
-const ARABIC_LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
-
 const GOVERNORATES = {
   'القاهرة': ['مدينة نصر','المعادي','التجمع الخامس','مصر الجديدة','وسط البلد','شبرا','حلوان','عين شمس','المرج','الزيتون','السلام','دار السلام','البساتين','التبين','النزهة','الدرب الأحمر','السيدة زينب','الخليفة','عابدين','قصر النيل','بولاق','الأزبكية','الجمالية','باب الشعرية','روض الفرج','الساحل','حدائق القبة','الزاوية الحمراء','شبرا الخيمة'],
   'الجيزة': ['الهرم','الفيصل','الدقي','المهندسين','العجوزة','الزمالك','السادس من أكتوبر','الواحة','كرداسة','أبو النمرس','البدرشين','الحوامدية','الصف','العياط','أطفيح','أوسيم','إمبابة'],
@@ -420,16 +418,73 @@ function generateBusinessSchema(b) {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Sikka starting...');
   loadData();
-  loadHome();
-  renderAlphaGrid();
   document.getElementById('search-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
   updateAuthUI();
   handleHash();
-  setTimeout(() => {
-    const ls = document.getElementById('loading-screen');
-    if (ls) { ls.classList.add('fade-out'); setTimeout(() => ls.remove(), 500); }
-  }, 800);
+  startSplash();
 });
+
+function startSplash() {
+  setTimeout(() => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) { splash.classList.add('fade-out'); setTimeout(() => splash.remove(), 600); }
+    setTimeout(() => checkOnboarding(), 300);
+  }, 2000);
+}
+
+// ==================== ONBOARDING ====================
+let onboardGov = '';
+let onboardDistrict = '';
+
+function checkOnboarding() {
+  const savedGov = localStorage.getItem('sikka_user_gov');
+  if (savedGov) {
+    loadHome();
+    return;
+  }
+  showOnboarding();
+}
+
+function showOnboarding() {
+  const el = document.getElementById('onboarding-screen');
+  if (!el) { loadHome(); return; }
+  el.classList.remove('hidden');
+  const list = document.getElementById('onboard-gov-list');
+  if (!list) return;
+  list.innerHTML = Object.keys(GOVERNORATES).map(g => {
+    const icon = { 'الفيوم': '🌿', 'القاهرة': '🏛️', 'الإسكندرية': '🌊', 'الجيزة': '🔺', 'المنوفية': '🌾', 'القليوبية': '🏙️', 'الشرقية': '🏭', 'الدقهلية': '🌾', 'البحيرة': '🐟', 'كفر الشيخ': '🌻', 'دمياط': '⛵', ' PORT-SAID': '⚓', 'بورسعيد': '⚓', 'الإسماعيلية': '🌊', 'السويس': '⚓', 'شمال سيناء': '⛰️', 'جنوب سيناء': '⛰️', 'بني سويف': '🌴', 'أسيوط': '🏜️', 'سوهاج': '🏛️', 'قنا': '⛰️', 'الأقصر': '🏛️', 'أسوان': '⛵', 'البحر الأحمر': '🐠', 'الوادي الجديد': '🏜️', 'مطروح': '🏖️' }[g] || '📍';
+    return `<button class="onboard-item" onclick="selectOnboardGov('${g}')"><span class="onboard-item-icon">${icon}</span>${g}</button>`;
+  }).join('');
+}
+
+function selectOnboardGov(gov) {
+  onboardGov = gov;
+  localStorage.setItem('sikka_user_gov', gov);
+  document.getElementById('onboard-step1').classList.remove('active');
+  document.getElementById('onboard-step2').classList.add('active');
+  const list = document.getElementById('onboard-district-list');
+  if (list && GOVERNORATES[gov]) {
+    list.innerHTML = GOVERNORATES[gov].map(d =>
+      `<button class="onboard-item" onclick="selectOnboardDistrict('${d}')"><span class="onboard-item-icon">📍</span>${d}</button>`
+    ).join('');
+  }
+}
+
+function selectOnboardDistrict(district) {
+  onboardDistrict = district;
+  localStorage.setItem('sikka_user_district', district);
+  document.getElementById('onboard-step2').classList.remove('active');
+  document.getElementById('onboard-step3').classList.add('active');
+  if (currentUser) {
+    updateFirestore({ governorate: onboardGov, center: onboardDistrict });
+  }
+}
+
+function finishOnboarding() {
+  const el = document.getElementById('onboarding-screen');
+  if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.4s'; setTimeout(() => el.classList.add('hidden'), 400); }
+  loadHome();
+}
 
 window.addEventListener('popstate', () => {
   if (!isNavigating) handleHash();
@@ -1376,20 +1431,6 @@ function stopVoiceSearch() {
   if (modal) modal.classList.add('hidden');
 }
 
-function renderAlphaGrid() {
-  const g = document.getElementById('alpha-grid');
-  if (!g) return;
-  g.innerHTML = ARABIC_LETTERS.map(l => `<button class="alpha-btn" onclick="searchByLetter('${l}')">${l}</button>`).join('');
-}
-
-function searchByLetter(letter) {
-  document.querySelectorAll('.alpha-btn').forEach(a => a.classList.remove('active'));
-  event?.target?.classList.add('active');
-  document.getElementById('search-input').value = letter;
-  navigateTo('businesses');
-  setTimeout(() => performSearch(), 100);
-}
-
 // ==================== HOME ====================
 function loadHome() {
   const approved = businesses.filter(b => b.status === 'approved');
@@ -1497,8 +1538,8 @@ function renderNearby(approved) {
   const grid = document.getElementById('nearby-grid');
   if (!section || !grid) return;
 
-  const userGov = currentUser?.governorate;
-  const userCenter = currentUser?.center;
+  const userGov = currentUser?.governorate || localStorage.getItem('sikka_user_gov') || '';
+  const userCenter = currentUser?.center || localStorage.getItem('sikka_user_district') || '';
 
   let nearby = [];
   if (userGov) {
@@ -1513,6 +1554,8 @@ function renderNearby(approved) {
 
   if (nearby.length) {
     section.style.display = 'block';
+    const sectionTitle = section.querySelector('h2');
+    if (sectionTitle) sectionTitle.innerHTML = `<i class="ri-map-pin-line text-blue-500"></i> قربك في ${userGov}`;
     grid.innerHTML = nearby.map((b, i) => renderBusinessCard(b, i)).join('');
   } else if (userGov) {
     section.style.display = 'block';
@@ -3217,6 +3260,14 @@ function openPost(id) {
 // ==================== PROFILE ====================
 function loadProfile() {
   updateAuthUI();
+  const locText = document.getElementById('profile-location-text');
+  const locWrap = document.getElementById('profile-location');
+  const gov = localStorage.getItem('sikka_user_gov');
+  const district = localStorage.getItem('sikka_user_district');
+  if (locText && locWrap && gov) {
+    locText.textContent = district ? `${gov} — ${district}` : gov;
+    locWrap.classList.remove('hidden');
+  }
 }
 
 // ==================== FAVORITES ====================
