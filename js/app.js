@@ -339,16 +339,14 @@ let reports = JSON.parse(localStorage.getItem('sikka_reports') || '[]');
 })();
 
 function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  localStorage.setItem('sikka_dark_mode', document.body.classList.contains('dark-mode'));
-  updateDarkModeIcons();
-}
-
-function updateDarkModeIcons() {
-  const isDark = document.body.classList.contains('dark-mode');
-  document.querySelectorAll('.dark-mode-toggle').forEach(b => {
-    b.innerHTML = isDark ? '<i class="ri-sun-line"></i>' : '<i class="ri-moon-line"></i>';
-  });
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('sikka_theme', isDark ? 'light' : 'dark');
+  
+  const icon = document.getElementById('dark-mode-icon');
+  if (icon) {
+    icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+  }
 }
 
 function handleSearchInput(value) {
@@ -429,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
   handleHash();
   setTimeout(() => {
     const ls = document.getElementById('loading-screen');
-    if (ls) { ls.style.opacity = '0'; ls.style.transition = 'opacity 0.3s'; setTimeout(() => ls.remove(), 300); }
+    if (ls) { ls.classList.add('fade-out'); setTimeout(() => ls.remove(), 500); }
   }, 800);
 });
 
@@ -443,6 +441,10 @@ window.addEventListener('scroll', () => {
   if (btn) {
     if (window.scrollY > 400) { btn.classList.add('visible'); } else { btn.classList.remove('visible'); }
   }
+  const header = document.getElementById('main-header');
+  if (header) {
+    header.classList.toggle('header-scrolled', window.scrollY > 10);
+  }
 });
 
 // Prevent ALL href="#" from changing hash
@@ -452,9 +454,24 @@ document.addEventListener('click', (e) => {
 });
 
 function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.style.opacity = '0';
+    p.style.transform = 'translateY(12px)';
+  });
   const el = document.getElementById('page-' + pageId);
-  if (el) el.classList.add('active');
+  if (el) {
+    el.classList.add('active');
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+    el.offsetHeight;
+    requestAnimationFrame(() => {
+      el.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      setTimeout(() => { el.style.transition = ''; }, 400);
+    });
+  }
   document.getElementById('mobile-menu')?.classList.add('hidden');
 }
 
@@ -530,7 +547,7 @@ function handleHash() {
     '#/contact': 'contact',
     '#/terms': 'terms',
     '#/map': 'mapview',
-    '#/compare': 'compare', '#/plans': 'plans',
+    '#/compare': 'compare',
   };
 
   const page = pageMap[hash];
@@ -546,7 +563,6 @@ function handleHash() {
     businesses: 'كل الأعمال | سِكّة',
     categories: 'الفئات | سِكّة',
     blog: 'المدونة | سِكّة',
-    add: 'سجّل شغلك | سِكّة',
     profile: 'الملف الشخصي | سِكّة',
     dashboard: 'لوحة التحكم | سِكّة',
     favorites: 'المفضلة | سِكّة',
@@ -555,7 +571,7 @@ function handleHash() {
     contact: 'تواصل معنا | سِكّة',
     terms: 'الشروط والأحكام | سِكّة',
     mapview: 'الخريطة | سِكّة',
-    compare: 'مقارنة الأعمال | سِكّة', plans: 'باقات سِكّة',
+    compare: 'مقارنة الأعمال | سِكّة',
   };
   generateSEO(
     seoTitles[page] || 'سِكّة',
@@ -570,12 +586,10 @@ function handleHash() {
   if (page === 'admin') loadAdmin();
   if (page === 'profile') loadProfile();
   if (page === 'categories') loadCategoriesFull();
-  if (page === 'add') renderAddForm();
   if (page === 'dashboard') loadDashboard();
   if (page === 'favorites') loadFavorites();
   if (page === 'mapview') setTimeout(() => initMapPage(), 100);
   if (page === 'compare') renderCompare();
-  if (page === 'plans' && typeof renderPlansPage === 'function') renderPlansPage(document.getElementById('plans-content'));
 }
 
 function show404() {
@@ -716,26 +730,19 @@ function clearAllNotifications() {
 
 // ==================== AD BANNERS ====================
 function handleAdClick(slot) {
-  if (slot === 1) navigateTo('add');
-  else if (slot === 2) navigateTo('plans');
-  else if (slot === 3) navigateTo('businesses');
+  if (slot === 3) navigateTo('businesses');
 }
 
 function loadAdBanners() {
-  // Ad banners are static HTML — just show/hide based on user state
   const banner1 = document.getElementById('ad-banner-1');
-  if (banner1 && currentUser) {
-    // Don't show "register" ad to logged-in users
-    const biz = businesses.find(b => b.ownerId === currentUser.id);
-    if (biz) banner1.style.display = 'none';
-  }
+  if (banner1) banner1.style.display = 'none';
 }
 
 // ==================== NAVIGATION ====================
 function navigateTo(page) {
   if (!authReady) { showAuthModal(); return; }
   console.log('📄 Navigate to:', page);
-  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', add:'#/add', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare', plans:'#/plans' };
+  const hashMap = { home:'#/home', businesses:'#/businesses', categories:'#/categories', blog:'#/blog', profile:'#/profile', dashboard:'#/dashboard', favorites:'#/favorites', admin:'#/admin', about:'#/about', contact:'#/contact', terms:'#/terms', map:'#/map', compare:'#/compare' };
   let newHash;
   if (page.startsWith('blog/')) {
     newHash = '#/' + page;
@@ -1425,7 +1432,7 @@ function renderBusinesses(list) {
   const g = document.getElementById('businesses-grid');
   if (!g) return;
   if (!list.length) {
-    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش أعمال لسه</h3><p>كون أول واحد يسجّل شغله</p></div>';
+    g.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="ri-store-2-line"></i></div><h3>مفيش أعمال لسه</h3><p>مفيش أعمال متسجلة في المنطقة دي</p></div>';
     return;
   }
   g.innerHTML = list.map((b, i) => renderBusinessCard(b, i)).join('');
@@ -1471,12 +1478,18 @@ function animateCounter(id, target) {
   const el = document.getElementById(id);
   if (!el || target === 0) { if(el) el.textContent = target; return; }
   let current = 0;
-  const step = Math.max(1, Math.floor(target / 20));
-  const interval = setInterval(() => {
-    current += step;
-    if (current >= target) { current = target; clearInterval(interval); }
+  const duration = 1200;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    current = Math.floor(ease * target);
     el.textContent = current;
-  }, 30);
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(update);
 }
 
 function renderNearby(approved) {
@@ -2030,12 +2043,6 @@ function renderBusinessDetail(b) {
       ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-sidebar-order"><i class="ri-phone-line"></i> اتصل</a>` : ''}
       ${b.contact?.whatsapp ? `<a href="https://wa.me/${b.contact.whatsapp}" target="_blank" class="yelp-sidebar-order" style="background:#25d366;margin-top:8px"><i class="ri-whatsapp-line"></i> واتساب</a>` : ''}
 
-      <div class="yelp-sidebar-promo">
-        <div class="yelp-sidebar-promo-icon">🔥</div>
-        <div class="yelp-sidebar-promo-text">سجّل شغلك على سِكّة واوصل لآلاف الناس</div>
-        <button class="yelp-sidebar-promo-btn" onclick="navigate('add')">سجّل دلوقتي</button>
-      </div>
-
       <div class="yelp-sidebar-links">
         ${b.contact?.website ? `<a href="${b.contact.website}" target="_blank" class="yelp-sidebar-link"><span class="yelp-sidebar-link-text">${b.contact.website.replace(/^https?:\/\//, '')}</span><i class="ri-external-link-line"></i></a>` : ''}
         ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="yelp-sidebar-link"><span class="yelp-sidebar-link-text">${b.contact.phone}</span><i class="ri-phone-line"></i></a>` : ''}
@@ -2241,10 +2248,7 @@ function loadDashboard() {
           <i class="ri-store-2-line text-4xl text-gray-300"></i>
         </div>
         <h2 class="text-xl font-bold mb-2">م عندك شغل متسجل</h2>
-        <p class="text-gray-500 mb-6 text-sm">سجّل شغلك عشان يظهر في الدليل ويظهر لك لوحة التحكم</p>
-        <button onclick="navigateTo('add')" class="px-6 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all">
-          <i class="ri-add-line ml-1"></i> سجّل شغلك دلوقتي
-        </button>
+        <p class="text-gray-500 mb-6 text-sm">هتظهر لك لوحة التحكم أول ما يتسجّل شغلك</p>
       </div>`;
     return;
   }
@@ -3156,185 +3160,6 @@ function submitReview() {
   openBusiness(currentReviewBizId);
 }
 
-// ==================== ADD BUSINESS ====================
-function renderAddForm() {
-  const c = document.getElementById('add-business-content');
-  if (!c) return;
-
-  if (!currentUser) {
-    c.innerHTML = `
-      <div class="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
-        <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="ri-lock-line text-3xl text-gray-400"></i></div>
-        <h3 class="text-xl font-bold mb-2">لازم تسجل دخول</h3>
-        <p class="text-gray-500 mb-6">سجّل دخول أو اعمل حساب جديد عشان تضيف شغلك</p>
-        <button class="px-8 py-3 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all" onclick="showAuthModal()"><i class="ri-login-box-line ml-2"></i>ادخل</button>
-      </div>
-    `;
-    return;
-  }
-
-  c.innerHTML = `
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <!-- Header -->
-      <div class="p-6 sm:p-8 border-b border-gray-100 text-center">
-        <div class="w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-          <i class="ri-store-2-line text-2xl text-white"></i>
-        </div>
-        <h2 class="text-xl font-bold mb-1">سجّل شغلك</h2>
-        <p class="text-gray-500 text-sm">اعمل حساب وابدأ انشر شغلك للزباين</p>
-      </div>
-
-      <div class="p-6 sm:p-8 space-y-6">
-        <!-- Basic Info Section -->
-        <div class="dash-section border-0 bg-gray-50">
-          <div class="dash-section-body">
-            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-store-2-line text-gray-400"></i> المعلومات الأساسية</h3>
-            <div class="space-y-4">
-              <div><label class="form-label">اسم الشغل بالعربي *</label><input type="text" class="form-input" id="biz-name" placeholder="اسم شغلك"></div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label class="form-label">الفئة *</label><select class="form-input" id="biz-category"><option value="">اختار الفئة</option>${CATEGORIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
-                <div><label class="form-label">الوصف</label><input type="text" class="form-input" id="biz-description" placeholder="وصف مختصر لشغلك"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Location Section -->
-        <div class="dash-section border-0 bg-gray-50">
-          <div class="dash-section-body">
-            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-map-pin-line text-gray-400"></i> الموقع</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label class="form-label">المحافظة *</label><select class="form-input" id="biz-city"><option value="">اختار المحافظة</option>${Object.keys(GOVERNORATES).map(g => `<option value="${g}">${g}</option>`).join('')}</select></div>
-              <div><label class="form-label">المركز/الحي</label><select class="form-input" id="biz-district" disabled><option value="">اختار المحافظة الأول</option></select></div>
-              <div class="sm:col-span-2"><label class="form-label">العنوان بالتفصيل</label><input type="text" class="form-input" id="biz-address" placeholder="شارع، رقم المبنى..."></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="dash-section border-0 bg-gray-50">
-          <div class="dash-section-body">
-            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-phone-line text-gray-400"></i> بيانات التواصل</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div><label class="form-label">التليفون *</label><input type="tel" class="form-input" id="biz-phone" placeholder="01XXXXXXXXX"></div>
-              <div><label class="form-label">واتساب</label><input type="tel" class="form-input" id="biz-whatsapp" placeholder="201XXXXXXXXX"></div>
-              <div><label class="form-label">الإيميل</label><input type="email" class="form-input" id="biz-email" placeholder="email@example.com"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEO & Hours Section -->
-        <div class="dash-section border-0 bg-gray-50">
-          <div class="dash-section-body">
-            <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i class="ri-search-eye-line text-gray-400"></i> معلومات إضافية</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label class="form-label">الكلمات المفتاحية (فاصلة)</label><input type="text" class="form-input" id="biz-keywords" placeholder="مقهوة، قهوة، حبوب"></div>
-              <div><label class="form-label">البراندات (فاصلة)</label><input type="text" class="form-input" id="biz-brands" placeholder="Starbucks, Costa"></div>
-              <div><label class="form-label">مواعيد الشغل (سبت-خميس)</label><input type="text" class="form-input" id="biz-hours-week" placeholder="8:00 ص - 11:00 م"></div>
-              <div><label class="form-label">مواعيد الشغل (الجمعة)</label><input type="text" class="form-input" id="biz-hours-fri" placeholder="1:00 م - 11:00 م"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notice -->
-        <div class="p-4 bg-blue-50 border border-blue-100 rounded-2xl">
-          <div class="flex items-start gap-3">
-            <div class="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"><i class="ri-information-line text-blue-600"></i></div>
-            <div>
-              <h4 class="font-bold text-blue-800 text-sm">ملاحظة مهمة</h4>
-              <p class="text-blue-600 text-xs mt-1 leading-relaxed">طلبك هيتراجع من الإدارة قبل ما يظهر في الدليل. هتتلقى إشعار لما شغلك يتعمله اعتماد. العملية عادة بتاخد 24 ساعة.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit -->
-        <div class="flex gap-3">
-          <button class="flex-1 py-3.5 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2" onclick="submitBusiness()">
-            <i class="ri-send-plane-line"></i> إرسال طلب التسجيل
-          </button>
-          <button class="px-6 py-3.5 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-all" onclick="navigateTo('home')">إلغاء</button>
-        </div>
-      </div>
-    </div>
-  `;
-  const bizGov = document.getElementById('biz-city');
-  const bizCenter = document.getElementById('biz-district');
-  if (bizGov && bizCenter) {
-    bizGov.addEventListener('change', () => {
-      const gov = bizGov.value;
-      if (gov && GOVERNORATES[gov]) {
-        bizCenter.innerHTML = '<option value="">اختار المركز</option>' + GOVERNORATES[gov].map(c => `<option value="${c}">${c}</option>`).join('');
-        bizCenter.disabled = false;
-      } else {
-        bizCenter.innerHTML = '<option value="">اختار المحافظة الأول</option>';
-        bizCenter.disabled = true;
-      }
-    });
-  }
-}
-
-function submitBusiness() {
-  if (!currentUser) { showAuthModal(); return; }
-  const name = document.getElementById('biz-name')?.value?.trim();
-  const category = document.getElementById('biz-category')?.value;
-  const city = document.getElementById('biz-city')?.value;
-  const phone = document.getElementById('biz-phone')?.value?.trim();
-
-  const errors = [];
-  if (!name) errors.push('اسم الشغل');
-  if (!category) errors.push('الفئة');
-  if (!city) errors.push('المحافظة');
-  if (!phone) errors.push('رقم التليفون');
-
-  if (errors.length) {
-    showToast('اكتب: ' + errors.join('، '), 'error');
-    return;
-  }
-
-  const newBiz = {
-    id: 'biz_' + Date.now(),
-    name: name,
-    nameAr: name,
-    nameEn: '',
-    categoryNameAr: document.getElementById('biz-category')?.value || '',
-    location: {
-      city: document.getElementById('biz-city')?.value || '',
-      district: document.getElementById('biz-district')?.value || '',
-      address: document.getElementById('biz-address')?.value || '',
-    },
-    contact: {
-      phone: document.getElementById('biz-phone')?.value || '',
-      whatsapp: document.getElementById('biz-whatsapp')?.value || '',
-      email: document.getElementById('biz-email')?.value || '',
-    },
-    description: document.getElementById('biz-description')?.value || '',
-    keywords: (document.getElementById('biz-keywords')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
-    brands: (document.getElementById('biz-brands')?.value || '').split(',').map(s => s.trim()).filter(Boolean),
-    workingHours: {
-      saturday: document.getElementById('biz-hours-week')?.value || '',
-      friday: document.getElementById('biz-hours-fri')?.value || '',
-    },
-    rating: { average: 0, count: 0 },
-    status: 'approved',
-    ownerId: currentUser.id,
-    userId: currentUser.id,
-    userName: currentUser.name,
-    isVerified: false,
-    photos: [],
-    offers: [],
-    products: [],
-    views: 0,
-    createdAt: new Date().toISOString()
-  };
-
-  businesses.push(newBiz);
-  saveBizToFirestore(newBiz);
-  saveData();
-  addNotification(currentUser.id, 'شغلك اتسجّل! 🎉', 'ممكن تدخل لوحة التحكم وتملأ تفاصيل أكتر عن شغلك', 'success');
-  showToast('شغلك اتسجّل وهينزل مباشرة!', 'success');
-  navigateTo('home');
-}
-
 // ==================== CATEGORIES PAGE ====================
 function loadCategoriesFull() {
   const g = document.getElementById('categories-full-grid');
@@ -4049,7 +3874,6 @@ window.loginWithEmail = loginWithEmail;
 window.signupWithEmail = signupWithEmail;
 window.loginWithGoogle = loginWithGoogle;
 window.logout = logout;
-window.submitBusiness = submitBusiness;
 window.performSearch = performSearch;
 window.quickSearch = quickSearch;
 window.showAdminTab = showAdminTab;

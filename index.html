@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="author" content="سِكّة - Sikka">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="description" content="سِكّة - دليل الأعمال الذكي في مصر. اكتشف أفضل المحلات والمطاعم والمقاهي والخدمات في فيوم والقاهرة وكل المحافظات. تقييمات حقيقية من ناس زيك. سجّل شغلك مجاناً.">
-  <meta name="keywords" content="سِكّة, سكه, دليل أعمال, دليل أعمال مصر, محلات مصر, مطاعم, مقاهي, خدمات, تقييمات, فيوم, القاهرة, الإسكندرية, businesses directory Egypt, Sikka, shops, restaurants, cafes, سجّل شغلك, دليل الشركات">
+  <meta name="description" content="سِكّة - دليل الأعمال الذكي في مصر. اكتشف أفضل المحلات والمطاعم والمقاهي والخدمات في فيوم والقاهرة وكل المحافظات. تقييمات حقيقية من ناس زيك.">
+  <meta name="keywords" content="سِكّة, سكه, دليل أعمال, دليل أعمال مصر, محلات مصر, مطاعم, مقاهي, خدمات, تقييمات, فيوم, القاهرة, الإسكندرية, businesses directory Egypt, Sikka, shops, restaurants, cafes, دليل الشركات">
   <meta name="application-name" content="سِكّة">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,7 +22,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" id="og-url" content="https://ohmedayman.github.io/skii/">
   <meta property="og:title" id="og-title" content="سِكّة — دليل الأعمال الذكي في مصر | Sikka Business Directory">
-  <meta property="og:description" id="og-desc" content="اكتشف أفضل المحلات والمطاعم والمقاهي والخدمات في مصر. تقييمات حقيقية، خريطة تفاعلية، وبحث ذكي. سجّل شغلك مجاناً.">
+  <meta property="og:description" id="og-desc" content="اكتشف أفضل المحلات والمطاعم والمقاهي والخدمات في مصر. تقييمات حقيقية، خريطة تفاعلية، وبحث ذكي.">
   <meta property="og:image" id="og-image" content="https://ohmedayman.github.io/skii/assets/icons/logo.png">
   <meta property="og:image:alt" content="سِكّة - دليل الأعمال الذكي في مصر">
   <meta property="og:image:width" content="1200">
@@ -171,7 +171,6 @@
           <a href="#/businesses" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
           <a href="#/map" class="nav-link" data-nav="mapview" onclick="navigateTo('map')"><i class="ri-map-2-line ml-1"></i>الخريطة</a>
           <a href="#/categories" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
-          <a href="#/plans" class="nav-link" data-nav="plans" onclick="navigateTo('plans')"><i class="ri-vip-crown-line ml-1"></i>الباقات</a>
           <a href="#/blog" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
           <a href="#/admin" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
         </nav>
@@ -194,9 +193,6 @@
               <i class="ri-login-box-line"></i> دخول
             </button>
           </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-l from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5" onclick="requireAuth('add')">
-            <i class="ri-add-line"></i><span class="hidden sm:inline">سجّل شغلك</span>
-          </button>
           <button class="md:hidden p-2 hover:bg-gray-100 rounded-xl" onclick="toggleMobileMenu()">
             <i class="ri-menu-3-line text-xl"></i>
           </button>
@@ -212,7 +208,6 @@
         <a href="#/categories" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
         <a href="#/compare" class="mobile-menu-item" onclick="navigateTo('compare')"><i class="ri-scales-line"></i>مقارنة</a>
         <a href="#/blog" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
-        <a href="#/add" class="mobile-menu-item" onclick="requireAuth('add')"><i class="ri-add-circle-line"></i>سجّل شغلك</a>
         <button class="mobile-menu-item w-full text-left" onclick="toggleDarkMode()"><i class="ri-moon-line"></i>الوضع الليلي</button>
       </div>
     </div>
@@ -326,20 +321,6 @@
       </div>
     </section>
 
-    <!-- Ad Banner 1 -->
-    <div class="ad-banner-container" id="ad-banner-1">
-      <div class="ad-banner" onclick="handleAdClick(1)">
-        <div class="ad-banner-content">
-          <span class="ad-banner-badge">إعلان</span>
-          <div class="ad-banner-text">
-            <h3>سجّل شغلك على سِكّة مجاناً</h3>
-            <p>وصّل لآلاف الزوار كل يوم — ابدأ دلوقتي</p>
-          </div>
-          <button class="ad-banner-btn">سجّل دلوقتي <i class="ri-arrow-left-line"></i></button>
-        </div>
-      </div>
-    </div>
-
     <!-- Nearby Section (hidden by default) -->
     <section class="py-16 bg-blue-50/50" data-aos="fade-up" id="nearby-section" style="display:none">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -365,31 +346,6 @@
           <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">شوف الكل <i class="ri-arrow-left-line"></i></button>
         </div>
         <div id="businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
-      </div>
-    </section>
-
-    <!-- Ad Banner 2 -->
-    <div class="ad-banner-container" id="ad-banner-2">
-      <div class="ad-banner ad-banner-alt" onclick="handleAdClick(2)">
-        <div class="ad-banner-content">
-          <span class="ad-banner-badge">إعلان</span>
-          <div class="ad-banner-text">
-            <h3>الخطة Pro — تحليلات متقدمة</h3>
-            <p>شوف مين بيزور شغلك وامتى — كل الإحصائيات في مكان واحد</p>
-          </div>
-          <button class="ad-banner-btn">شوف الخطط <i class="ri-arrow-left-line"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Alpha Browse Section -->
-    <section class="py-16 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10">
-          <h2 class="text-2xl sm:text-3xl font-bold">دور بالحروف</h2>
-          <p class="text-gray-500 mt-1">دور على حسب الحرف الأول</p>
-        </div>
-        <div id="alpha-grid" class="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl mx-auto"></div>
       </div>
     </section>
 
@@ -513,26 +469,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section" data-aos="fade-up">
-      <div class="cta-glow" style="background:radial-gradient(circle,rgba(59,130,246,0.3),transparent);top:-100px;right:-100px"></div>
-      <div class="cta-glow" style="background:radial-gradient(circle,rgba(139,92,246,0.2),transparent);bottom:-100px;left:-100px"></div>
-      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <div class="section-tag" style="display:inline-flex;margin-bottom:16px;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"><i class="ri-rocket-line"></i> ابدأ دلوقتي</div>
-        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4" style="line-height:1.2">عندك شغل أو محل؟</h2>
-        <p class="text-xl mb-10" style="color:rgba(255,255,255,0.65)">سجّل شغلك مجاناً وابدأ توصل لآلاف الزباين في منطقتك</p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-xl cta-keep-white" onclick="requireAuth('add')">
-            <i class="ri-add-circle-line"></i> سجّل شغلك مجاناً
-          </button>
-          <button class="btn btn-xl" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2)" onclick="navigateTo('plans')">
-            <i class="ri-vip-crown-line"></i> شوف الباقات
-          </button>
-        </div>
-        <p style="margin-top:16px;font-size:0.875rem;color:rgba(255,255,255,0.4)">✓ بدون بطاقة ائتمان &nbsp; ✓ مجاني للأبد &nbsp; ✓ يظهر فوراً</p>
       </div>
     </section>
 
@@ -670,22 +606,6 @@
     </div>
   </div>
 
-  <!-- ==================== PAGE: PLANS ==================== -->
-  <div id="page-plans" class="page">
-    <div id="plans-content"></div>
-  </div>
-
-  <!-- ==================== PAGE: ADD BUSINESS ==================== -->
-  <div id="page-add" class="page">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <div class="text-center mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold">سجّل شغلك</h1>
-        <p class="text-gray-500 mt-2">سجّل شغلك مجاناً وهينزل مباشرة على المنصة</p>
-      </div>
-      <div id="add-business-content"></div>
-    </div>
-  </div>
-
   <!-- ==================== PAGE: PROFILE ==================== -->
   <div id="page-profile" class="page">
     <div class="max-w-lg mx-auto px-4 sm:px-6 py-12">
@@ -717,10 +637,6 @@
             <a href="#/favorites" class="profile-quick-link" onclick="navigateTo('favorites')">
               <div class="w-10 h-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-heart-3-line text-lg"></i></div>
               <span class="text-xs font-medium text-gray-700">المفضلة</span>
-            </a>
-            <a href="#/add" class="profile-quick-link" onclick="navigateTo('add')">
-              <div class="w-10 h-10 bg-green-50 text-green-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-add-circle-line text-lg"></i></div>
-              <span class="text-xs font-medium text-gray-700">شغل جديد</span>
             </a>
             <a href="#/compare" class="profile-quick-link" onclick="navigateTo('compare')">
               <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-scales-line text-lg"></i></div>
@@ -1108,7 +1024,6 @@
             <a href="#/businesses" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('businesses')">كل الأعمال</a>
             <a href="#/categories" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('categories')">الفئات</a>
             <a href="#/blog" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="navigateTo('blog')">المدونة</a>
-            <a href="#/add" class="block text-gray-400 hover:text-white text-sm transition-colors" onclick="requireAuth('add')">سجّل شغلك</a>
           </div>
         </div>
         <!-- Column 3: Categories -->
@@ -1155,16 +1070,11 @@
       <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')">
         <i class="ri-apps-line"></i><span>الفئات</span>
       </button>
-      <div style="position:relative;margin-top:-24px">
-        <button style="width:56px;height:56px;background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 8px 24px rgba(15,23,42,0.4);border:none;cursor:pointer;transition:all 0.3s" onclick="requireAuth('add')" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
-          <i class="ri-add-line" style="font-size:1.5rem"></i>
-        </button>
-      </div>
       <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')">
         <i class="ri-store-2-line"></i><span>الأعمال</span>
       </button>
-      <button class="mobile-nav-item" data-page="profile" onclick="navigateTo('profile')">
-        <i class="ri-user-3-line"></i><span>حسابي</span>
+      <button class="mobile-nav-item" data-page="map" onclick="navigateTo('map')">
+        <i class="ri-map-2-line"></i><span>الخريطة</span>
       </button>
     </div>
   </nav>
@@ -1379,7 +1289,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
   <script src="js/app.js"></script>
-  <script src="js/plans.js"></script>
   <script src="js/booking.js"></script>
 
   <!-- Initialize hero particles -->
