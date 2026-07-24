@@ -447,45 +447,74 @@
 
   <!-- ==================== PAGE: PROFILE ==================== -->
   <div id="page-profile" class="page">
-    <div class="max-w-lg mx-auto px-4 sm:px-6 py-12">
-      <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center">
-        <!-- Avatar -->
-        <div class="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-          <i class="ri-user-3-line text-3xl text-white"></i>
+    <div class="sikka-profile">
+      <!-- Profile Header -->
+      <div class="sikka-profile-card">
+        <div class="sikka-profile-avatar">
+          <i class="ri-user-3-line"></i>
         </div>
-        <h2 id="profile-name" class="text-xl font-bold mb-1">ضيف</h2>
-        <p id="profile-email" class="text-gray-500 text-sm mb-2">ادخل عشان توصل حسابك</p>
-        <p id="profile-location" class="text-blue-600 text-sm mb-6 hidden">
-          <i class="ri-map-pin-line ml-1"></i><span id="profile-location-text"></span>
+        <div class="sikka-profile-badge">عضو سِكّة</div>
+        <h2 id="profile-name" class="sikka-profile-name">ضيف</h2>
+        <p id="profile-email" class="sikka-profile-email">ادخل عشان توصل حسابك</p>
+        <p id="profile-location" class="sikka-profile-loc hidden">
+          <i class="ri-map-pin-line"></i> <span id="profile-location-text"></span>
         </p>
+      </div>
 
-        <!-- Auth Buttons (logged out) -->
-        <div id="auth-buttons">
-          <button class="w-full py-3 px-6 bg-gradient-to-l from-gray-800 to-gray-900 text-white rounded-xl font-medium transition-all hover:shadow-lg" onclick="showAuthModal()">
-            <i class="ri-login-box-line ml-2"></i>تسجيل دخول
-          </button>
+      <!-- Stats -->
+      <div class="sikka-profile-stats">
+        <div class="sikka-profile-stat">
+          <div class="sikka-profile-stat-num" id="profile-visits">0</div>
+          <div class="sikka-profile-stat-label">الزيارات</div>
         </div>
+        <div class="sikka-profile-stat">
+          <div class="sikka-profile-stat-num" id="profile-reviews-count">0</div>
+          <div class="sikka-profile-stat-label">التقييمات</div>
+        </div>
+        <div class="sikka-profile-stat">
+          <div class="sikka-profile-stat-num" id="profile-favs-count">0</div>
+          <div class="sikka-profile-stat-label">المفضلة</div>
+        </div>
+      </div>
 
-        <!-- Profile Menu (logged in) -->
-        <div id="profile-menu" style="display:none">
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <a href="#/dashboard" class="profile-quick-link" onclick="navigateTo('dashboard')">
-              <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-dashboard-line text-lg"></i></div>
-              <span class="text-xs font-medium text-gray-700">لوحة التحكم</span>
-            </a>
-            <a href="#/favorites" class="profile-quick-link" onclick="navigateTo('favorites')">
-              <div class="w-10 h-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-heart-3-line text-lg"></i></div>
-              <span class="text-xs font-medium text-gray-700">المفضلة</span>
-            </a>
-            <a href="#/compare" class="profile-quick-link" onclick="navigateTo('compare')">
-              <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-2"><i class="ri-scales-line text-lg"></i></div>
-              <span class="text-xs font-medium text-gray-700">مقارنة</span>
-            </a>
+      <!-- Auth Buttons (logged out) -->
+      <div id="auth-buttons" class="sikka-section">
+        <button class="sikka-profile-login-btn" onclick="showAuthModal()">
+          <i class="ri-login-box-line"></i> تسجيل دخول
+        </button>
+      </div>
+
+      <!-- Profile Menu (logged in) -->
+      <div id="profile-menu" class="sikka-section" style="display:none">
+        <h3 class="sikka-section-title" style="margin-bottom:12px">إدارة الحساب</h3>
+        <div class="sikka-profile-menu">
+          <a class="sikka-profile-menu-item" onclick="navigateTo('dashboard')">
+            <i class="ri-dashboard-line"></i>
+            <span>لوحة التحكم</span>
+            <i class="ri-arrow-left-s-line" style="color:var(--on-surface-variant)"></i>
+          </a>
+          <a class="sikka-profile-menu-item" onclick="navigateTo('favorites')">
+            <i class="ri-heart-3-line"></i>
+            <span>المفضلة</span>
+            <i class="ri-arrow-left-s-line" style="color:var(--on-surface-variant)"></i>
+          </a>
+        </div>
+        <h3 class="sikka-section-title" style="margin:16px 0 12px">الإعدادات</h3>
+        <div class="sikka-profile-menu">
+          <div class="sikka-profile-menu-item">
+            <i class="ri-notification-3-line"></i>
+            <span>الإشعارات</span>
+            <label class="sikka-toggle"><input type="checkbox" checked><span class="sikka-toggle-slider"></span></label>
           </div>
-          <button onclick="logout()" class="w-full py-3 bg-gray-50 hover:bg-red-50 text-gray-600 hover:text-red-600 rounded-xl font-medium text-sm transition-all border border-gray-100 hover:border-red-200">
-            <i class="ri-logout-box-r-line ml-1"></i> خروج
-          </button>
+          <a class="sikka-profile-menu-item" onclick="toggleDarkMode()">
+            <i class="ri-moon-line"></i>
+            <span>الوضع الليلي</span>
+            <label class="sikka-toggle"><input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()"><span class="sikka-toggle-slider"></span></label>
+          </a>
         </div>
+        <button class="sikka-profile-logout" onclick="logout()">
+          <i class="ri-logout-box-r-line"></i> خروج
+        </button>
       </div>
     </div>
   </div>
@@ -502,17 +531,12 @@
 
   <!-- ==================== PAGE: FAVORITES ==================== -->
   <div id="page-favorites" class="page">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center">
-          <i class="ri-heart-3-fill text-red-500 text-xl"></i>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold">المفضلة</h1>
-          <p class="text-gray-500 text-sm">الشغل اللي حفظته</p>
-        </div>
-      </div>
-      <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+    <div class="sikka-section">
+      <h1 class="sikka-section-title" style="font-size:1.5rem;margin-bottom:16px">
+        <i class="ri-heart-3-fill" style="color:var(--primary)"></i> الأماكن المحفوظة
+      </h1>
+      <p style="color:var(--on-surface-variant);margin-bottom:24px">قائمة الأماكن اللي قمت بحفظيها للوصول السريع.</p>
+      <div id="favorites-grid" class="sikka-cards-list"></div>
     </div>
   </div>
 

@@ -5404,3 +5404,243 @@ body {
   color: var(--on-surface-variant);
 }
 .sikka-empty i { font-size: 2rem; margin-bottom: 8px; display: block; }
+
+/* =============================================
+   PROFILE PAGE
+   ============================================= */
+.sikka-profile {
+  padding: var(--space-lg) var(--margin-mobile);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.sikka-profile-card {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+.sikka-profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 12px;
+  box-shadow: var(--shadow-mint);
+}
+.sikka-profile-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  background: rgba(108,220,161,0.15);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-family-mono);
+  margin-bottom: 8px;
+}
+.sikka-profile-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 4px;
+}
+.sikka-profile-email {
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  font-family: var(--font-family-mono);
+}
+.sikka-profile-loc {
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin-top: 8px;
+}
+.sikka-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: var(--space-lg);
+}
+.sikka-profile-stat {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 16px 12px;
+  text-align: center;
+}
+.sikka-profile-stat-num {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: var(--font-family-mono);
+}
+.sikka-profile-stat-label {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin-top: 2px;
+}
+.sikka-profile-login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-family-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+.sikka-profile-login-btn:hover {
+  background: var(--primary-dim);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-mint);
+}
+.sikka-profile-menu {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.sikka-profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--on-surface);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border-bottom: 1px solid var(--outline-variant);
+  font-size: 0.9rem;
+}
+.sikka-profile-menu-item:last-child { border-bottom: none; }
+.sikka-profile-menu-item:hover { background: var(--surface-container-high); }
+.sikka-profile-menu-item i:first-child { font-size: 1.1rem; color: var(--on-surface-variant); }
+.sikka-profile-menu-item span { flex: 1; }
+.sikka-profile-logout {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: var(--font-family-body);
+  cursor: pointer;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+.sikka-profile-logout:hover {
+  background: var(--error);
+  color: var(--on-error);
+}
+.sikka-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+}
+.sikka-toggle input { display: none; }
+.sikka-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-container-high);
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+.sikka-toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--on-surface);
+  top: 3px;
+  right: 3px;
+  transition: transform var(--transition-fast);
+}
+.sikka-toggle input:checked + .sikka-toggle-slider {
+  background: var(--primary);
+}
+.sikka-toggle input:checked + .sikka-toggle-slider::after {
+  transform: translateX(-20px);
+  background: var(--on-primary);
+}
+
+/* =============================================
+   SEARCH PAGE
+   ============================================= */
+.sikka-search-page {
+  padding: var(--space-lg) var(--margin-mobile);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.sikka-search-page-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  padding: 4px 4px 4px 18px;
+  margin-bottom: var(--space-lg);
+}
+.sikka-search-page-bar:focus-within {
+  border-color: var(--primary-dim);
+}
+.sikka-search-page-bar .sikka-search-input { flex: 1; }
+.sikka-search-page-close {
+  background: none;
+  border: none;
+  color: var(--on-surface-variant);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px;
+}
+.sikka-filter-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: var(--space-lg);
+  scrollbar-width: none;
+}
+.sikka-filter-chips::-webkit-scrollbar { display: none; }
+.sikka-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family-body);
+}
+.sikka-chip:hover, .sikka-chip.active {
+  border-color: var(--primary);
+  background: rgba(108,220,161,0.1);
+  color: var(--primary);
+}
