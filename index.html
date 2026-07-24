@@ -147,10 +147,10 @@
   }
   </script>
 </head>
-<body class="font-arabic bg-gray-50 text-gray-900 min-h-screen">
+<body>
 
   <!-- ==================== SPLASH SCREEN ==================== -->
-  <div id="splash-screen" class="fixed inset-0 z-[5000] flex items-center justify-center" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+  <div id="splash-screen" class="fixed inset-0 z-[5000] flex items-center justify-center" style="background:var(--surface)">
     <div class="text-center splash-content">
       <div class="splash-logo-wrap">
         <img src="assets/icons/logo.png" alt="سِكّة" class="splash-logo">
@@ -194,55 +194,25 @@
   </div>
 
   <!-- ==================== HEADER ==================== -->
-  <header class="sticky top-0 z-50" id="main-header">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="flex items-center justify-between h-16">
-        <a href="#/home" class="flex items-center gap-2 group" onclick="navigateTo('home')">
-          <img src="assets/icons/logo.png" alt="سِكّة" class="h-10 w-auto rounded-lg group-hover:scale-105 transition-all">
-        </a>
-        <nav class="hidden md:flex items-center gap-1">
-          <a href="#/home" class="nav-link active" data-nav="home" onclick="navigateTo('home')"><i class="ri-home-5-line ml-1"></i>الرئيسية</a>
-          <a href="#/businesses" class="nav-link" data-nav="businesses" onclick="navigateTo('businesses')"><i class="ri-store-2-line ml-1"></i>الأعمال</a>
-          <a href="#/map" class="nav-link" data-nav="mapview" onclick="navigateTo('map')"><i class="ri-map-2-line ml-1"></i>الخريطة</a>
-          <a href="#/categories" class="nav-link" data-nav="categories" onclick="navigateTo('categories')"><i class="ri-apps-line ml-1"></i>الفئات</a>
-          <a href="#/blog" class="nav-link" data-nav="blog" onclick="navigateTo('blog')"><i class="ri-article-line ml-1"></i>المدونة</a>
-          <a href="#/admin" class="nav-link" data-nav="admin" id="admin-nav-link" onclick="navigateTo('admin')" style="display:none"><i class="ri-dashboard-line ml-1"></i>الإدارة</a>
-        </nav>
-        <div class="flex items-center gap-2">
-          <button class="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600 relative" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="ri-moon-line text-lg" id="dark-mode-icon"></i></button>
-          <!-- Notifications Bell -->
-          <div class="relative" id="notif-btn-wrap" style="display:none">
-            <button class="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600 relative" onclick="toggleNotifications()">
-              <i class="ri-notification-3-line text-lg"></i>
-              <span id="notif-count" class="hidden notif-badge">0</span>
-            </button>
-          </div>
-          <!-- Compare Badge -->
-          <button class="relative p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-600" onclick="navigateTo('compare')" title="المقارنة">
-            <i class="ri-scales-line text-lg"></i>
-            <span id="compare-badge" class="hidden notif-badge" style="background:#3b82f6">0</span>
+  <header class="sikka-topbar" id="main-header">
+    <div class="sikka-topbar-inner">
+      <a href="#/home" class="sikka-logo" onclick="navigateTo('home')">
+        <img src="assets/icons/logo.png" alt="سِكّة" class="sikka-logo-img">
+        <span class="sikka-logo-text">سِكّة</span>
+      </a>
+      <div class="sikka-topbar-right">
+        <div class="sikka-location" onclick="navigateTo('home')">
+          <span class="sikka-location-label">مرحبا بك حاليا</span>
+          <span class="sikka-location-city" id="topbar-city">القاهرة, مصر</span>
+        </div>
+        <div class="sikka-topbar-actions">
+          <button class="sikka-icon-btn" onclick="navigateTo('search')" title="بحث">
+            <i class="ri-search-line"></i>
           </button>
-          <div id="header-auth-btns">
-            <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="showAuthModal()">
-              <i class="ri-login-box-line"></i> دخول
-            </button>
-          </div>
-          <button class="md:hidden p-2 hover:bg-gray-100 rounded-xl" onclick="toggleMobileMenu()">
-            <i class="ri-menu-3-line text-xl"></i>
+          <button class="sikka-icon-btn" onclick="toggleDarkMode()" title="الوضع الليلي">
+            <i class="ri-moon-line" id="dark-mode-icon"></i>
           </button>
         </div>
-      </div>
-    </div>
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl">
-      <div class="px-4 py-3 space-y-1">
-        <a href="#/home" class="mobile-menu-item active" onclick="navigateTo('home')"><i class="ri-home-5-line"></i>الرئيسية</a>
-        <a href="#/businesses" class="mobile-menu-item" onclick="navigateTo('businesses')"><i class="ri-store-2-line"></i>الأعمال</a>
-        <a href="#/map" class="mobile-menu-item" onclick="navigateTo('map')"><i class="ri-map-2-line"></i>الخريطة</a>
-        <a href="#/categories" class="mobile-menu-item" onclick="navigateTo('categories')"><i class="ri-apps-line"></i>الفئات</a>
-        <a href="#/compare" class="mobile-menu-item" onclick="navigateTo('compare')"><i class="ri-scales-line"></i>مقارنة</a>
-        <a href="#/blog" class="mobile-menu-item" onclick="navigateTo('blog')"><i class="ri-article-line"></i>المدونة</a>
-        <button class="mobile-menu-item w-full text-left" onclick="toggleDarkMode()"><i class="ri-moon-line"></i>الوضع الليلي</button>
       </div>
     </div>
   </header>
@@ -250,227 +220,62 @@
   <!-- ==================== PAGE: HOME ==================== -->
   <div id="page-home" class="page active">
 
-    <!-- Hero Section PREMIUM -->
-    <section class="hero-section">
-      <div class="hero-particles" id="hero-particles"></div>
-      <div class="hero-glow-1"></div>
-      <div class="hero-glow-2"></div>
-      <div class="hero-grid"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center w-full">
-        <div class="hero-badge">
-          <span class="dot"></span>
-          دليل الأعمال الذكي في مصر — أكثر من <span id="hero-biz-count">500</span> نشاط تجاري
-        </div>
-        <h1 class="hero-title">
-          اكتشف أفضل الأعمال
-          <span class="block mt-2 gradient-text">مع سِكّة</span>
+    <!-- Hero Section -->
+    <section class="sikka-hero">
+      <div class="sikka-hero-content">
+        <h1 class="sikka-hero-title">
+          اكتشف أفضل الأماكن
+          <span class="sikka-hero-highlight">في مدينتك</span>
         </h1>
-        <p class="hero-subtitle mx-auto mt-5">دليل أعمال ذكي يربطك بأفضل المحلات والمطاعم والخدمات في مصر — بتقييمات حقيقية من ناس زيّك</p>
 
-        <!-- Search Bar PREMIUM -->
-        <div class="search-container" style="position:relative">
-          <div class="search-box">
-            <div class="search-tabs">
-              <button class="search-tab active" onclick="switchSearchTab(this,'name')"><i class="ri-search-line"></i><span>بالاسم</span></button>
-              <button class="search-tab" onclick="switchSearchTab(this,'keyword')"><i class="ri-keyboard-line"></i><span>بالكلمة</span></button>
-              <button class="search-tab" onclick="switchSearchTab(this,'category')"><i class="ri-folder-line"></i><span>بالفئة</span></button>
-              <button class="search-tab" onclick="switchSearchTab(this,'brand')"><i class="ri-bookmark-line"></i><span>بالبراند</span></button>
-            </div>
-            <div class="search-input-row">
-              <div class="relative hidden sm:flex">
-                <button id="search-loc-btn" class="search-loc-btn" onclick="toggleSearchLocation()">
-                  <i class="ri-map-pin-2-fill" style="color:#3b82f6"></i>
-                  <span id="search-loc-text">كل المحافظات</span>
-                  <i class="ri-arrow-down-s-line" style="color:#94a3b8"></i>
-                </button>
-                <div id="search-loc-dropdown" class="hidden" style="position:absolute;top:calc(100% + 8px);right:0;min-width:260px">
-                  <div class="p-2">
-                    <input type="text" id="search-loc-filter" class="form-input" style="padding:8px 12px;font-size:0.875rem" placeholder="دور على محافظة..." oninput="filterSearchLocations(this.value)">
-                  </div>
-                  <div id="search-loc-list" class="px-1 pb-1"></div>
-                </div>
-              </div>
-              <div class="search-input-wrap">
-                <input type="text" id="search-input" class="search-main-input" placeholder="دور على أي حاجة..." oninput="handleSearchInput(this.value)" autocomplete="off">
-                <button id="search-clear-btn" class="hidden" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:none;align-items:center;justify-content:center;border-radius:50%;background:#f1f5f9;color:#94a3b8;border:none;cursor:pointer" onclick="clearSearch()">
-                  <i class="ri-close-line" style="font-size:0.875rem"></i>
-                </button>
-              </div>
-              <button onclick="startVoiceSearch()" id="voice-btn" class="btn btn-ghost" style="color:rgba(255,255,255,0.7);height:52px;padding:0 14px" title="بحث صوتي">
-                <i class="ri-mic-line" style="font-size:1.25rem"></i>
-              </button>
-              <button class="search-submit-btn" onclick="performSearch()">
-                <i class="ri-search-line"></i><span>بحث</span>
-              </button>
-            </div>
-          </div>
-          <!-- Search Autocomplete -->
-          <div id="search-autocomplete" class="hidden" style="position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:50;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.15);border:1px solid #e2e8f0;max-height:400px;overflow-y:auto">
-            <div id="autocomplete-results"></div>
-          </div>
-          <!-- Quick Tags -->
-          <div class="flex justify-center gap-2 mt-6 flex-wrap">
-            <span class="search-tag" onclick="quickSearch('مقاهي')"><i class="ri-cup-line"></i> مقاهي</span>
-            <span class="search-tag" onclick="quickSearch('مطاعم')"><i class="ri-restaurant-line"></i> مطاعم</span>
-            <span class="search-tag" onclick="quickSearch('بنوك')"><i class="ri-bank-line"></i> بنوك</span>
-            <span class="search-tag" onclick="quickSearch('تسوق')"><i class="ri-shopping-bag-line"></i> تسوق</span>
-            <span class="search-tag" onclick="quickSearch('صحة')"><i class="ri-heart-pulse-line"></i> صحة</span>
-            <span class="search-tag" onclick="quickSearch('تعليم')"><i class="ri-graduation-cap-line"></i> تعليم</span>
-          </div>
-        </div>
-
-        <!-- Hero Live Stats -->
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-biz-hero">0+</div>
-            <div class="hero-stat-label">نشاط تجاري</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-rev-hero">0+</div>
-            <div class="hero-stat-label">تقييم حقيقي</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-city-hero">27+</div>
-            <div class="hero-stat-label">محافظة</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num">100%</div>
-            <div class="hero-stat-label">مجاني للزباين</div>
-          </div>
+        <!-- Search Bar -->
+        <div class="sikka-search">
+          <i class="ri-search-line sikka-search-icon"></i>
+          <input type="text" id="search-input" class="sikka-search-input" placeholder="ابحث عن مطعم، مقهى، أو خدمة..." oninput="handleSearchInput(this.value)" autocomplete="off">
+          <button class="sikka-search-filter" onclick="navigateTo('search')">
+            <i class="ri-filter-3-line"></i>
+          </button>
         </div>
       </div>
-    </section>
 
-    <!-- Categories Section -->
-    <section class="py-16 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold">تصفح حسب الفئات</h2>
-            <p class="text-gray-500 mt-1">اختار الفئة اللي تناسبك</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all" onclick="navigateTo('categories')">شوف الكل <i class="ri-arrow-left-line"></i></button>
-        </div>
-        <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4"></div>
+      <!-- Categories -->
+      <div class="sikka-categories-header">
+        <h2 class="sikka-section-title">التصنيفات</h2>
+        <button class="sikka-link" onclick="navigateTo('categories')">عرض الكل</button>
       </div>
+      <div id="categories-grid" class="sikka-categories-scroll"></div>
     </section>
 
     <!-- Nearby Section (hidden by default) -->
-    <section class="py-16 bg-blue-50/50" data-aos="fade-up" id="nearby-section" style="display:none">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold"><i class="ri-map-pin-line text-blue-500"></i> قربك</h2>
-            <p class="text-gray-500 mt-1">أشغال قريبة من مكانك</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">شوف الكل <i class="ri-arrow-left-line"></i></button>
-        </div>
-        <div id="nearby-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+    <section class="sikka-section" id="nearby-section" style="display:none">
+      <div class="sikka-section-header">
+        <h2 class="sikka-section-title"><i class="ri-map-pin-line" style="color:var(--primary)"></i> قربك</h2>
+        <button class="sikka-link" onclick="navigateTo('businesses')">شوف الكل</button>
       </div>
+      <div id="nearby-grid" class="sikka-cards-list"></div>
     </section>
 
-    <!-- Best Businesses Section -->
-    <section class="py-16 bg-gray-50" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center justify-between mb-10">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-bold">أحسن الأعمال</h2>
-            <p class="text-gray-500 mt-1">شوف الأعمال اللي عليها تقييمات كويسة</p>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 rounded-xl border border-gray-200 transition-all" onclick="navigateTo('businesses')">شوف الكل <i class="ri-arrow-left-line"></i></button>
+    <!-- Suggested For You -->
+    <section class="sikka-section" id="suggested-section">
+      <div class="sikka-section-header">
+        <h2 class="sikka-section-title">اقتراح ليك</h2>
+        <div class="sikka-dots" id="suggested-dots">
+          <span class="sikka-dot active"></span>
+          <span class="sikka-dot"></span>
+          <span class="sikka-dot"></span>
         </div>
-        <div id="businesses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
       </div>
+      <div id="businesses-grid" class="sikka-cards-list"></div>
     </section>
 
     <!-- Last Visited Section (hidden by default) -->
-    <section class="py-16 bg-gray-50" data-aos="fade-up" id="last-visited-section" style="display:none">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center gap-3 mb-10">
-          <div class="w-10 h-10 bg-gray-200 rounded-xl flex items-center justify-center">
-            <i class="ri-history-line text-gray-500"></i>
-          </div>
-          <div>
-            <h2 class="text-2xl font-bold">شفتهم قبل كده</h2>
-            <p class="text-gray-500 text-sm">آخر الأعمال اللي شفتها</p>
-          </div>
-        </div>
-        <div id="last-visited-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"></div>
+    <section class="sikka-section" id="last-visited-section" style="display:none">
+      <div class="sikka-section-header">
+        <h2 class="sikka-section-title"><i class="ri-history-line"></i> شفتهم قبل كده</h2>
       </div>
+      <div id="last-visited-grid" class="sikka-cards-list"></div>
     </section>
-
-    <!-- Stats Counters Section -->
-    <section class="py-16 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20"><i class="ri-store-2-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-biz">0</div>
-            <div class="text-sm text-gray-500 mt-1">شغل</div>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20"><i class="ri-user-3-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-users">0</div>
-            <div class="text-sm text-gray-500 mt-1">مستخدم</div>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20"><i class="ri-star-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-reviews">0</div>
-            <div class="text-sm text-gray-500 mt-1">تقييم</div>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
-            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20"><i class="ri-map-pin-line text-2xl text-white"></i></div>
-            <div class="text-3xl sm:text-4xl font-bold" id="stat-cities">0</div>
-            <div class="text-sm text-gray-500 mt-1">محافظة</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section (SaaS) -->
-    <section class="py-20 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-14">
-          <div class="section-tag" style="display:inline-flex;margin-bottom:12px"><i class="ri-sparkling-line"></i> مزايا المنصة</div>
-          <h2 class="section-title">كل اللي محتاجه في مكان واحد</h2>
-          <p class="section-subtitle">سِكّة مش بس دليل — هي منصة متكاملة لأصحاب الأعمال والزباين</p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card" style="--feature-color:rgba(59,130,246,0.2)">
-            <div class="feature-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6"><i class="ri-search-eye-line"></i></div>
-            <h3 class="feature-title">بحث ذكي</h3>
-            <p class="feature-desc">ابحث بالاسم أو الفئة أو الموقع أو حتى بصوتك — نتائج فورية ودقيقة</p>
-          </div>
-          <div class="feature-card" style="--feature-color:rgba(16,185,129,0.2)">
-            <div class="feature-icon" style="background:rgba(16,185,129,0.1);color:#10b981"><i class="ri-star-smile-line"></i></div>
-            <h3 class="feature-title">تقييمات حقيقية</h3>
-            <p class="feature-desc">تقييمات من عملاء حقيقيين — مفيش تلاعب، مفيش دفع مقابل تقييم</p>
-          </div>
-          <div class="feature-card" style="--feature-color:rgba(139,92,246,0.2)">
-            <div class="feature-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="ri-map-pin-2-line"></i></div>
-            <h3 class="feature-title">خريطة تفاعلية</h3>
-            <p class="feature-desc">شوف الأعمال على خريطة مباشرة، اعرف المكان الأقرب ليك</p>
-          </div>
-          <div class="feature-card" style="--feature-color:rgba(245,158,11,0.2)">
-            <div class="feature-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b"><i class="ri-calendar-check-line"></i></div>
-            <h3 class="feature-title">حجز مواعيد</h3>
-            <p class="feature-desc">احجز موعدك أونلاين في ثواني — للباقة البرو وما فوق</p>
-          </div>
-          <div class="feature-card" style="--feature-color:rgba(236,72,153,0.2)">
-            <div class="feature-icon" style="background:rgba(236,72,153,0.1);color:#ec4899"><i class="ri-line-chart-line"></i></div>
-            <h3 class="feature-title">إحصائيات متقدمة</h3>
-            <p class="feature-desc">لوحة تحكم بـ Charts تفاعلية — اعرف مين بيشوف شغلك وإمتى</p>
-          </div>
-          <div class="feature-card" style="--feature-color:rgba(6,182,212,0.2)">
-            <div class="feature-icon" style="background:rgba(6,182,212,0.1);color:#06b6d4"><i class="ri-qr-code-line"></i></div>
-            <h3 class="feature-title">QR Code ومشاركة</h3>
-            <p class="feature-desc">شارك شغلك بـ QR Code أو على واتساب بضغطة واحدة</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials Section -->
+  </div>
     <section class="py-20" style="background:#f8fafc" data-aos="fade-up">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-14">
@@ -1096,19 +901,19 @@
   </footer>
 
   <!-- ==================== MOBILE BOTTOM NAV ==================== -->
-  <nav class="fixed bottom-0 left-0 right-0 backdrop-blur-xl border-t z-50 md:hidden" style="background:rgba(255,255,255,0.95);border-color:rgba(226,232,240,0.8)" id="mobile-bottom-nav">
-    <div class="flex items-center justify-around h-16 px-2">
-      <button class="mobile-nav-item active" data-page="home" onclick="navigateTo('home')">
+  <nav class="sikka-bottomnav" id="mobile-bottom-nav">
+    <div class="sikka-bottomnav-inner">
+      <button class="sikka-bottomnav-item active" data-page="home" onclick="navigateTo('home')">
         <i class="ri-home-5-line"></i><span>الرئيسية</span>
       </button>
-      <button class="mobile-nav-item" data-page="categories" onclick="navigateTo('categories')">
-        <i class="ri-apps-line"></i><span>الفئات</span>
+      <button class="sikka-bottomnav-item" data-page="favorites" onclick="navigateTo('favorites')">
+        <i class="ri-heart-line"></i><span>المفضلة</span>
       </button>
-      <button class="mobile-nav-item" data-page="businesses" onclick="navigateTo('businesses')">
-        <i class="ri-store-2-line"></i><span>الأعمال</span>
+      <button class="sikka-bottomnav-item sikka-bottomnav-center" data-page="search" onclick="navigateTo('search')">
+        <i class="ri-search-line"></i><span>استكشف</span>
       </button>
-      <button class="mobile-nav-item" data-page="map" onclick="navigateTo('map')">
-        <i class="ri-map-2-line"></i><span>الخريطة</span>
+      <button class="sikka-bottomnav-item" data-page="profile" onclick="navigateTo('profile')">
+        <i class="ri-user-3-line"></i><span>حسابي</span>
       </button>
     </div>
   </nav>

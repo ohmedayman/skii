@@ -1434,21 +1434,18 @@ function stopVoiceSearch() {
 // ==================== HOME ====================
 function loadHome() {
   const approved = businesses.filter(b => b.status === 'approved');
-  renderBusinesses(approved.slice(0, 8));
+  renderBusinesses(approved.slice(0, 6));
   renderCategories(CATEGORIES);
-  animateCounter('stat-biz-hero', approved.length);
-  animateCounter('stat-biz', approved.length);
-  animateCounter('stat-users', users.length);
-  const totalReviews = Object.values(reviews).flat().length + approved.reduce((s, b) => s + (b.rating?.count || 0), 0);
-  animateCounter('stat-rev-hero', totalReviews);
-  animateCounter('stat-reviews', totalReviews);
-  const cities = [...new Set(approved.map(b => b.location?.city).filter(Boolean))];
-  animateCounter('stat-city-hero', cities.length || CITIES.length);
-  animateCounter('stat-cities', cities.length || CITIES.length);
-  const hbc = document.getElementById('hero-biz-count');
-  if (hbc) hbc.textContent = approved.length;
   renderNearby(approved);
   renderLastVisited(approved);
+  updateTopbarCity();
+}
+
+function updateTopbarCity() {
+  const el = document.getElementById('topbar-city');
+  if (!el) return;
+  const gov = localStorage.getItem('sikka_user_gov') || currentUser?.governorate || '';
+  el.textContent = gov ? `${gov}, مصر` : 'القاهرة, مصر';
 }
 
 function renderCategories(cats) {
@@ -1459,12 +1456,11 @@ function renderCategories(cats) {
     const style = getCategoryStyle(c.name);
     const count = approved.filter(b => b.categoryNameAr === c.name).length;
     return `
-    <div class="bg-white border border-gray-200 rounded-2xl p-5 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all group" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
-      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-all duration-300" style="background:${style.bg}">
-        <span style="font-size:1.5rem;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))">${style.emoji}</span>
+    <div class="sikka-cat-card" onclick="quickSearch('${c.name}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+      <div class="sikka-cat-icon">
+        <span>${style.emoji}</span>
       </div>
-      <div class="text-sm font-bold mb-1">${c.name}</div>
-      <div class="text-xs text-gray-400">${count} شغل</div>
+      <span class="sikka-cat-name">${c.name}</span>
     </div>
   `}).join('');
 }
@@ -1486,30 +1482,28 @@ function renderBusinessCard(b, i = 0) {
   const totalReviews = reviewCount + reviewList.length;
   const style = getCategoryStyle(b.categoryNameAr);
   const isOpen = checkIfOpen(b.workingHours);
+  const isFav = currentUser && userData?.favorites?.includes(b.id);
 
   return `
-    <div class="biz-card" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 40}">
-      <div class="biz-card-img" style="background:${style.bg}">
-        <div style="font-size:2.8rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))">${style.emoji}</div>
-        <span class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${isOpen ? 'bg-emerald-50/90 text-emerald-600' : 'bg-red-50/90 text-red-500'}" style="border:1px solid ${isOpen ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}">
-          <span class="w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse"></span>
-          ${isOpen ? 'مفتوح' : 'مقفول'}
-        </span>
-        ${b.isVerified ? '<span class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-amber-50/90 text-amber-600 rounded-full text-xs font-semibold backdrop-blur-sm" style="border:1px solid rgba(245,158,11,0.2)"><i class="ri-verified-badge-fill"></i> موثق</span>' : ''}
+    <div class="sikka-biz-card ${b.isVerified ? 'featured' : ''}" onclick="openBusiness('${b.id}')" data-aos="fade-up" data-aos-delay="${i * 60}">
+      <div class="sikka-biz-card-img" style="background-image:url(${b.coverImage || b.images?.[0] || ''});background-color:${style.bg}">
+        ${!b.coverImage && !b.images?.[0] ? `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:2.5rem">${style.emoji}</div>` : ''}
+        <div class="sikka-biz-rating"><i class="ri-star-fill"></i> ${rating > 0 ? rating.toFixed(1) : '—'}</div>
       </div>
-      <div class="biz-card-body">
-        <div class="biz-card-name">${b.nameAr || b.name}</div>
-        <div class="biz-card-cat" style="display:flex;align-items:center;gap:4px">
-          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${style.bg};flex-shrink:0"></span>
-          ${b.categoryNameAr || ''}
+      <button class="sikka-biz-card-fav ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${b.id}')">
+        <i class="ri-heart-${isFav ? 'fill' : 'line'}"></i>
+      </button>
+      <div class="sikka-biz-card-body">
+        <div class="sikka-biz-card-name">${b.nameAr || b.name}</div>
+        <div class="sikka-biz-card-cat">${b.categoryNameAr || ''}</div>
+        <div class="sikka-biz-card-meta">
+          <span class="sikka-biz-card-status ${isOpen ? 'open' : 'closed'}">
+            <span class="w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-current' : 'bg-current'}"></span>
+            ${isOpen ? 'مفتوح' : 'مقفول'}
+          </span>
+          ${b.location?.city ? `<span><i class="ri-map-pin-line"></i> ${b.location.district || b.location.city}</span>` : ''}
+          ${totalReviews > 0 ? `<span><i class="ri-chat-3-line"></i> ${totalReviews} (${Math.round(totalReviews/2)} تعليق)</span>` : ''}
         </div>
-        <div class="biz-card-info">
-          ${b.location?.city ? `<span><i class="ri-map-pin-2-line"></i> ${b.location.city}${b.location.district ? ' — ' + b.location.district : ''}</span>` : ''}
-        </div>
-      </div>
-      <div class="biz-card-footer">
-        <div class="biz-rating"><i class="ri-star-fill"></i> ${rating > 0 ? rating.toFixed(1) : '—'} <span>(${totalReviews})</span></div>
-        ${b.products?.length ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:#64748b;background:#f8fafc;padding:4px 10px;border-radius:20px"><i class="ri-shopping-bag-3-line"></i>${b.products.length} منتج</span>` : ''}
       </div>
     </div>
   `;
