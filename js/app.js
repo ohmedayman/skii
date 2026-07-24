@@ -2114,58 +2114,32 @@ function renderBusinessDetail(b) {
   `;
 
   c.innerHTML = `
-    <div class="yelp-page">
-      <div class="yelp-topbar" style="position:absolute;top:0;left:0;right:0;z-index:10">
-        <button class="yelp-back" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
-        <div class="yelp-topbar-actions">
-          <button class="yelp-topbar-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
-          <button class="yelp-topbar-btn" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i></button>
-          <button class="yelp-topbar-btn" onclick="openReportModal('${b.id}')"><i class="ri-flag-line"></i></button>
-        </div>
-      </div>
-
-      ${heroHtml}
-
-      <div class="yelp-action-bar">
-        <button class="yelp-action-btn primary" onclick="openReviewModal('${b.id}')"><i class="ri-star-line"></i> اكتب تقييم</button>
-        <button class="yelp-action-btn" onclick="shareWhatsApp('${b.id}')"><i class="ri-whatsapp-line"></i> شير</button>
-        <button class="yelp-action-btn" onclick="openQRModal('${b.id}')"><i class="ri-qr-code-line"></i> QR</button>
-        <button class="yelp-action-btn" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i> مشاركة</button>
-        <button class="yelp-action-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}',this)" style="${isFav ? 'color:#ef4444;border-color:#ef4444' : ''}"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i> حفظ</button>
-      </div>
-      <div class="yelp-action-bar" style="border-bottom:none;padding-top:0">
-        <span class="yelp-recommend-row">هل أنصح بالشغل ده؟</span>
-        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">أيوه</button>
-        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">لأ</button>
-        <button class="yelp-recommend-btn" onclick="this.classList.toggle('active')">ممكن</button>
-      </div>
-
-      <div class="yelp-container">
-        <div class="yelp-main">
-          ${productsHtml}
-          ${vibeHtml}
-          ${alsoSearchedHtml}
-          ${locationHoursHtml}
-          ${descHtml}
-          ${offersHtml}
-          ${keywordsHtml}
-          ${brandsHtml}
-
-          <div class="yelp-section">
-            <div class="yelp-section-header">
-              <div class="yelp-section-title">التقييمات <span class="yelp-count">${totalReviews}</span></div>
-            </div>
-            ${ratingBreakdownHtml}
-            ${trustHtml}
-            ${reviewFormHtml}
-            <div id="reviews-list">${reviewsHtml}</div>
+    <div class="sikka-detail">
+      <div class="sikka-detail-hero" style="background-image:url(${photos[0] || ''});background-color:${style.bg}">
+        <div class="sikka-detail-hero-overlay"></div>
+        <div class="sikka-detail-topbar">
+          <button class="sikka-detail-back" onclick="closeDetail()"><i class="ri-arrow-right-line"></i></button>
+          <div class="sikka-detail-topbar-actions">
+            <button class="sikka-icon-btn" onclick="shareBusiness('${b.id}')"><i class="ri-share-line"></i></button>
+            <button class="sikka-icon-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${b.id}')"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></button>
           </div>
         </div>
-
-        <div class="yelp-aside">
-          ${sidebarHtml}
+        <div class="sikka-detail-hero-content">
+          <div class="sikka-detail-rating-badge"><i class="ri-star-fill"></i> ${rating > 0 ? rating.toFixed(1) : '—'} <span>(${totalReviews} تقييم)</span></div>
+          <h1 class="sikka-detail-name">${b.nameAr || b.name}</h1>
+          <div class="sikka-detail-loc">${b.location?.city || ''}${b.location?.district ? ' • ' + b.location.district : ''}</div>
         </div>
       </div>
+      <div class="sikka-detail-actions">
+        ${b.contact?.phone ? `<a href="tel:${b.contact.phone}" class="sikka-detail-action"><div class="sikka-detail-action-icon"><i class="ri-phone-line"></i></div><span>اتصال</span></a>` : ''}
+        ${b.location?.lat && b.location?.lng ? `<a href="https://www.google.com/maps?q=${b.location.lat},${b.location.lng}" target="_blank" class="sikka-detail-action"><div class="sikka-detail-action-icon primary"><i class="ri-directions-line"></i></div><span>الاتجاهات</span></a>` : ''}
+        ${b.contact?.website ? `<a href="${b.contact.website}" target="_blank" class="sikka-detail-action"><div class="sikka-detail-action-icon"><i class="ri-global-line"></i></div><span>الموقع</span></a>` : ''}
+        <button class="sikka-detail-action" onclick="toggleFavorite('${b.id}')"><div class="sikka-detail-action-icon ${isFav ? 'fav-active' : ''}"><i class="ri-heart-${isFav ? 'fill' : 'line'}"></i></div><span>${isFav ? 'محفوظ' : 'حفظ'}</span></button>
+      </div>
+      ${b.description ? `<div class="sikka-section"><h2 class="sikka-section-title">عن المكان</h2><p class="sikka-detail-desc">${b.description}</p></div>` : ''}
+      ${hoursRows ? `<div class="sikka-section"><div class="sikka-detail-hours-header"><h2 class="sikka-section-title">ساعات العمل</h2>${isOpen !== null ? `<span class="sikka-status ${isOpen ? 'open' : 'closed'}"><span class="w-1.5 h-1.5 rounded-full bg-current"></span> ${isOpen ? 'مفتوح' : 'مقفول'}</span>` : ''}</div><div class="sikka-hours">${hoursRows}</div></div>` : ''}
+      ${photos.length ? `<div class="sikka-section"><h2 class="sikka-section-title">معرض الصور</h2><div class="sikka-photos-grid">${photos.slice(0,6).map(p => `<div class="sikka-photo-item" style="background-image:url(${p})"></div>`).join('')}</div></div>` : ''}
+      <div class="sikka-section"><div class="sikka-section-header"><h2 class="sikka-section-title">آراء الزوار (${totalReviews})</h2><button class="sikka-link" onclick="openReviewModal('${b.id}')">اكتب تقييم</button></div><div id="reviews-list">${reviewsHtml}</div></div>
     </div>
   `;
 

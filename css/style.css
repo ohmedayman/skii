@@ -5153,4 +5153,254 @@ body {
   .sikka-section { padding: var(--space-2xl) var(--margin-desktop); }
   .sikka-biz-card { flex-direction: row-reverse; }
   .sikka-biz-card-img { width: 200px; min-height: 160px; }
+  .sikka-detail-hero { height: 400px; }
 }
+
+/* =============================================
+   BUSINESS DETAIL PAGE
+   ============================================= */
+.sikka-detail { padding-bottom: 24px; }
+.sikka-detail-hero {
+  position: relative;
+  height: 320px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sikka-detail-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5,20,36,0.4) 0%, rgba(5,20,36,0.85) 100%);
+}
+.sikka-detail-topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--margin-mobile);
+}
+.sikka-detail-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5,20,36,0.5);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: var(--radius-full);
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.sikka-detail-back:hover { background: rgba(5,20,36,0.7); }
+.sikka-detail-topbar-actions { display: flex; gap: 8px; }
+.sikka-detail-topbar-actions .sikka-icon-btn {
+  background: rgba(5,20,36,0.5);
+  backdrop-filter: blur(8px);
+  color: white;
+}
+.sikka-detail-topbar-actions .sikka-icon-btn:hover {
+  background: rgba(5,20,36,0.7);
+  color: var(--primary);
+}
+.sikka-detail-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 var(--margin-mobile) 24px;
+}
+.sikka-detail-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family: var(--font-family-mono);
+}
+.sikka-detail-rating-badge span { font-weight: 400; opacity: 0.8; }
+.sikka-detail-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.sikka-detail-loc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+}
+
+/* Action Buttons */
+.sikka-detail-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px var(--margin-mobile);
+  border-bottom: 1px solid var(--outline-variant);
+}
+.sikka-detail-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--on-surface);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--font-family-body);
+}
+.sikka-detail-action-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  transition: all var(--transition-fast);
+}
+.sikka-detail-action:hover .sikka-detail-action-icon {
+  border-color: var(--primary);
+  background: rgba(108,220,161,0.08);
+}
+.sikka-detail-action-icon.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.sikka-detail-action-icon.fav-active {
+  color: #ff6b8a;
+  border-color: #ff6b8a;
+  background: rgba(255,107,138,0.1);
+}
+
+/* Description */
+.sikka-detail-desc {
+  color: var(--on-surface-variant);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+/* Tags */
+.sikka-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.sikka-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  font-family: var(--font-family-mono);
+}
+
+/* Status */
+.sikka-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-family-mono);
+}
+.sikka-status.open { color: var(--primary); }
+.sikka-status.closed { color: var(--on-surface-variant); }
+
+/* Hours */
+.sikka-detail-hours-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sikka-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sikka-hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.88rem;
+  color: var(--on-surface-variant);
+  border-bottom: 1px solid var(--outline-variant);
+}
+.sikka-hours-row:last-child { border-bottom: none; }
+.sikka-hours-row.today {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Photos Grid */
+.sikka-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.sikka-photo-item {
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+.sikka-photo-item:hover { transform: scale(1.03); }
+
+/* Reviews */
+.sikka-review {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--outline-variant);
+}
+.sikka-review:last-child { border-bottom: none; }
+.sikka-review-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.sikka-review-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.sikka-review-meta { flex: 1; }
+.sikka-review-name { font-weight: 600; font-size: 0.9rem; color: var(--on-surface); }
+.sikka-review-date { font-size: 0.75rem; color: var(--on-surface-variant); font-family: var(--font-family-mono); }
+.sikka-review-stars { color: var(--primary); font-size: 0.8rem; }
+.sikka-review-title { font-weight: 600; font-size: 0.9rem; color: var(--on-surface); margin-bottom: 4px; }
+.sikka-review-text { font-size: 0.88rem; color: var(--on-surface-variant); line-height: 1.6; }
+.sikka-empty {
+  text-align: center;
+  padding: 32px;
+  color: var(--on-surface-variant);
+}
+.sikka-empty i { font-size: 2rem; margin-bottom: 8px; display: block; }
